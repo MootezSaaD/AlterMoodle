@@ -1,4 +1,9 @@
 .main-form {
     width: 450px;
-    margin: auto;
+}
+.container {
+  margin-top: 200px;
+}
+.btn-primary {
+  width: 80%;
 }
