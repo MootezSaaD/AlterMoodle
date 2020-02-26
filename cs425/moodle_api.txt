@@ -1,0 +1,3 @@
+Get events by courseid : core_calendar_get_action_events_by_course
+Get enrolled courses : core_enrol_get_users_courses
+Get final grades of courses by id : gradereport_overview_get_course_grades
