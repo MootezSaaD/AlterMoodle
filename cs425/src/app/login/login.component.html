@@ -2,21 +2,33 @@
 <html>
 
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
 
 </head>
 
 <body>
-  <div class="LoginCard">
-    <div id="altermoodle">AlterMoodle</div>
-    <div id="userName"> <input type="text" value="username"> </div>
-    <div id="password"> <input type="text" value="password"> </div>
-    <div><input type="button" value="Login"></div>
-    <div id="createAccount">New ? Create an account</div>
-  </div>
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col">
+                <form action="" class="main-form needs-validation 
+                      shadow-lg p-3 mb-5 bg-white rounded" novalidate>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" id="username" class="form-control" required>
+                        <div class="invalid-feedback">Please enter a valid username.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
