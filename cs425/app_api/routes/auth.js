@@ -17,7 +17,7 @@ router.post("/signup", async(req, res) => {
         });
 
     // Check whether the user exists or not
-    const userEmail = User.findOne({ email: req.body.email });
+    const { userEmail } = User.findOne({ email: req.body.email });
     if (userEmail)
         return res.status(400).send({
             success: false,
@@ -51,7 +51,7 @@ router.post("/signup", async(req, res) => {
 });
 
 // Login
-router.post("/login", (req, res) => {
+router.post("/login", async(req, res) => {
     // Validating the user's reponse before creating and storing the user
     const { error } = loginValidation(req.body);
     if (error)
@@ -60,24 +60,25 @@ router.post("/login", (req, res) => {
             message: error.details[0].message
         });
     // Check whether the user exists or not
-    const userAccount = User.findOne({ email: req.body.email });
+    const userAccount = await User.findOne({ email: req.body.email });
+    console.log((await userAccount).toJSON());
     if (!userAccount)
         return res.status(400).send({
             success: false,
             message: "User does not exists"
         });
     // Check whether the entered password is valid or not
-    const validAccount = bcrypt.compare(req.body.password, userAccount.password);
-    if (!validAccount)
+    const validPassword = await bcrypt.compare(req.body.password, userAccount.password);
+    if (!validPassword)
         return res.status(400).send({
             success: false,
             message: "Wrong password"
         });
-    else
-        return res.status(200).send({
-            success: true,
-            message: "Welcome !"
-        });
+
+    return res.status(200).send({
+        success: true,
+        message: "Welcome !"
+    });
 });
 
 module.exports = router;

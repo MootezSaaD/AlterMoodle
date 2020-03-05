@@ -39,6 +39,7 @@ const loginValidation = data => {
             .min(6)
             .required()
     });
+    return schema.validate(data);
 }
 
 
