@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/User");
+const jwt = require('jsonwebtoken');
+
 const {
     signupValidation,
     loginValidation
@@ -74,7 +76,16 @@ router.post("/login", async(req, res) => {
             success: false,
             message: "Wrong password"
         });
+    // Create and return JWT.
+    const token = jwt.sign({
+        _id: userAccount._id,
+        firstName: userAccount.firstName,
+        lastName: userAccount.lastName,
+        email: userAccount.lastName,
+        moodleToken: userAccount.moodleToken
+    }, process.env.JWT_SECRET);
 
+    res.header('auth_token', token);
     return res.status(200).send({
         success: true,
         message: "Welcome !"

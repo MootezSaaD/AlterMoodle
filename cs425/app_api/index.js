@@ -8,26 +8,27 @@ let bodyParser = require("body-parser");
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(
-  bodyParser.urlencoded({
-    extended: false
-  })
+    bodyParser.urlencoded({
+        extended: false
+    })
 );
 
 //Importing routes
 const authRoute = require("./routes/auth");
+const testRoute = require("./routes/testJwtMW");
 
 //Connect to database
 mongoose.connect(
-  process.env.DB_URL,
-  {
-    useCreateIndex: true,
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  },
-  () => console.log("[X] Connected to DB")
+    process.env.DB_URL, {
+        useCreateIndex: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    },
+    () => console.log("[X] Connected to DB")
 );
 
 //Route Middlewares
 app.use("/api/user", authRoute);
+app.use("/api/test", testRoute);
 
 app.listen(3000, () => console.log("[X] Server is running"));
