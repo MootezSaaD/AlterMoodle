@@ -9,6 +9,8 @@ import { LoginComponent } from "./login/login.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { SideBarComponent } from "./side-bar/side-bar.component";
 import { SignupComponent } from "./signup/signup.component";
+import { JwtService } from "./services/jwt.service";
+import { AuthService } from "./services/auth.service";
 
 @NgModule({
   declarations: [
@@ -37,7 +39,7 @@ import { SignupComponent } from "./signup/signup.component";
       }
     ])
   ],
-  providers: [],
+  providers: [JwtService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
