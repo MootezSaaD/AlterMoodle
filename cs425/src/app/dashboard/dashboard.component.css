@@ -1,0 +1,16 @@
+@font-face {
+  font-family: Lato;
+  src: url(https://fonts.googleapis.com/css?family=Lato&display=swap)
+}
+
+body {
+  color: black;
+  background-color: #f8f8f8;
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  margin-left: 5rem;
+  padding: 1rem;
+}

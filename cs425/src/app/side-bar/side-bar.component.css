@@ -1,0 +1,112 @@
+@font-face {
+  font-family: Lato;
+  src: url(https://fonts.googleapis.com/css?family=Lato&display=swap)
+}
+
+:root {
+  font-size: 16px;
+  font-family: 'Lato', sans-serif;
+  --text-primary : #FFFFFF;
+  --text-seconday: #0079EA;
+  --bg-primary: #0F273E;
+  --bg-seconday: #0A2136;
+}
+
+.navbar {
+  position: fixed;
+  background-color: #0F273E;
+  transition: width 600ms ease-in;
+  height: 100vh;
+}
+
+.navbar:hover {
+  width: 16rem;
+  transition: width 600ms ease-in;
+}
+
+.navbar:hover .link-text {
+  display: block;
+}
+
+.navbar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.nav-item {
+  width: 100%;
+  font-family: 'Lato', sans-serif;
+  font-size: 1.2rem;
+}
+
+.nav-item:last-child {
+  margin-top: auto;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  height: 5rem;
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: 600ms;
+}
+
+.nav-link:hover {
+  filter: grayscale(0%) opacity(1);
+  background: #0A2136;
+  color: #0079EA;
+}
+
+.link-text {
+  display: none;
+}
+
+.nav-link svg {
+  width: 2rem;
+  min-width: 2rem;
+  margin: 0 1.5rem;
+}
+
+.fa-primary {
+  color: #0079EA;
+}
+
+.fa-secondary {
+  color: #0079EA;
+}
+
+.fa-primary,
+.fa-secondary {
+  transition: 600ms;
+}
+
+.logo {
+  margin-bottom: 1rem;
+  font-weight: bold;
+    text-align: center;
+  color: #0079EA;
+  background: #0A2136;
+  font-size: 1.5rem;
+  font-family: 'Lato', sans-serif;
+  width: 100%;
+}
+
+.logo-text
+{
+  display: inline;
+  position: absolute;
+  left: -800px;
+  transition: 600ms;
+}
+
+.navbar:hover .logo svg {
+  transform: rotate(-180deg);
+}
+
+
