@@ -1,7 +1,12 @@
 const jwt = require('jsonwebtoken');
 
+function extractBearer(headers) {
+    const token = (headers.authorization === undefined) ? undefined : headers.authorization.replace('Bearer ', '');
+    return token;
+}
+
 function verifyJwt(req, res, next) {
-    const token = req.heaader('auth_token');
+    const token = extractBearer(req.headers);
     if (!token)
         return res.status(401).send({
             success: false,
@@ -9,8 +14,8 @@ function verifyJwt(req, res, next) {
         });
     try {
         const verifiedToken = jwt.verify(token, process.env.JWT_SECRET);
-        if (verified)
-            req.userAccount = verifiedToken;
+        if (verifiedToken)
+            next();
     } catch {
         return res.status(400).send({
             success: false,

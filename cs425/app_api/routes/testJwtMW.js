@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const verifyJwt = require('./verifyToken');
+const { verifyJwt } = require('./verifyToken');
 
 router.post('/testjwt', verifyJwt, async(req, res) => {
     return res.status(201).send({
