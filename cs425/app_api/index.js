@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 let bodyParser = require("body-parser");
+const authRouter = require('./routes/authCreateRouter.js')();
 
 //Middleware
 app.use(express.json());
@@ -12,10 +13,6 @@ app.use(
         extended: false
     })
 );
-
-//Importing routes
-const authRoute = require("./routes/auth");
-const testRoute = require("./routes/testJwtMW");
 
 //Connect to database
 mongoose.connect(
@@ -28,7 +25,6 @@ mongoose.connect(
 );
 
 //Route Middlewares
-app.use("/api/user", authRoute);
-app.use("/api/test", testRoute);
+app.use("/api/user", authRouter);
 
-app.listen(3000, () => console.log("[X] Server is running"));
+module.exports = app;
