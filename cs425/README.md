@@ -12,3 +12,10 @@
         - setToken (Sets the JWT in localstorage).
         - getToken (Gets the JWT from localstorage).
         - deleteToken (Delete the JWT from localstorage).
+-   Protect the access to the dashboard using a Guard.
+
+# TODO:
+-   Contiune implementing the Seperation of Concers concept:
+    - Create an "Auth" module that contains Login and Signup components.
+    - Create a "Shared" module that contains different common components (Services, Guards) or any other future shared components.
+    - Same thing for "dashboard" componenet.
