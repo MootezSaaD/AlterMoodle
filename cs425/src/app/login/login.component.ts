@@ -29,7 +29,9 @@ export class LoginComponent {
       next: (data: any) => {
         this.router.navigateByUrl("/dashboard");
       },
-      error: err => (this.loginErrorMessage = err)
+      error: err => {
+        this.loginErrorMessage = err.body;
+      }
     });
   }
 }

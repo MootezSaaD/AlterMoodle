@@ -2,6 +2,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
+import { HttpClientModule } from "@angular/common/http";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -11,6 +12,7 @@ import { SideBarComponent } from "./side-bar/side-bar.component";
 import { SignupComponent } from "./signup/signup.component";
 import { JwtService } from "./services/jwt.service";
 import { AuthService } from "./services/auth.service";
+import { AuthGuardGuard as AuthGuard } from "./guards/auth-guard.guard"
 
 @NgModule({
   declarations: [
@@ -24,10 +26,16 @@ import { AuthService } from "./services/auth.service";
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule,
     RouterModule.forRoot([
       {
+        path:"",
+        component: LoginComponent
+      },
+      {
         path: "dashboard",
-        component: DashboardComponent
+        component: DashboardComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: "login",
@@ -39,7 +47,7 @@ import { AuthService } from "./services/auth.service";
       }
     ])
   ],
-  providers: [JwtService, AuthService],
+  providers: [AuthService, JwtService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

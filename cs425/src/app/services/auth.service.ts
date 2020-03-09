@@ -32,28 +32,9 @@ export class AuthService {
 
   register(user: User): Observable<any> {
     return this.httpClient.post(
-      "http://localhost:3000/api/user/register",
+      "http://localhost:3000/api/user/signup",
       user
     );
-  }
-
-  getUserInfo(): Observable<any> {
-    return this.httpClient.get(`http://localhost:3000/api/user/profile`);
-  }
-
-  getUserPayload() {
-    if (this.jwtService.getToken()) {
-      this.getUserInfo().subscribe({
-        next: (res: any) => {
-          this.setAuth(res);
-        },
-        error: err => {
-          this.purgeAuth();
-        }
-      });
-    } else {
-      this.purgeAuth();
-    }
   }
 
   setAuth(user: User) {

@@ -1,3 +1,4 @@
+const cors = require("cors");
 const dotenv = require("dotenv").config();
 const express = require("express");
 const app = express();
@@ -13,6 +14,8 @@ app.use(
         extended: false
     })
 );
+app.use(cors());
+
 
 //Connect to database
 mongoose.connect(
@@ -27,4 +30,10 @@ mongoose.connect(
 //Route Middlewares
 app.use("/api/user", authRouter);
 
+// Error handler
+app.use(function(err, req, res, next) {
+    console.error(err.stack);
+    if (!err.statusCode) err.statusCode = 500;
+    res.status(err.statusCode).send({ error: err.message });
+});
 module.exports = app;

@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -7,7 +11,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignupComponent implements OnInit {
 
-  constructor() { }
+  constructor(private titleService: Title,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private authService: AuthService) {
+
+    this.titleService.setTitle("Signup");
+  }
 
   ngOnInit() {
   }

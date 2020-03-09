@@ -1,27 +1,10 @@
-# Cs425
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.23.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+# Done:
+-   Created Authentication Backend (Register and Login)
+-   Seperated the different authentication actions (login and register) into services in the backend.
+-   Created a sidebar to the dashboard.
+-   Create two service: AuthService that handles the different actions related to authentication :
+    - AuthService:
+        -   Login in (hitting the /login API end-point).
+        -   Register (hitting the /signup API end-point).
+        -   PurgeAuth (deletes the JWT from the local storage, resets the BehaviourSubject to it's initials value (an empty object), and set the "authenticated" variable for false).
+        -   isAuthenticated (Checks whether the user is authenticated or not by return "authenticated"'s boolean value ).
