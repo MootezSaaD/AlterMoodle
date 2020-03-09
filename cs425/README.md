@@ -15,7 +15,13 @@
 -   Protect the access to the dashboard using a Guard.
 
 # TODO:
--   Contiune implementing the Seperation of Concers concept:
+-   Continue implementing the Seperation of Concers concept:
     - Create an "Auth" module that contains Login and Signup components.
     - Create a "Shared" module that contains different common components (Services, Guards) or any other future shared components.
     - Same thing for "dashboard" componenet.
+-   Setup Moodle (on this PC).
+-   Display user's details.
+-   Allow user to change his/her password.
+-   Add "Add time table" functionality to the dashboard.
+-   Create remaining views of the dashboard.
+-   Start creating appropriate API end-points : I can start by creating an end-point that fetches the user's assignments.
