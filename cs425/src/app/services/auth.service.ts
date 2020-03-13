@@ -31,14 +31,11 @@ export class AuthService {
   }
 
   register(user: User): Observable<any> {
-    return this.httpClient.post(
-      "http://localhost:3000/api/user/signup",
-      user
-    );
+    return this.httpClient.post("http://localhost:3000/api/user/signup", user);
   }
 
   setAuth(user: User) {
-    this.jwtService.setToken(user.token);
+    this.jwtService.setToken(user.userToken);
     this.setUser(user);
     this.authenticated = true;
   }
@@ -55,8 +52,24 @@ export class AuthService {
     this.authenticated = false;
   }
 
+  getUserPayload() {
+    const token = this.jwtService.getToken();
+    if (token) {
+      console.log(token);
+      const userPayload = atob(token.split(".")[0]);
+      return JSON.parse(userPayload);
+    } else {
+      return false;
+    }
+  }
+
   public isAuthenticated(): boolean {
-    return this.authenticated;
+    const userPayload = this.getUserPayload();
+    if (userPayload) {
+      return userPayload.exp > Date.now() / 1000;
+    } else {
+      return false;
+    }
   }
 
   public get getCurrentUser(): User {

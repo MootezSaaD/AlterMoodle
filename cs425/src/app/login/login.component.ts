@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../services/auth.service";
 import { Router } from "@angular/router";
 import { NgForm } from "@angular/forms";
@@ -9,7 +9,7 @@ import { Title } from "@angular/platform-browser";
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.css"]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   userModel = {
     email: "",
     password: ""
@@ -34,4 +34,5 @@ export class LoginComponent {
       }
     });
   }
+  ngOnInit() {}
 }
