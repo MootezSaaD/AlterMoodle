@@ -1,6 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { HttpClientModule } from "@angular/common/http";
 
@@ -12,7 +12,7 @@ import { SideBarComponent } from "./side-bar/side-bar.component";
 import { SignupComponent } from "./signup/signup.component";
 import { JwtService } from "./services/jwt.service";
 import { AuthService } from "./services/auth.service";
-import { AuthGuardGuard as AuthGuard } from "./guards/auth-guard.guard"
+import { AuthGuardGuard as AuthGuard } from "./guards/auth-guard.guard";
 
 @NgModule({
   declarations: [
@@ -27,9 +27,10 @@ import { AuthGuardGuard as AuthGuard } from "./guards/auth-guard.guard"
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
       {
-        path:"",
+        path: "",
         component: LoginComponent
       },
       {

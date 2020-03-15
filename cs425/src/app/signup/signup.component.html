@@ -14,7 +14,7 @@
 
 <body>
   <div class="row h-100 justify-content-center align-items-center">
-    <form action="" class="main-form needs-validation shadow-sm p-3 mb-5 bg-white rounded" novalidate>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="main-form shadow-sm p-3 mb-5 bg-white rounded">
       <div class="row">
         <div class="col text-center">
           <img src="../../assets/atlermoodle.png" alt="">
@@ -23,37 +23,74 @@
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="firstname">Firstname</label>
-            <input type="text" name="firstname" id="firstname" class="form-control">
+            <label for="firstName">Firstname</label>
+            <input formControlName="firstName" type="text" name="firstName" id="firstName" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }">
+            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+              <div *ngIf="f.firstName.errors.required">First Name is required</div>
+              <div *ngIf="f.firstName.errors.pattern">First Name should contain characters and spaces only
+              </div>
+              <div *ngIf="f.firstName.errors.minlength">First Name should contain at least 2 characters
+              </div>
+              <div *ngIf="f.firstName.errors.maxlength">First Name should not exceed 255 characters</div>
+            </div>
           </div>
         </div>
         <div class="col">
           <div class="form-group">
-            <label for="lastname">Lastname</label>
-            <input type="text" name="lastname" id="lastname" class="form-control">
+            <label for="lastName">Lastname</label>
+            <input formControlName="lastName" type="text" name="lastName" id="lastName" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }">
+            <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+              <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+              <div *ngIf="f.lastName.errors.pattern">Last Name should contain characters and spaces only
+              </div>
+              <div *ngIf="f.lastName.errors.minlengt">Last Name should contain at least 2 characters</div>
+              <div *ngIf="f.lastName.errors.maxlength">Last Name should not exceed 255 characters</div>
+            </div>
           </div>
         </div>
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="text" name="email" id="email" class="form-control" required>
-        <div class="invalid-feedback">Please enter a valid username.</div>
+        <input formControlName="email" type="text" name="email" id="email" class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+          <div *ngIf="f.email.errors.required">Email is required</div>
+        </div>
+        <small>
+          <div *ngIf="this.userExists" class="text-danger">{{this.userExists}}</div>
+        </small>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" name="password" id="password" class="form-control">
+        <input formControlName="password" type="password" name="password" id="password" class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+          <div *ngIf="f.password.errors.required">Password is required</div>
+          <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+          <div *ngIf="f.password.errors.pattern">Password requires a minimum of a MAJ, special character too!</div>
+        </div>
       </div>
       <div class="form-group">
         <label for="moodletoken">Moodle Token</label>
-        <input type="moodletoken" name="moodletoken" id="moodletoken" class="form-control"
-        data-toggle="tooltip" data-placement="right" title="Contact your Moodle administrator to retrieve your moodle token.">
+        <input formControlName="moodleToken" type="text" name="moodletoken" id="moodletoken" class="form-control" data-toggle="tooltip"
+          data-placement="right" title="Contact your Moodle administrator to retrieve your moodle token."
+          [ngClass]="{ 'is-invalid': submitted && f.moodleToken.errors }">
+          <div *ngIf="submitted && f.moodleToken.errors" class="invalid-feedback">
+            <div *ngIf="f.moodleToken.errors.required">MoodleToken is required</div>
+          </div>
         <small class="form-text text-muted">
           Contact your Moodle administrator to retrieve your moodle token.
         </small>
+
       </div>
       <div class="row">
         <div class="col text-center">
-          <button type="submit" class="btn btn-primary text-center">Register</button>
+          <button [disabled]="loading" type="submit" class="btn btn-primary text-center">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Register
+          </button>
         </div>
       </div>
     </form>

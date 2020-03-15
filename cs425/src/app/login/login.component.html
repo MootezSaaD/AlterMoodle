@@ -23,11 +23,17 @@
                 <label for="login">Login</label>
                 <input type="text" name="username" id="login" placeholder="Login" class="form-control rounded-lg border border-primary" name="email" #email="ngModel" [(ngModel)]="userModel.email" [ngClass]="{'invalid-textbox': loginForm.submitted && !email.valid}" required>
                 <div class="invalid-feedback">Please enter a valid email.</div>
+                <small>
+                  <div *ngIf="this.userNotExists" class="text-danger">{{this.userNotExists}}</div>
+                </small>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" placeholder="Password" #password="ngModel" [(ngModel)]="userModel.password" class="form-control rounded-lg border border-primary" required>
-                <div class="invalid-feedback">Please enter a valid username.</div>
+                <div class="invalid-feedback">Please enter a valid password.</div>
+                <small>
+                  <div *ngIf="this.userWrongPassword" class="text-danger">{{this.userWrongPassword}}</div>
+                </small>
             </div>
             &nbsp;
             <div class="row">
