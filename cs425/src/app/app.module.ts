@@ -13,6 +13,7 @@ import { SignupComponent } from "./signup/signup.component";
 import { JwtService } from "./services/jwt.service";
 import { AuthService } from "./services/auth.service";
 import { AuthGuardGuard as AuthGuard } from "./guards/auth-guard.guard";
+import { UserProfileComponent } from "./user-profile/user-profile.component";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { AuthGuardGuard as AuthGuard } from "./guards/auth-guard.guard";
     LoginComponent,
     DashboardComponent,
     SideBarComponent,
-    SignupComponent
+    SignupComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +47,10 @@ import { AuthGuardGuard as AuthGuard } from "./guards/auth-guard.guard";
       {
         path: "signup",
         component: SignupComponent
+      },
+      {
+        path: "profile",
+        component: UserProfileComponent
       }
     ])
   ],
