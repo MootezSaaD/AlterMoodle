@@ -23,7 +23,7 @@ export class AuthGuardGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    if (!this.authService.isAuthenticated()) {
+    if (this.authService.isAuthenticated()) {
       this.router.navigateByUrl("/login");
       this.jwtSerivce.deleteToken();
       return false;

@@ -66,7 +66,8 @@ export class AuthService {
   public isAuthenticated(): boolean {
     const userPayload = this.getUserPayload();
     if (userPayload) {
-      return userPayload.exp > Date.now() / 1000;
+      const current_time = new Date().getTime() / 1000;
+      return userPayload.exp > current_time;
     } else {
       return false;
     }
