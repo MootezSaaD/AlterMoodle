@@ -3,10 +3,6 @@
   src: url(https://fonts.googleapis.com/css?family=Lato&display=swap)
 }
 
-body {
-  background-color: #F8F8F8;
-}
-
 .custom-border {
   border-color: #707070;
   border-style: solid;

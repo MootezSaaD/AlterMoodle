@@ -1,18 +1,3 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-  <title>Login</title>
-
-</head>
-
-<body>
   <div class="row h-100 justify-content-center align-items-center">
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="main-form shadow-sm p-3 mb-5 bg-white rounded">
       <div class="row">
@@ -54,7 +39,7 @@
       <div class="form-group">
         <label for="email">Email</label>
         <input formControlName="email" type="text" name="email" id="email" class="form-control"
-        [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+          [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
         <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
           <div *ngIf="f.email.errors.required">Email is required</div>
         </div>
@@ -65,7 +50,7 @@
       <div class="form-group">
         <label for="password">Password</label>
         <input formControlName="password" type="password" name="password" id="password" class="form-control"
-        [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+          [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
         <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
           <div *ngIf="f.password.errors.required">Password is required</div>
           <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
@@ -74,27 +59,34 @@
       </div>
       <div class="form-group">
         <label for="moodletoken">Moodle Token</label>
-        <input formControlName="moodleToken" type="text" name="moodletoken" id="moodletoken" class="form-control" data-toggle="tooltip"
-          data-placement="right" title="Contact your Moodle administrator to retrieve your moodle token."
+        <input formControlName="moodleToken" type="text" name="moodletoken" id="moodletoken" class="form-control"
+          data-toggle="tooltip" data-placement="right"
+          title="Contact your Moodle administrator to retrieve your moodle token."
           [ngClass]="{ 'is-invalid': submitted && f.moodleToken.errors }">
-          <div *ngIf="submitted && f.moodleToken.errors" class="invalid-feedback">
-            <div *ngIf="f.moodleToken.errors.required">MoodleToken is required</div>
-          </div>
+        <div *ngIf="submitted && f.moodleToken.errors" class="invalid-feedback">
+          <div *ngIf="f.moodleToken.errors.required">MoodleToken is required</div>
+        </div>
         <small class="form-text text-muted">
           Contact your Moodle administrator to retrieve your moodle token.
         </small>
 
       </div>
-      <div class="row">
-        <div class="col text-center">
-          <button [disabled]="loading" type="submit" class="btn btn-primary text-center">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            Register
-          </button>
+      <div class="form-group">
+        <div class="row">
+          <div class="col text-center">
+            <button [disabled]="loading" type="submit" class="btn btn-primary text-center">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+              Register
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col text-center">
+            <a routerLink="/login" class="text-center">Already have an account ? Login</a>
+          </div>
         </div>
       </div>
     </form>
   </div>
-</body>
-
-</html>
