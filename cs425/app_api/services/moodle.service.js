@@ -9,7 +9,7 @@ function moodleService() {
     const user = await userService.getUserByID(userID);
     moodle
       .init({
-        wwwroot: "http://192.168.126.129/moodle/",
+        wwwroot: process.env.MOODLE_URL,
         token: user.moodleToken
       })
       .then(function(client) {
