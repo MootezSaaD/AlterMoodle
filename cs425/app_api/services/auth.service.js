@@ -5,13 +5,17 @@ const bcrypt = require("bcryptjs");
 
 function userService() {
   // Search for user by email
-  async function getUser(email) {
+  async function getUserByEmail(email) {
     const query = { email: email };
     return User.findOne(query);
   }
+  // Seach for user by id
+  async function getUserByID(userID) {
+    return User.findById(userID);
+  }
   // Login User Service
   async function login(email, password) {
-    const user = await getUser(email);
+    const user = await getUserByEmail(email);
     if (!user) {
       throw new Error("User is not registered");
     }
@@ -54,7 +58,7 @@ function userService() {
       }
     }
   }
-  return { login, signup };
+  return { login, signup, getUserByID };
 }
 
 module.exports = userService;

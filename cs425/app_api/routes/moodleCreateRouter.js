@@ -3,7 +3,7 @@ const Router = require("express").Router;
 
 module.exports = () =>
   glob
-    .sync("auth/*.js", {
+    .sync("moodle/*.js", {
       cwd: `${__dirname}/`
     })
     .map(filename => require(`./${filename}`))

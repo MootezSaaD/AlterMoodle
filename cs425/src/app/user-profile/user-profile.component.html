@@ -1,5 +1,5 @@
-  <div class="container custom-border w-100 ">
-    <div class="row w-100 align-items-center">
+  <div class="container custom-border h-100">
+    <div class="row align-items-center">
       <div class="col-2"><img src="../../assets/defaultAvatar.png" alt="" srcset=""></div>
       <div class="col-9">
         <button type="button" class="btn btn-primary d-flex flex-row">
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="border-top"></div>
-    <div class="row">
+    <div class="row border border-info">
       <div class="d-flex flex-column">
         <div class="col offset-2 custom-account">
           Account Info
@@ -23,15 +23,15 @@
             <div class="col">
               <div class="form-group custom-form-group">
                 <label for="fullname">Full Name</label>
-                <input type="text" name="fullname" id="fullname" class="form-control" required>
+                <input type="text" name="fullname" id="fullname" class="form-control" value="{{this.fullName}}" required>
               </div>
               <div class="form-group custom-form-group">
                 <label for="email">Email</label>
-                <input type="text" name="email" id="email" class="form-control" required>
+                <input type="text" name="email" id="email" class="form-control" value="{{this.email}}" required>
               </div>
               <div class="form-group custom-form-group">
                 <label for="moodletoken">Moodle Token</label>
-                <input type="text" name="moodletoken" id="moodletoken" class="form-control" required>
+                <input type="text" name="moodletoken" id="moodletoken" class="form-control" value="{{this.moodleToken}}" required>
               </div>
               <div class="form-group">
                 <button class="btn btn-success">Save</button>
