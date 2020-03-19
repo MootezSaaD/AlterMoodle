@@ -32,7 +32,8 @@ let UserSchema = new mongoose.Schema(
     moodleUserID: {
       type: Number,
       required: false
-    }
+    },
+    courses: []
   },
   { strict: false }
 );

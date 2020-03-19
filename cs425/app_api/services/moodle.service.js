@@ -24,10 +24,43 @@ function moodleService() {
           });
       })
       .catch(function(err) {
-        console.log("Unable to initialize the client: " + err);
+        throw new Error(err);
       });
   }
-  return { getUserMoodleID };
+
+  // Get user's enrolled courses
+  async function getUsersCourses(userID) {
+    const user = await userService.getUserByID(userID);
+    const res = moodle
+      .init({
+        wwwroot: process.env.MOODLE_URL,
+        token: user.moodleToken
+      })
+      .then(client => {
+        return client
+          .call({
+            wsfunction: "core_enrol_get_users_courses",
+            args: {
+              userid: user.moodleUserID
+            }
+          })
+          .then(courses => {
+            let coursesArr = [];
+            courses.forEach(course => {
+              coursesArr.push({
+                code: course.shortname,
+                desc: course.fullname
+              });
+            });
+            return coursesArr;
+          });
+      })
+      .catch(err => {
+        throw new Error(err);
+      });
+    return Promise.resolve(res);
+  }
+  return { getUserMoodleID, getUsersCourses };
 }
 
 module.exports = moodleService;
