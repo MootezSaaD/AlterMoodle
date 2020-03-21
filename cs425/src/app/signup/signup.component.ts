@@ -46,7 +46,11 @@ export class SignupComponent implements OnInit {
       ],
       moodleToken: [
         "",
-        [Validators.required, Validators.min(1000000), Validators.max(9999999)]
+        [
+          Validators.required,
+          Validators.minLength(32),
+          Validators.maxLength(32)
+        ]
       ],
       email: ["", [Validators.required, Validators.minLength(6)]],
       password: [
