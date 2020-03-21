@@ -21,6 +21,9 @@ let UserSchema = new mongoose.Schema(
     },
     moodleToken: {
       type: String,
+      unique: true,
+      min: 32,
+      max: 32,
       required: true
     },
     password: {

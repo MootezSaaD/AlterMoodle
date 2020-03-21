@@ -1,27 +1,21 @@
 require("dotenv").config();
 const User = require("../models/User");
 const authBasic = require("../helpers/authBasic");
+const moodleService = require("../services/moodle.service")();
+const userSerivce = require("../services/user.service")();
 const bcrypt = require("bcryptjs");
+const { ErrorHandler } = require("../helpers/errorHandler");
 
-function userService() {
-  // Search for user by email
-  async function getUserByEmail(email) {
-    const query = { email: email };
-    return User.findOne(query);
-  }
-  // Seach for user by id
-  async function getUserByID(userID) {
-    return User.findById(userID);
-  }
+function authService() {
   // Login User Service
   async function login(email, password) {
-    const user = await getUserByEmail(email);
+    const user = await userSerivce.getUserByEmail(email);
     if (!user) {
       throw new Error("User is not registered");
     }
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      throw new Error("Wrong password");
+      throw new ErrorHandler(401, "Wrong password");
     }
     const userToken = await authBasic.createTokens(
       user,
@@ -41,24 +35,34 @@ function userService() {
   async function signup(userCreds) {
     try {
       const hashedPassword = await bcrypt.hash(userCreds.password, 10);
+      const userid = await moodleService.getUserMoodleID(userCreds.moodleToken);
+      if (!userid) {
+        throw new ErrorHandler(422, "Invalid Moodle Token, please retry again");
+      }
       const user = await User.create({
         ...userCreds,
-        password: hashedPassword
+        password: hashedPassword,
+        userid
       });
-      console.log(user);
+
       if (!user) {
-        throw new Error("User cannot be created");
+        throw new ErrorHandler(500, "User cannot be created");
       }
+
       return user;
     } catch (error) {
+      console.log(error);
       if (error.code === 11000) {
-        throw new Error("User already exists !");
+        throw new ErrorHandler(
+          409,
+          Object.keys(error.keyValue)[0] + " already exists"
+        );
       } else {
         throw error;
       }
     }
   }
-  return { login, signup, getUserByID };
+  return { login, signup };
 }
 
-module.exports = userService;
+module.exports = authService;
