@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 let bodyParser = require("body-parser");
+const { handleError } = require("./helpers/errorHandler");
 const authRouter = require("./routes/authCreateRouter.js")();
 const moodleRouter = require("./routes/moodleCreateRouter.js")();
 
@@ -34,8 +35,6 @@ app.use("/api/moodle", moodleRouter);
 
 // Error handler
 app.use(function(err, req, res, next) {
-  console.error(err.stack);
-  if (!err.statusCode) err.statusCode = 500;
-  res.status(err.statusCode).send({ error: err.message });
+  handleError(err, res);
 });
 module.exports = app;
