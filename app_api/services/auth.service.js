@@ -27,6 +27,7 @@ function authService() {
       firstName: user.firstName,
       lastName: user.lastName,
       moodleToken: user.moodleToken,
+      courses: user.courses,
       userToken
     };
     return userObj;
@@ -36,13 +37,18 @@ function authService() {
     try {
       const hashedPassword = await bcrypt.hash(userCreds.password, 10);
       const userid = await moodleService.getUserMoodleID(userCreds.moodleToken);
+      const courses = await moodleService.getUsersCourses(
+        userid,
+        userCreds.moodleToken
+      );
       if (!userid) {
-        throw new ErrorHandler(422, "Invalid Moodle Token, please retry again");
+        throw new ErrorHandler(422, "Invalid MoodleToken, please retry again");
       }
       const user = await User.create({
         ...userCreds,
         password: hashedPassword,
-        userid
+        userid,
+        courses
       });
 
       if (!user) {

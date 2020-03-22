@@ -13,7 +13,7 @@ export class SignupComponent implements OnInit {
   registerForm: FormGroup;
   loading = false;
   submitted = false;
-  userExists = "";
+  errMsg = "";
 
   constructor(
     private titleService: Title,
@@ -81,9 +81,10 @@ export class SignupComponent implements OnInit {
         this.router.navigateByUrl("/login");
       },
       error: error => {
-        console.log(error);
-        this.userExists = error.error.error;
-        console.log(this.userExists);
+        console.log(error.error.message);
+        // Bad code, to fix later
+        let interMsg = error.error.message;
+        this.errMsg = interMsg.charAt(0).toUpperCase() + interMsg.slice(1);
         this.loading = false;
       }
     });

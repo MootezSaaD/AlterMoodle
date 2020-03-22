@@ -38,7 +38,13 @@ import { UserProfileComponent } from "./user-profile/user-profile.component";
       {
         path: "dashboard",
         component: DashboardComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        children: [
+          {
+            path: "profile",
+            component: UserProfileComponent
+          }
+        ]
       },
       {
         path: "login",
@@ -47,10 +53,6 @@ import { UserProfileComponent } from "./user-profile/user-profile.component";
       {
         path: "signup",
         component: SignupComponent
-      },
-      {
-        path: "profile",
-        component: UserProfileComponent
       }
     ])
   ],

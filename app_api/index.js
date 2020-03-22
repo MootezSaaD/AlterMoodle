@@ -4,9 +4,10 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 let bodyParser = require("body-parser");
-const { handleError } = require("./helpers/errorHandler");
+let { handleError } = require("./helpers/errorHandler");
 const authRouter = require("./routes/authCreateRouter.js")();
 const moodleRouter = require("./routes/moodleCreateRouter.js")();
+const miscRouter = require("./routes/miscCreateRouter.js")();
 
 //Middleware
 app.use(express.json());
@@ -32,6 +33,7 @@ mongoose.connect(
 //Route Middlewares
 app.use("/api/user", authRouter);
 app.use("/api/moodle", moodleRouter);
+app.use("/api/misc", miscRouter);
 
 // Error handler
 app.use(function(err, req, res, next) {

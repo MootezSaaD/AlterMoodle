@@ -10,7 +10,12 @@ function userSerivce() {
   async function getUserByID(userID) {
     return User.findById(userID);
   }
-  return { getUserByEmail, getUserByID };
+  // Seach for user by token
+  async function getUserByMoodleToken(token) {
+    const query = { moodleToken: token };
+    return User.findOne(query);
+  }
+  return { getUserByEmail, getUserByID, getUserByMoodleToken };
 }
 
 module.exports = userSerivce;

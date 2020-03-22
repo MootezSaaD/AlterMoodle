@@ -26,3 +26,4 @@
 - [ ]  Create remaining views of the dashboard.
 - [ ]  Start creating appropriate API end-points : I can start by creating an end-point that fetches the user's     assignments.
 - [ ] * Think about deploying the project on Heroku, same thing regardig Moodle (maye on a free hosting service)*.
+- [ ] Enhance validation by including server side errors (ref: https://stackoverflow.com/questions/57747379/how-to-do-and-show-server-validation-errors-in-angular-form)

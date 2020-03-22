@@ -27,35 +27,26 @@ function moodleService() {
   }
 
   // Get user's enrolled courses
-  async function getUsersCourses(userID) {
-    const user = await userService.getUserByID(userID);
+  async function getUsersCourses(userID, moodleToken) {
     const res = moodle
       .init({
         wwwroot: process.env.MOODLE_URL,
-        token: user.moodleToken
+        token: moodleToken
       })
       .then(client => {
         return client
           .call({
             wsfunction: "core_enrol_get_users_courses",
             args: {
-              userid: user.moodleUserID
+              userid: userID
             }
           })
           .then(async courses => {
-            let coursesArr = [];
             let coursesIDS = [];
             courses.forEach(course => {
-              coursesArr.push({
-                id: course.id,
-                code: course.shortname,
-                desc: course.fullname
-              });
               coursesIDS.push(course.id);
             });
-            user.courses = coursesIDS;
-            await user.save();
-            return coursesArr;
+            return coursesIDS;
           });
       })
       .catch(err => {

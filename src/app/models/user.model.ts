@@ -4,4 +4,5 @@ export interface User {
   email: string;
   moodleToken: string;
   userToken: string;
+  courses: string[];
 }
