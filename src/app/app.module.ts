@@ -14,6 +14,10 @@ import { JwtService } from "./services/jwt.service";
 import { AuthService } from "./services/auth.service";
 import { AuthGuardGuard as AuthGuard } from "./guards/auth-guard.guard";
 import { UserProfileComponent } from "./user-profile/user-profile.component";
+import { UserDdmenuComponent } from "./user-ddmenu/user-ddmenu.component";
+import { UserScheduleComponent } from "./user-schedule/user-schedule.component";
+import { InitialStatsComponent } from "./initial-stats/initial-stats.component";
+import { MainDashboardComponent } from "./main-dashboard/main-dashboard.component";
 
 @NgModule({
   declarations: [
@@ -22,7 +26,11 @@ import { UserProfileComponent } from "./user-profile/user-profile.component";
     DashboardComponent,
     SideBarComponent,
     SignupComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    UserDdmenuComponent,
+    UserScheduleComponent,
+    InitialStatsComponent,
+    MainDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +50,13 @@ import { UserProfileComponent } from "./user-profile/user-profile.component";
         children: [
           {
             path: "profile",
-            component: UserProfileComponent
+            component: UserProfileComponent,
+            canActivateChild: [AuthGuard]
+          },
+          {
+            path: "home",
+            component: MainDashboardComponent,
+            canActivateChild: [AuthGuard]
           }
         ]
       },

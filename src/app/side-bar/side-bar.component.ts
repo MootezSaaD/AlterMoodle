@@ -1,21 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import { Component, AfterViewInit } from "@angular/core";
+import { AuthService } from "../services/auth.service";
+import { Router } from "@angular/router";
+import * as Feather from "feather-icons";
+import { Title } from "@angular/platform-browser";
 
 @Component({
-  selector: 'app-side-bar',
-  templateUrl: './side-bar.component.html',
-  styleUrls: ['./side-bar.component.css']
+  selector: "app-side-bar",
+  templateUrl: "./side-bar.component.html",
+  styleUrls: ["./side-bar.component.css"]
 })
-export class SideBarComponent implements OnInit {
+export class SideBarComponent implements AfterViewInit {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private titleSerivce: Title
+  ) {
+    this.titleSerivce.setTitle("Dashboard");
+  }
 
-  constructor(private authService: AuthService, private router: Router) { }
-
-  ngOnInit() {
+  ngAfterViewInit() {
+    Feather.replace();
   }
   Logout() {
     this.authService.purgeAuth();
     this.router.navigateByUrl("/login");
-
   }
 }
