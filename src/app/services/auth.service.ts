@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject } from "rxjs";
 import { map, distinctUntilChanged } from "rxjs/operators";
 import { User } from "../models/user.model";
 import { JwtService } from "./jwt.service";
+import { StorageService } from "./storage.service";
 
 @Injectable()
 export class AuthService {
@@ -11,7 +12,11 @@ export class AuthService {
   public currentUser: Observable<User>;
   private authenticated: boolean;
 
-  constructor(private httpClient: HttpClient, private jwtService: JwtService) {
+  constructor(
+    private httpClient: HttpClient,
+    private jwtService: JwtService,
+    private storageService: StorageService
+  ) {
     this.currentUserSubject = new BehaviorSubject<User>({} as User);
     this.currentUser = this.currentUserSubject
       .asObservable()
@@ -25,6 +30,7 @@ export class AuthService {
       .pipe(
         map((res: any) => {
           this.setAuth(res);
+          this.storageService.saveUser(res);
           return res;
         })
       );
@@ -66,8 +72,8 @@ export class AuthService {
   public isAuthenticated(): boolean {
     const userPayload = this.getUserPayload();
     if (userPayload) {
-      const current_time = new Date().getTime() / 1000;
-      return userPayload.exp > current_time;
+      const currentTime = new Date().getTime() / 1000;
+      return userPayload.exp > currentTime;
     } else {
       return false;
     }

@@ -14,8 +14,7 @@ export class LoginComponent implements OnInit {
     email: "",
     password: ""
   };
-  userNotExists;
-  userWrongPassword;
+  errMsg: string;
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -31,11 +30,7 @@ export class LoginComponent implements OnInit {
       },
       error: error => {
         console.log(error);
-        if (error.error.error.includes("User")) {
-          this.userNotExists = error.error.error;
-        } else {
-          this.userWrongPassword = error.error.error;
-        }
+        this.errMsg = error.error.message;
       }
     });
   }
