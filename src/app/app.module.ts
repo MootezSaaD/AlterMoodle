@@ -3,6 +3,8 @@ import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { JwtInterceptor } from "./interceptors/jwt.interceptor";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -18,6 +20,7 @@ import { UserDdmenuComponent } from "./user-ddmenu/user-ddmenu.component";
 import { UserScheduleComponent } from "./user-schedule/user-schedule.component";
 import { InitialStatsComponent } from "./initial-stats/initial-stats.component";
 import { MainDashboardComponent } from "./main-dashboard/main-dashboard.component";
+import { StatsComponent } from "./stats/stats.component";
 
 @NgModule({
   declarations: [
@@ -30,7 +33,8 @@ import { MainDashboardComponent } from "./main-dashboard/main-dashboard.componen
     UserDdmenuComponent,
     UserScheduleComponent,
     InitialStatsComponent,
-    MainDashboardComponent
+    MainDashboardComponent,
+    StatsComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +61,11 @@ import { MainDashboardComponent } from "./main-dashboard/main-dashboard.componen
             path: "home",
             component: MainDashboardComponent,
             canActivateChild: [AuthGuard]
+          },
+          {
+            path: "stats",
+            component: StatsComponent,
+            canActivateChild: [AuthGuard]
           }
         ]
       },
@@ -70,7 +79,12 @@ import { MainDashboardComponent } from "./main-dashboard/main-dashboard.componen
       }
     ])
   ],
-  providers: [AuthService, JwtService],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    AuthService,
+    JwtService,
+    AuthGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

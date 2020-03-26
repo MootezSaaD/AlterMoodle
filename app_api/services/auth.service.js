@@ -36,25 +36,36 @@ function authService() {
   async function signup(userCreds) {
     try {
       const hashedPassword = await bcrypt.hash(userCreds.password, 10);
-      const userid = await moodleService.getUserMoodleID(userCreds.moodleToken);
-      const courses = await moodleService.getUsersCourses(
-        userid,
+      const moodleUserID = await moodleService.getUserMoodleID(
         userCreds.moodleToken
       );
-      if (!userid) {
+      if (!moodleUserID) {
         throw new ErrorHandler(422, "Invalid MoodleToken, please retry again");
       }
+      // Stores user's courses moodle ids to be accessed later.
+      const courses = await moodleService.getUsersCoursesIDS(
+        moodleUserID,
+        userCreds.moodleToken
+      );
+
       const user = await User.create({
         ...userCreds,
         password: hashedPassword,
-        userid,
+        moodleUserID,
         courses
       });
 
       if (!user) {
         throw new ErrorHandler(500, "User cannot be created");
       }
-
+      // // Get courses following the Course Model
+      // const fullCourses = await moodleService.getUsersCourses(
+      //   moodleUserID,
+      //   userCreds.moodleToken,
+      //   user._id
+      // );
+      // // Store the user's enrolled courses (if they already exist then they wont be added)
+      // await moodleService.storeCourses(fullCourses);
       return user;
     } catch (error) {
       console.log(error);

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { AuthService } from "../services/auth.service";
+import { StorageService } from "../services/storage.service";
 
 @Component({
   selector: "app-user-ddmenu",
@@ -7,13 +7,12 @@ import { AuthService } from "../services/auth.service";
   styleUrls: ["./user-ddmenu.component.css"]
 })
 export class UserDdmenuComponent implements OnInit {
-  constructor(private authSerivce: AuthService) {}
-
+  constructor(private storageService: StorageService) {}
+  currentUser: any;
   fullName = "";
   ngOnInit() {
+    this.currentUser = this.storageService.getUser();
     this.fullName =
-      this.authSerivce.getCurrentUser.firstName +
-      " " +
-      this.authSerivce.getCurrentUser.lastName;
+      this.currentUser.firstName + " " + this.currentUser.lastName;
   }
 }

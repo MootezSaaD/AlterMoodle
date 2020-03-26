@@ -2,6 +2,8 @@ require("dotenv").config();
 const userService = require("../services/user.service")();
 const moodle = require("moodle-client");
 const User = require("../models/User");
+const Course = require("../models/Course");
+const { ErrorHandler } = require("../helpers/errorHandler");
 
 function moodleService() {
   // Get user's moodle id
@@ -26,8 +28,8 @@ function moodleService() {
     return Promise.resolve(userid);
   }
 
-  // Get user's enrolled courses
-  async function getUsersCourses(userID, moodleToken) {
+  // Get user's enrolled courses ids and store them in the user's document
+  async function getUsersCoursesIDS(userID, moodleToken) {
     const res = moodle
       .init({
         wwwroot: process.env.MOODLE_URL,
@@ -47,6 +49,39 @@ function moodleService() {
               coursesIDS.push(course.id);
             });
             return coursesIDS;
+          });
+      })
+      .catch(err => {
+        throw new Error(err);
+      });
+    return Promise.resolve(res);
+  }
+  // Get user's enrolled courses (following the Course Model)
+  async function getUsersCourses(userID, moodleToken, _userdid) {
+    const res = moodle
+      .init({
+        wwwroot: process.env.MOODLE_URL,
+        token: moodleToken
+      })
+      .then(client => {
+        return client
+          .call({
+            wsfunction: "core_enrol_get_users_courses",
+            args: {
+              userid: userID
+            }
+          })
+          .then(async courses => {
+            let coursesArr = [];
+            courses.forEach(course => {
+              coursesArr.push({
+                courseCode: course.shortname,
+                courseMoodleID: course.id,
+                courseDesc: course.fullname,
+                _user: _userdid
+              });
+            });
+            return coursesArr;
           });
       })
       .catch(err => {
@@ -87,7 +122,47 @@ function moodleService() {
       });
     return Promise.resolve(res);
   }
-  return { getUserMoodleID, getUsersCourses, getUserMoodleAssignments };
+  // Get user's grades from moodle
+  async function getUserGrades(userID) {
+    const user = await userService.getUserByID(userID);
+    const res = moodle
+      .init({
+        wwwroot: process.env.MOODLE_URL,
+        token: user.moodleToken
+      })
+      .then(client => {
+        return client
+          .call({
+            wsfunction: "gradereport_overview_get_course_grades",
+            args: {
+              userid: user.moodleUserID
+            }
+          })
+          .then(async grades => {
+            return grades.grades;
+          });
+      })
+      .catch(err => {
+        throw new Error(err);
+      });
+    return Promise.resolve(res);
+  }
+  // Store courses in the database
+  async function storeCourses(coursesArr) {
+    Course.insertMany(coursesArr, { ordered: false })
+      .then(docs => {})
+      .catch(err => {
+        throw err;
+      });
+  }
+  return {
+    getUserMoodleID,
+    getUsersCoursesIDS,
+    getUserMoodleAssignments,
+    getUserGrades,
+    getUsersCourses,
+    storeCourses
+  };
 }
 
 module.exports = moodleService;

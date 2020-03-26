@@ -7,7 +7,7 @@ const router = Router({
 });
 
 /**
- * Get assignments from moodle (whether finished or not)
+ * Get assignments from moodle.
  */
 router.post("get-moodle-assignments", verifyJwt, async (req, res) => {});
 

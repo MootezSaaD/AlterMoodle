@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../services/auth.service";
+import { StorageService } from "../services/storage.service";
+import { User } from "../models/user.model";
 
 @Component({
   selector: "app-initial-stats",
@@ -7,9 +9,11 @@ import { AuthService } from "../services/auth.service";
   styleUrls: ["./initial-stats.component.css"]
 })
 export class InitialStatsComponent implements OnInit {
-  constructor(private authService: AuthService) {}
-  nbrOfCourses: Number;
+  constructor(private storageService: StorageService) {}
+  nbrOfCourses: number;
+  currentUser: any;
   ngOnInit() {
-    this.nbrOfCourses = this.authService.getCurrentUser.courses.length;
+    this.currentUser = this.storageService.getUser();
+    this.nbrOfCourses = this.currentUser.courses.length;
   }
 }

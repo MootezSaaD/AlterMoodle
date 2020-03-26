@@ -1,8 +1,4 @@
 const mongoose = require("mongoose");
-const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
-dotenv.config();
 
 let UserSchema = new mongoose.Schema(
   {
@@ -36,7 +32,8 @@ let UserSchema = new mongoose.Schema(
       type: Number,
       required: false
     },
-    courses: []
+    courses: [],
+    transcript: { type: mongoose.Schema.Types.ObjectId, ref: "Transcript" }
   },
   { strict: false }
 );
