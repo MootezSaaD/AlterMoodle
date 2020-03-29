@@ -9,10 +9,37 @@
         <th scope="col">Overall</th>
       </tr>
     </thead>
-      <tr *ngFor="let course of this.transcript">
+      <tr *ngFor="let course of this.transcript$ | async">
         <td>{{course.courseCode}}</td>
         <td>{{course.courseDesc}}</td>
         <th scope="row">{{course.grade}}</th>
       </tr>
   </table>
 </div>
+<div><h4>Assignments</h4>
+</div>
+<div class="card-deck mb-3">
+
+  <div class="card custom-card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Number of Assignments :</h5>
+      <h1 class="card-title">{{this.nbrOfassignments}}</h1>
+    </div>
+  </div>
+
+  <div class="card custom-card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Finished Assignments :</h5>
+      <h1 class="card-title text-success">{{this.nbrOfFinishedAssignments}}</h1>
+    </div>
+  </div>
+
+  <div class="card custom-card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Unfinished Assignments :</h5>
+      <h1 class="card-title text-danger">{{this.nbOfUnfinishedAssignments}}</h1>
+    </div>
+  </div>
+
+</div>
+

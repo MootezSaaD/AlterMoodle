@@ -1,7 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { TranscriptService } from "../services/transcript.service";
-import { Course } from "../models/course.model";
+import { CourseGrade } from "../models/courseGrade.model";
 import { Observable } from "rxjs";
+import { AssignmentService } from "../services/assignment.service";
+import { CourseAssignment } from "../models/courseAssignment.model";
 
 @Component({
   selector: "app-stats",
@@ -9,22 +11,24 @@ import { Observable } from "rxjs";
   styleUrls: ["./stats.component.css"]
 })
 export class StatsComponent implements OnInit {
-  constructor(private transcriptService: TranscriptService) {}
-  transcript: Course[];
+  constructor(
+    private transcriptService: TranscriptService,
+    private assignmentService: AssignmentService
+  ) {}
+  transcript$: Observable<CourseGrade[]>;
+  assignments$: Observable<CourseAssignment[]>;
+  nbrOfassignments = 0;
+  nbOfUnfinishedAssignments = 0;
+  nbrOfFinishedAssignments = 0;
+
   ngOnInit() {
-    // this.transcriptService.getTranscript().subscribe({
-    //   next: (data: any) => {
-    //     console.log(data);
-    //   },
-    //   error: error => {
-    //     console.log(error);
-    //   }
-    // });
-    // this.transcript = this.transcriptService.getTranscript();
-    // console.log(this.transcript);
-    this.transcriptService.fetchTranscript().subscribe(transcript => {
-      this.transcript = transcript;
-      console.log(this.transcript);
-    });
+    this.transcript$ = this.transcriptService.transcript$;
+    this.assignments$ = this.assignmentService.assignments$;
+    this.nbrOfassignments = this.assignmentService.getNbrOfAssignments();
+    this.nbOfUnfinishedAssignments = this.assignmentService.getNbrOfUnfinishedAssigments();
+    this.nbrOfFinishedAssignments =
+      this.nbrOfassignments - this.nbOfUnfinishedAssignments;
+    console.log(this.assignments$);
+    console.log(this.transcript$);
   }
 }

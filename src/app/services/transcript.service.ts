@@ -1,24 +1,22 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Course } from "../models/course.model";
-import { BehaviorSubject } from "rxjs";
+import { CourseGrade } from "../models/courseGrade.model";
+import { BehaviorSubject, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root"
 })
 export class TranscriptService {
-  private transcriptSubject = new BehaviorSubject<Course[]>([]);
+  private subject = new BehaviorSubject<CourseGrade[]>([]);
+  transcript$: Observable<CourseGrade[]> = this.subject.asObservable();
 
-  constructor(private httpClient: HttpClient) {
-    // Once this service is loaded it will make a GET request to the server
-    // and stores the courses+grades (i.e transcript) in transcriptSubject
+  constructor(private httpClient: HttpClient) {}
+
+  init() {
     this.httpClient
       .get("http://localhost:3000/api/moodle/grades")
-      .subscribe((transcript: Course[]) => {
-        this.transcriptSubject.next(transcript);
+      .subscribe((transcript: CourseGrade[]) => {
+        this.subject.next(transcript);
       });
-  }
-  fetchTranscript() {
-    return this.transcriptSubject.asObservable();
   }
 }
