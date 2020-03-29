@@ -1,9 +1,5 @@
 require("dotenv").config();
-const userService = require("../services/user.service")();
 const moodle = require("moodle-client");
-const User = require("../models/User");
-const Course = require("../models/Course");
-const { ErrorHandler } = require("../helpers/errorHandler");
 const _ = require("lodash");
 
 function transcriptService() {

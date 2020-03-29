@@ -1,7 +1,5 @@
 const Router = require("express").Router;
 const { verifyJwt } = require("../../helpers/verifyToken");
-const moodleService = require("../../services/moodle.service")();
-const Course = require("../../models/Course");
 const userService = require("../../services/user.service")();
 const transcriptService = require("../../services/transcript.service")();
 

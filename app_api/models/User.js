@@ -32,8 +32,7 @@ let UserSchema = new mongoose.Schema(
       type: Number,
       required: false
     },
-    courses: [],
-    transcript: { type: mongoose.Schema.Types.ObjectId, ref: "Transcript" }
+    courses: []
   },
   { strict: false }
 );

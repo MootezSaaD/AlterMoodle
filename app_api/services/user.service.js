@@ -8,7 +8,7 @@ function userSerivce() {
   }
   // Seach for user by id
   async function getUserByID(userID) {
-    return User.findById(userID);
+    return User.findById(userID).lean();
   }
   // Seach for user by token
   async function getUserByMoodleToken(token) {

@@ -1,25 +1,48 @@
 const mongoose = require("mongoose");
 
-const AssignmentSchema = new mongoose.Schema(
-  {
-    _courseid: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Course"
+const assignmentSchema = new mongoose.Schema({
+  moodleID: {
+    type: Number,
+    required: true
+  },
+  name: {
+    type: String,
+    default: ""
+  },
+  description: {
+    type: String,
+    default: ""
+  },
+  url: {
+    type: String,
+    default: ""
+  },
+  expDate: {
+    type: String,
+    default: ""
+  },
+  status: {
+    type: Boolean,
+    default: false
+  },
+  course: {
+    courseMoodleID: {
+      type: Number
     },
-    moodleid: {
-      type: Number,
-      required: true
-    },
-    description: {
+    courseCode: {
       type: String,
-      default: "No description"
+      default: ""
     },
-    status: {
-      type: Boolean,
-      default: false
+    courseName: {
+      type: String,
+      default: ""
     }
   },
-  { strict: false }
-);
-
-module.exports = mongoose.model("Assignment", AssignmentSchema);
+  _user: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+});
+/**
+ * Here we need to ensure the uniquness of the assignment by two fields: the user and the moodleid,
+ * since different users can have the same assignments
+ */
+assignmentSchema.index({ moodleID: 1, _user: 1 }, { unique: true });
+module.exports = mongoose.model("Assigment", assignmentSchema);
