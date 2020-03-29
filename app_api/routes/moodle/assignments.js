@@ -29,7 +29,7 @@ router.get("/get-mdl-assignments", verifyJwt, async (req, res) => {
     for (let a in pre) {
       finalAssignments.push({
         moodleID: pre[a].id,
-        name: pre[a].name,
+        name: pre[a].name.replace(" is due", ""),
         description: pre[a].description,
         url: pre[a].url,
         course: {
