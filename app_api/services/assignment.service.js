@@ -46,7 +46,7 @@ function assignmentService() {
         $group: {
           _id: "$course.courseCode",
           courseInfo: {
-            $first: {
+            $push: {
               courseName: "$course.courseName",
               courseID: "$course.courseMoodleID"
             }

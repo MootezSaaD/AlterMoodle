@@ -3,6 +3,6 @@ import { Course } from "./course.model";
 
 export interface CourseAssignment {
   _id: string;
-  courseInfo: Course;
+  courseInfo: Course[];
   assignment: Assignment[];
 }

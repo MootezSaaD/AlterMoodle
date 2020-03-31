@@ -1,0 +1,10 @@
+<div class="card-deck mb-3">
+  <div *ngFor="let assignment of this.assignments$ | async" class="card custom-course-card shadow-sm">
+    <h5 class="card-header"></h5>
+    <div class="card-body">
+      <h5 class="card-title">{{assignment._id}}</h5>
+      <p class="card-text">{{assignment.courseInfo[0].courseName}}</p>
+      <button type="button" class="btn btn-primary" (click)="onSelect(assignment)">Check Tasks</button>
+    </div>
+  </div>
+</div>

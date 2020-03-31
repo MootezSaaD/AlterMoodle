@@ -21,6 +21,8 @@ import { UserScheduleComponent } from "./user-schedule/user-schedule.component";
 import { InitialStatsComponent } from "./initial-stats/initial-stats.component";
 import { MainDashboardComponent } from "./main-dashboard/main-dashboard.component";
 import { StatsComponent } from "./stats/stats.component";
+import { TodoComponent } from "./todo/todo.component";
+import { CourseAssignmentsComponent } from "./course-assignments/course-assignments.component";
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { StatsComponent } from "./stats/stats.component";
     UserScheduleComponent,
     InitialStatsComponent,
     MainDashboardComponent,
-    StatsComponent
+    StatsComponent,
+    TodoComponent,
+    CourseAssignmentsComponent
   ],
   imports: [
     BrowserModule,
@@ -65,6 +69,16 @@ import { StatsComponent } from "./stats/stats.component";
           {
             path: "stats",
             component: StatsComponent,
+            canActivateChild: [AuthGuard]
+          },
+          {
+            path: "todo",
+            component: TodoComponent,
+            canActivateChild: [AuthGuard]
+          },
+          {
+            path: "todo/:courseMoodleID",
+            component: CourseAssignmentsComponent,
             canActivateChild: [AuthGuard]
           }
         ]
