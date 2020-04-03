@@ -1,5 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
+import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { HttpClientModule } from "@angular/common/http";
@@ -23,6 +24,7 @@ import { MainDashboardComponent } from "./main-dashboard/main-dashboard.componen
 import { StatsComponent } from "./stats/stats.component";
 import { TodoComponent } from "./todo/todo.component";
 import { CourseAssignmentsComponent } from "./course-assignments/course-assignments.component";
+import { EditorComponent } from "./editor/editor.component";
 
 @NgModule({
   declarations: [
@@ -38,11 +40,13 @@ import { CourseAssignmentsComponent } from "./course-assignments/course-assignme
     MainDashboardComponent,
     StatsComponent,
     TodoComponent,
-    CourseAssignmentsComponent
+    CourseAssignmentsComponent,
+    EditorComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    CKEditorModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
@@ -60,6 +64,10 @@ import { CourseAssignmentsComponent } from "./course-assignments/course-assignme
             path: "profile",
             component: UserProfileComponent,
             canActivateChild: [AuthGuard]
+          },
+          {
+            path: "editor",
+            component: EditorComponent
           },
           {
             path: "home",

@@ -17,15 +17,20 @@
         <th scope="col">Actions</th>
       </tr>
     </thead>
-      <tr *ngFor="let assignment of this.test.assignment">
-        <td  align="center">{{assignment.name}}</td>
-        <td  align="center" [innerHTML]="assignment.description"></td>
-        <td  align="center">{{assignment.expDate}}</td>
-        <td  align="center">{{assignment.url}}</td>
-        <td  align="center"><span class="badge badge-danger">{{assignment.status}}</span></td>
-        <td  align="center"><button type="button" class="btn btn-success">Done</button>
+    <tr *ngFor="let assignment of this.test.assignment">
+      <td align="center">{{assignment.name}}</td>
+      <td align="center" [innerHTML]="assignment.description"></td>
+      <td align="center">{{assignment.expDate}}</td>
+      <td align="center"><a href="{{assignment.url}}">Link</a></td>
+      <td align="center"><span class="badge badge-danger">{{assignment.status}}</span></td>
+      <td align="center">
+        <div class="btn-group mr-2" role="group" aria-label="Done">
+          <button type="button" class="btn btn-success">Done</button>
+        </div>
+        <div class="btn-group mr-2" role="group" aria-label="Do">
           <button type="button" class="btn btn-primary">Do it</button>
-        </td>
-      </tr>
+        </div>
+      </td>
+    </tr>
   </table>
 </div>

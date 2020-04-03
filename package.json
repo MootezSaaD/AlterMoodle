@@ -20,6 +20,8 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
+    "@ckeditor/ckeditor5-angular": "^1.2.3",
+    "@ckeditor/ckeditor5-build-classic": "^18.0.0",
     "@hapi/joi": "^17.1.0",
     "angular-feather": "^6.0.8",
     "axios": "^0.19.2",
