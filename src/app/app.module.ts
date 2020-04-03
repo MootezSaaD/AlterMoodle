@@ -77,7 +77,7 @@ import { CourseAssignmentsComponent } from "./course-assignments/course-assignme
             canActivateChild: [AuthGuard]
           },
           {
-            path: "todo/:courseMoodleID",
+            path: "todo/:coursName",
             component: CourseAssignmentsComponent,
             canActivateChild: [AuthGuard]
           }

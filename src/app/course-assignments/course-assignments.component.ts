@@ -1,8 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, ParamMap } from "@angular/router";
 import { CourseAssignment } from "../models/courseAssignment.model";
 import { Observable } from "rxjs";
 import { AssignmentService } from "../services/assignment.service";
+import { switchMap } from "rxjs/operators";
 
 @Component({
   selector: "app-course-assignments",
@@ -10,11 +11,18 @@ import { AssignmentService } from "../services/assignment.service";
   styleUrls: ["./course-assignments.component.css"]
 })
 export class CourseAssignmentsComponent implements OnInit {
-  assignments$: any;
+  courseAssignments$: any;
+  coursId: string;
+  course: Observable<void>;
+  test: CourseAssignment;
   constructor(
     private route: ActivatedRoute,
     private assignmentService: AssignmentService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.coursId = this.route.snapshot.params["coursName"];
+    this.test = this.assignmentService.getCourseAssignments(this.coursId);
+    console.log(this.test);
+  }
 }

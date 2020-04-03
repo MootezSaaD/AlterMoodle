@@ -21,10 +21,7 @@ export class TodoComponent implements OnInit {
   }
 
   onSelect(assignment) {
-    this.router.navigate([
-      "/dashboard/todo",
-      assignment.courseInfo[0].courseID
-    ]);
-    console.log(assignment.courseInfo[0].courseID);
+    this.router.navigate(["/dashboard/todo", assignment._id]);
+    console.log(assignment._id);
   }
 }

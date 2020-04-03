@@ -1,1 +1,31 @@
-<p>course-assignments works!</p>
+<div class="card mb-3" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{this.test._id}}</h5>
+    <p class="card-text">Total Assignments: {{this.test.assignment.length}}</p>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Due Date</th>
+        <th scope="col">URL</th>
+        <th scope="col">Status</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+      <tr *ngFor="let assignment of this.test.assignment">
+        <td  align="center">{{assignment.name}}</td>
+        <td  align="center" [innerHTML]="assignment.description"></td>
+        <td  align="center">{{assignment.expDate}}</td>
+        <td  align="center">{{assignment.url}}</td>
+        <td  align="center"><span class="badge badge-danger">{{assignment.status}}</span></td>
+        <td  align="center"><button type="button" class="btn btn-success">Done</button>
+          <button type="button" class="btn btn-primary">Do it</button>
+        </td>
+      </tr>
+  </table>
+</div>

@@ -2,7 +2,8 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
 import { CourseAssignment } from "../models/courseAssignment.model";
-import { map, filter } from "rxjs/operators";
+import { map, filter, tap } from "rxjs/operators";
+import { of } from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -12,6 +13,7 @@ export class AssignmentService {
   assignments$: Observable<CourseAssignment[]> = this.subject.asObservable();
   private nbrOfAssignments = 0;
   private nbrOfUnfinishedAssignments = 0;
+  reAssignment: CourseAssignment;
 
   constructor(private httpClient: HttpClient) {}
 
@@ -26,7 +28,13 @@ export class AssignmentService {
       .get("http://localhost:3000/api/moodle/get-mdl-assignments")
       .subscribe();
     this.httpClient
-      .get("http://localhost:3000/api/moodle/assignments")
+      .get<CourseAssignment[]>("http://localhost:3000/api/moodle/assignments")
+      .pipe(
+        tap(() => {
+          console.log("HTTP REQUEST DONE");
+        }),
+        map(res => Object.values(res))
+      )
       .subscribe((assignments: CourseAssignment[]) => {
         this.subject.next(assignments);
         assignments.forEach(assignment => {
@@ -45,5 +53,23 @@ export class AssignmentService {
 
   getNbrOfUnfinishedAssigments() {
     return this.nbrOfUnfinishedAssignments;
+  }
+
+  getCourseAssignments(id: string) {
+    let a = this.assignments$
+      .pipe(
+        map((assignments: CourseAssignment[]) => {
+          assignments.forEach(assignment => {
+            if (assignment._id === id) {
+              console.log("Found it !");
+              console.log("IT IS => ", assignment);
+              this.reAssignment = assignment;
+              return assignment;
+            }
+          });
+        })
+      )
+      .subscribe(a => {});
+    return this.reAssignment;
   }
 }
