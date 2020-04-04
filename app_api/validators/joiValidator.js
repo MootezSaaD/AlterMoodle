@@ -1,5 +1,11 @@
 const Joi = require("@hapi/joi");
 
+const handleJoiError = (joiObject) => {
+  if (joiObject.error)
+  throw new Error(joiObject.error);
+}
+
+
 // Signup Validation
 const signupValidation = data => {
   const schema = Joi.object({
@@ -18,7 +24,7 @@ const signupValidation = data => {
       .required(),
     moodleToken: Joi.string().required()
   });
-  return schema.validate(data);
+  return handleJoiError(schema.validate(data));
 };
 
 // Login Validation
@@ -31,7 +37,7 @@ const loginValidation = data => {
       .min(6)
       .required()
   });
-  return schema.validate(data);
+  return handleJoiError(schema.validate(data));
 };
 
 module.exports.signupValidation = signupValidation;
