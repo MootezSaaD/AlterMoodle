@@ -1,0 +1,19 @@
+@font-face {
+  font-family: Lato;
+  src: url(https://fonts.googleapis.com/css?family=Lato&display=swap)
+}
+.status {
+  display: inline-block;
+  line-height: 30px;
+  font-size: 14px;
+  color: #fff;
+  padding: 0 15px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  text-transform: capitalize;
+  font-family: Lato, sans-serif;
+}
+.status.unfinished {
+  background-color: #fa4251;
+}

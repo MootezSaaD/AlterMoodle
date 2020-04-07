@@ -5,16 +5,16 @@
   </div>
 </div>
 
-<div class="table-responsive">
+<div class="table-responsive table-striped">
   <table class="table table-bordered">
     <thead class="thead-dark">
       <tr>
         <th scope="col">Name</th>
         <th scope="col">Description</th>
         <th scope="col">Due Date</th>
-        <th scope="col">URL</th>
-        <th scope="col">Status</th>
-        <th scope="col">Actions</th>
+        <th scope="col" class="text-center">URL</th>
+        <th scope="col" class="text-center">Status</th>
+        <th scope="col" class="text-center" >Actions</th>
       </tr>
     </thead>
     <tr *ngFor="let assignment of this.test.assignment">
@@ -22,13 +22,13 @@
       <td align="center" [innerHTML]="assignment.description"></td>
       <td align="center">{{assignment.expDate}}</td>
       <td align="center"><a href="{{assignment.url}}">Link</a></td>
-      <td align="center"><span class="badge badge-danger">{{assignment.status}}</span></td>
+      <td align="center" ><span *ngIf="!this.assignment.status" class="status unfinished">Pending</span></td>
       <td align="center">
         <div class="btn-group mr-2" role="group" aria-label="Done">
           <button type="button" class="btn btn-success">Done</button>
         </div>
         <div class="btn-group mr-2" role="group" aria-label="Do">
-          <button type="button" class="btn btn-primary">Do it</button>
+          <button type="button" class="btn btn-primary" (click)="onSelect(assignment)">Do it</button>
         </div>
       </td>
     </tr>

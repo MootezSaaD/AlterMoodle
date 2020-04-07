@@ -41,7 +41,7 @@ import { EditorComponent } from "./editor/editor.component";
     StatsComponent,
     TodoComponent,
     CourseAssignmentsComponent,
-    EditorComponent
+    EditorComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,7 +53,7 @@ import { EditorComponent } from "./editor/editor.component";
     RouterModule.forRoot([
       {
         path: "",
-        component: LoginComponent
+        component: LoginComponent,
       },
       {
         path: "dashboard",
@@ -63,50 +63,54 @@ import { EditorComponent } from "./editor/editor.component";
           {
             path: "profile",
             component: UserProfileComponent,
-            canActivateChild: [AuthGuard]
+            canActivateChild: [AuthGuard],
           },
           {
             path: "editor",
-            component: EditorComponent
+            component: EditorComponent,
+          },
+          {
+            path: "editor/:id",
+            component: EditorComponent,
           },
           {
             path: "home",
             component: MainDashboardComponent,
-            canActivateChild: [AuthGuard]
+            canActivateChild: [AuthGuard],
           },
           {
             path: "stats",
             component: StatsComponent,
-            canActivateChild: [AuthGuard]
+            canActivateChild: [AuthGuard],
           },
           {
             path: "todo",
             component: TodoComponent,
-            canActivateChild: [AuthGuard]
+            canActivateChild: [AuthGuard],
           },
           {
             path: "todo/:coursName",
             component: CourseAssignmentsComponent,
-            canActivateChild: [AuthGuard]
-          }
-        ]
+            canActivateChild: [AuthGuard],
+          },
+        ],
       },
       {
         path: "login",
-        component: LoginComponent
+        component: LoginComponent,
       },
       {
         path: "signup",
-        component: SignupComponent
-      }
-    ])
+        component: SignupComponent,
+      },
+    ]),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     AuthService,
     JwtService,
-    AuthGuard
+    AuthGuard,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
