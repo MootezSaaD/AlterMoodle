@@ -3,7 +3,7 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
 } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { JwtService } from "../services/jwt.service";
@@ -21,7 +21,7 @@ export class JwtInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     this.headers = {
       "Content-Type": "application/json",
-      Accept: "application/json"
+      Accept: "application/json",
     };
     const token = this.jwtService.getToken();
     if (token) {

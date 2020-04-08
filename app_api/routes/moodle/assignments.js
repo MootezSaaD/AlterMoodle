@@ -3,9 +3,10 @@ const { verifyJwt } = require("../../helpers/verifyToken");
 const assignmentService = require("../../services/assignment.service")();
 const userService = require("../../services/user.service")();
 const moodleService = require("../../services/moodle.service")();
+const fs = require("fs");
 
 const router = Router({
-  mergeParams: true
+  mergeParams: true,
 });
 
 /**
@@ -35,11 +36,11 @@ router.get("/get-mdl-assignments", verifyJwt, async (req, res) => {
         course: {
           courseMoodleID: pre[a].course.id,
           courseCode: pre[a].course.shortname,
-          courseName: pre[a].course.fullname
+          courseName: pre[a].course.fullname,
         },
         expDate: pre[a].formattedtime.replace(/<[^>]*>/g, ""),
         status: false,
-        _user: user
+        _user: user,
       });
     }
   }
@@ -48,7 +49,7 @@ router.get("/get-mdl-assignments", verifyJwt, async (req, res) => {
 
   return res.status(200).send({
     success: true,
-    message: "Assignments fetched from moodle and stored in database"
+    message: "Assignments fetched from moodle and stored in database",
   });
 });
 
@@ -61,6 +62,38 @@ router.get("/assignments", verifyJwt, async (req, res) => {
     req.decodedToken._id
   );
   return res.status(200).send(finalRes);
+});
+
+/**
+ * Store a submission
+ */
+router.post("/submission/:id", verifyJwt, async (req, res) => {
+  //Fetch the user
+  let user = await userService.getUserByID(req.decodedToken._id);
+  //Create folder (if it does exist) of the user
+  if (!fs.existsSync("app_api/files/" + user._id)) {
+    fs.mkdirSync("app_api/files/" + user._id);
+  }
+  //Save submission
+  fs.writeFile(
+    "app_api/files/" + user._id + "/" + req.body._assignment + ".html",
+    req.body.content,
+    (err, data) => {
+      if (err) {
+        return res.status(500).send({
+          success: false,
+          message: "Error",
+        });
+      }
+    }
+  );
+
+  let result = req.body.content;
+  console.log(result);
+  return res.status(200).send({
+    success: true,
+    message: "Reached back",
+  });
 });
 
 module.exports = router;

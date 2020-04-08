@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
-    extended: false
+    extended: false,
   })
 );
 app.use(cors());
@@ -25,7 +25,7 @@ mongoose.connect(
   {
     useCreateIndex: true,
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   },
   () => console.log("[X] Connected to DB")
 );
@@ -36,7 +36,7 @@ app.use("/api/moodle", moodleRouter);
 app.use("/api/misc", miscRouter);
 
 // Error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   handleError(err, res);
 });
 module.exports = app;
