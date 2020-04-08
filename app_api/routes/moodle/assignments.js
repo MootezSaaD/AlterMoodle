@@ -4,6 +4,9 @@ const assignmentService = require("../../services/assignment.service")();
 const userService = require("../../services/user.service")();
 const moodleService = require("../../services/moodle.service")();
 const fs = require("fs");
+const pretty = require("pretty");
+const pdf = require("html-pdf");
+const options = { format: "Letter" };
 
 const router = Router({
   mergeParams: true,
@@ -77,7 +80,7 @@ router.post("/submission/:id", verifyJwt, async (req, res) => {
   //Save submission
   fs.writeFile(
     "app_api/files/" + user._id + "/" + req.body._assignment + ".html",
-    req.body.content,
+    pretty(req.body.content),
     (err, data) => {
       if (err) {
         return res.status(500).send({
@@ -87,9 +90,24 @@ router.post("/submission/:id", verifyJwt, async (req, res) => {
       }
     }
   );
-
-  let result = req.body.content;
-  console.log(result);
+  //Convert to PDF
+  let submissionToPDF = fs.readFileSync(
+    "app_api/files/" + user._id + "/" + req.body._assignment + ".html",
+    "utf8"
+  );
+  pdf
+    .create(submissionToPDF, options)
+    .toFile(
+      "app_api/files/" + user._id + "/" + req.body._assignment + ".pdf",
+      (err, data) => {
+        if (err) {
+          return res.status(500).send({
+            success: false,
+            message: "Error",
+          });
+        }
+      }
+    );
   return res.status(200).send({
     success: true,
     message: "Reached back",
