@@ -12,7 +12,6 @@ const tokenSchema = new mongoose.Schema({
   },
   tokenType: {
     type: String,
-    enum: ['passwordReset', 'confirmEmail'],
     required: true
   },
   createdAt: {

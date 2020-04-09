@@ -46,6 +46,16 @@ smtptransporter.sendMail(
         }
       }
 )
+try{
+  await token.save();
+  console.log (token);
+}
+catch(error){
+return res.status(200).send({
+  error :error
+}
+)
+}
 })
 
 
