@@ -6,7 +6,7 @@ import { map, filter, tap } from "rxjs/operators";
 import { of } from "rxjs";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class AssignmentService {
   private subject = new BehaviorSubject<CourseAssignment[]>([]);
@@ -33,13 +33,13 @@ export class AssignmentService {
         tap(() => {
           console.log("HTTP REQUEST DONE");
         }),
-        map(res => Object.values(res))
+        map((res) => Object.values(res))
       )
       .subscribe((assignments: CourseAssignment[]) => {
         this.subject.next(assignments);
-        assignments.forEach(assignment => {
+        assignments.forEach((assignment) => {
           this.nbrOfAssignments += assignment.assignment.length;
-          assignment.assignment.forEach(a => {
+          assignment.assignment.forEach((a) => {
             if (!a.status) {
               this.nbrOfUnfinishedAssignments++;
             }
@@ -59,7 +59,7 @@ export class AssignmentService {
     let a = this.assignments$
       .pipe(
         map((assignments: CourseAssignment[]) => {
-          assignments.forEach(assignment => {
+          assignments.forEach((assignment) => {
             if (assignment._id === id) {
               console.log("Found it !");
               console.log("IT IS => ", assignment);
@@ -69,7 +69,34 @@ export class AssignmentService {
           });
         })
       )
-      .subscribe(a => {});
+      .subscribe((a) => {});
     return this.reAssignment;
+  }
+  markAsDone(assignmentID: string) {
+    const data = this.subject.getValue();
+    let courseIdx = 0;
+    let asgnIdx = 0;
+    data.forEach((course, idx) =>
+      course.assignment.forEach((assignment, aidx) => {
+        if (assignment.id === assignmentID) {
+          courseIdx = idx;
+          asgnIdx = aidx;
+        }
+      })
+    );
+    let newCourses = data.slice(0);
+    newCourses[courseIdx].assignment[asgnIdx] = {
+      id: newCourses[courseIdx].assignment[asgnIdx].id,
+      name: newCourses[courseIdx].assignment[asgnIdx].name,
+      description: newCourses[courseIdx].assignment[asgnIdx].description,
+      expDate: newCourses[courseIdx].assignment[asgnIdx].expDate,
+      status: true,
+      url: newCourses[courseIdx].assignment[asgnIdx].url,
+    };
+    this.subject.next(newCourses);
+    return this.httpClient.put(
+      "http://localhost:3000/api/moodle/assignment/" + assignmentID,
+      null
+    );
   }
 }

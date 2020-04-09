@@ -113,5 +113,14 @@ router.post("/submission/:id", verifyJwt, async (req, res) => {
     message: "Reached back",
   });
 });
-
+/**
+ * Mark an assignment as done
+ */
+router.put("/assignment/:id", verifyJwt, async (req, res) => {
+  await assignmentService.markAsDone(req.params.id);
+  return res.status(200).send({
+    success: true,
+    message: "Assignment has been marked done successfully",
+  });
+});
 module.exports = router;

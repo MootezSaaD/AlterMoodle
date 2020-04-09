@@ -17,3 +17,7 @@
 .status.unfinished {
   background-color: #fa4251;
 }
+
+.status.finished {
+  background-color: #2ecc71;
+}

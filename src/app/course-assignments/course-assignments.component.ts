@@ -15,6 +15,7 @@ export class CourseAssignmentsComponent implements OnInit {
   coursId: string;
   course: Observable<void>;
   test: CourseAssignment;
+  statusMsg: string;
   constructor(
     private route: ActivatedRoute,
     private assignmentService: AssignmentService,
@@ -28,5 +29,16 @@ export class CourseAssignmentsComponent implements OnInit {
   }
   onSelect(assigment) {
     this.router.navigate(["dashboard/editor/", assigment.id]);
+  }
+  done(assigment) {
+    this.assignmentService.markAsDone(assigment.id).subscribe({
+      next: (data: any) => {
+        console.log(data);
+        this.statusMsg = data.message;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 }

@@ -3,6 +3,7 @@ const Assignment = require("../models/Assignment");
 const userService = require("./user.service");
 const User = require("../models/User");
 const mongoose = require("mongoose");
+const { ErrorHandler } = require("../helpers/errorHandler");
 
 function assignmentService() {
   // Get user's assignments from moodle
@@ -10,21 +11,21 @@ function assignmentService() {
     const res = moodle
       .init({
         wwwroot: process.env.MOODLE_URL,
-        token: moodleToken
+        token: moodleToken,
       })
-      .then(client => {
+      .then((client) => {
         return client
           .call({
             wsfunction: "core_calendar_get_action_events_by_courses",
             args: {
-              courseids: coursesArr
-            }
+              courseids: coursesArr,
+            },
           })
-          .then(courses => {
+          .then((courses) => {
             return courses;
           });
       })
-      .catch(err => {
+      .catch((err) => {
         throw new Error(err);
       });
     return Promise.resolve(res);
@@ -33,8 +34,8 @@ function assignmentService() {
   async function storeAssignments(finalAssignments) {
     // Store assignments in the databse
     Assignment.insertMany(finalAssignments, { ordered: false })
-      .then(docs => {})
-      .catch(err => {
+      .then((docs) => {})
+      .catch((err) => {
         console.error("Duplicate docs were found and were not stored");
       });
   }
@@ -48,8 +49,8 @@ function assignmentService() {
           courseInfo: {
             $first: {
               courseName: "$course.courseName",
-              courseID: "$course.courseMoodleID"
-            }
+              courseID: "$course.courseMoodleID",
+            },
           },
           assignment: {
             $push: {
@@ -58,14 +59,30 @@ function assignmentService() {
               description: "$description",
               expDate: "$expDate",
               status: "$status",
-              url: "$url"
-            }
-          }
-        }
-      }
+              url: "$url",
+            },
+          },
+        },
+      },
     ]);
   }
-  return { storeAssignments, getUserAssignments, fetchUserAssignments };
+  // Mark assignment as done
+  async function markAsDone(assignmentID) {
+    let assignment = await Assignment.findById(assignmentID);
+    assignment.status = true;
+    await assignment
+      .save()
+      .then((doc) => {})
+      .catch((err) => {
+        throw new ErrorHandler(500, "Could save assignment status");
+      });
+  }
+  return {
+    storeAssignments,
+    getUserAssignments,
+    fetchUserAssignments,
+    markAsDone,
+  };
 }
 
 module.exports = assignmentService;
