@@ -40,5 +40,18 @@ const loginValidation = data => {
   return handleJoiError(schema.validate(data));
 };
 
+//New password validation
+
+const resetPasswordValidation = data => 
+  {
+    const schema = Joi.object(
+      {
+        newPassword : Joi.string().min(6).required() 
+      }
+    )
+    return handleJoiError(schema.validate(data));
+  }
+
 module.exports.signupValidation = signupValidation;
 module.exports.loginValidation = loginValidation;
+module.exports.resetPasswordValidation = resetPasswordValidation;
