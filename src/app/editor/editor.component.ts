@@ -17,6 +17,10 @@ export class EditorComponent implements OnInit {
     _assignment: "",
     content: "",
   };
+  submitClicked = false;
+  successMessage = "";
+  public body = "";
+  public bodyArrived = false;
   constructor(
     private submissionService: SubmissionService,
     private router: Router,
@@ -25,6 +29,16 @@ export class EditorComponent implements OnInit {
 
   ngOnInit() {
     this.assignmentID = this.route.snapshot.params["id"];
+    this.submissionService.getSubmissionContent(this.assignmentID).subscribe({
+      next: (data: any) => {
+        console.log(data);
+        this.body = data.data;
+        this.bodyArrived = true;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
   public onReady(editor) {
     editor.ui
@@ -35,16 +49,28 @@ export class EditorComponent implements OnInit {
       );
   }
   onSubmit(form: NgForm) {
-    this.contentdata._assignment = this.assignmentID;
-    this.submissionService
-      .submitSubmission(this.contentdata, this.assignmentID)
-      .subscribe({
-        next: (data: any) => {
-          this.router.navigateByUrl("/dashboard/home");
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
+    // Saving submissing without uploading it to moodle
+    if (!this.submitClicked) {
+      this.contentdata._assignment = this.assignmentID;
+      this.submissionService
+        .saveSubmission(this.contentdata, this.assignmentID)
+        .subscribe({
+          next: (data: any) => {
+            this.successMessage = data.message;
+            console.log(data);
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        });
+      // Saving submission and uploading to moodle
+    } else {
+    }
+  }
+  public onSubmitSubmission(): void {
+    this.submitClicked = true;
+  }
+  public onSaveSubmission(): void {
+    this.submitClicked = false;
   }
 }

@@ -68,7 +68,9 @@ router.get("/assignments", verifyJwt, async (req, res) => {
 });
 
 /**
- * Store a submission
+ * Store a submission as a file and in database
+ * Ideas: convert to pdf only when submitting the assignment
+ * to moodle.
  */
 router.post("/submission/:id", verifyJwt, async (req, res) => {
   //Fetch the user
@@ -77,7 +79,7 @@ router.post("/submission/:id", verifyJwt, async (req, res) => {
   if (!fs.existsSync("app_api/files/" + user._id)) {
     fs.mkdirSync("app_api/files/" + user._id);
   }
-  //Save submission
+  //Save submission file
   fs.writeFile(
     "app_api/files/" + user._id + "/" + req.body._assignment + ".html",
     pretty(req.body.content),
@@ -90,27 +92,58 @@ router.post("/submission/:id", verifyJwt, async (req, res) => {
       }
     }
   );
-  //Convert to PDF
-  let submissionToPDF = fs.readFileSync(
-    "app_api/files/" + user._id + "/" + req.body._assignment + ".html",
-    "utf8"
-  );
-  pdf
-    .create(submissionToPDF, options)
-    .toFile(
-      "app_api/files/" + user._id + "/" + req.body._assignment + ".pdf",
-      (err, data) => {
-        if (err) {
-          return res.status(500).send({
-            success: false,
-            message: "Error",
-          });
-        }
-      }
+  // //Convert to PDF
+  // let submissionToPDF = fs.readFileSync(
+  //   "app_api/files/" + user._id + "/" + req.body._assignment + ".html",
+  //   "utf8"
+  // );
+  // pdf
+  //   .create(submissionToPDF, options)
+  //   .toFile(
+  //     "app_api/files/" + user._id + "/" + req.body._assignment + ".pdf",
+  //     (err, data) => {
+  //       if (err) {
+  //         return res.status(500).send({
+  //           success: false,
+  //           message: "Error",
+  //         });
+  //       }
+  //     }
+  //   );
+  /**
+   * Save submission to the database.
+   * First check if the submission doc exists, if it does do nothing, otherwise, store it in database
+   */
+  let sub = await assignmentService.fetchSub(req.body._assignment, user._id);
+  //If submission does not exist in the database, store it
+  if (sub.length === 0) {
+    await assignmentService.storeSubmissionInDB(
+      req.body._assignment,
+      "app_api/files/" + user._id + "/" + req.body._assignment + ".html",
+      user._id
     );
+  }
   return res.status(200).send({
     success: true,
-    message: "Reached back",
+    message: "Submission has been successfully stored",
+  });
+});
+
+/**
+ * Get a submission body
+ */
+router.get("/submission/:id", verifyJwt, async (req, res) => {
+  let user = await userService.getUserByID(req.decodedToken._id);
+  let subbmission = await assignmentService.fetchSub(req.params.id, user._id);
+  if (subbmission.length === 0) {
+    return res.status(200).send({
+      data: "",
+    });
+  }
+  let path = subbmission[0].directory;
+  let content = fs.readFileSync(path, "utf8");
+  return res.status(200).send({
+    data: content,
   });
 });
 /**

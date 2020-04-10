@@ -2,6 +2,7 @@ const moodle = require("moodle-client");
 const Assignment = require("../models/Assignment");
 const userService = require("./user.service");
 const User = require("../models/User");
+const Submission = require("../models/Submission");
 const mongoose = require("mongoose");
 const { ErrorHandler } = require("../helpers/errorHandler");
 
@@ -77,11 +78,29 @@ function assignmentService() {
         throw new ErrorHandler(500, "Could save assignment status");
       });
   }
+  // Update/add submission to database
+  async function storeSubmissionInDB(assignmentID, subDir, userID) {
+    let submission = new Submission({
+      _assignment: mongoose.Types.ObjectId(assignmentID),
+      directory: subDir,
+      _user: mongoose.Types.ObjectId(userID),
+    });
+    await submission.save();
+  }
+  // Fetch submission from database
+  async function fetchSub(assignmentID, userID) {
+    return Submission.find({
+      _assignment: mongoose.Types.ObjectId(assignmentID),
+      _user: mongoose.Types.ObjectId(userID),
+    });
+  }
   return {
     storeAssignments,
     getUserAssignments,
     fetchUserAssignments,
     markAsDone,
+    storeSubmissionInDB,
+    fetchSub,
   };
 }
 

@@ -1,27 +1,7 @@
-<h2>Status</h2>
-<p>I had hoped to polish this more before publishing it, but I can't seem to get caught up... there's so much new stuff all the time!</p>
-<h2>Some Background on SGML for the World-Wide Web</h2>
-<p>In late 1992 and early 1993, I did quite a bit of work on the HTML DTD while I was working at Convex in the online documentation group.</p>
-<p>When I began, there was the LineMode browser and the NeXT implementation, and a few nodes in The Web describing HTML with some oblique references to SGML. I was not intimately familiar with SGML, but I was quite familiar with the problems of document interchange, and I was eager to apply some of my formal systems background to the problem.</p>
-<h2>On Formally Unconvertable Document Formats</h2>
-<p>My experience with document interchange led me to classify document formats using the essential distinction that some are "programmable" and some are not. Most widely used source forms are programmable: TeX, troff, postscript, and the like. On the other hand, there are several "static" formats: plain text, Microsoft RTF, FrameMaker MIF, GNU's TeXinfo,</p>
-<p>The reason that this distinction is essential with respect to document interchange is that extracting information from documents in "programmable" document formats is equivalent to the halting problem. That is, it is arbitrarily difficult and cannot be automated in a general fashion.</p>
-<p>For example, I conjecture that it is impossible to write a program that will extract the third word from a TeX document. It would be an easy task for 80% of the TeX documents out there -- just skip over some formatting stuff and grab the third bunch of characters surrounded by whitespace. But that "formatting stuff" might be a program that generates 100 words from the hypenation dictionary. So the simple lexical scan of the TeX source would find a word that is <i>not</i> third word of the document when printed.</p>
-<p>This may seem like an obscure and unimportant problem, but I assure you that the problem of converting TeX tables to FrameMaker MIF is just as unsolvable.</p>
-<p>So while "programmable" document formats have the advantage that features can be added on a per-document basis, they suffer the disadvantage that these features cannot be recovered by the machine and translated in an automated fashion.</p>
-<figure class="table">
-  <table>
-    <tbody>
-      <tr>
-        <td>a</td>
-        <td>b</td>
-        <td>b</td>
-      </tr>
-      <tr>
-        <td>d</td>
-        <td>e</td>
-        <td>d</td>
-      </tr>
-    </tbody>
-  </table>
-</figure>
+<h2>What is Lorem Ipsum?</h2>
+<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+<h2>Why do we use it?</h2>
+<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+<h2>Where does it come from?</h2>
+<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+<p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>

@@ -1,4 +1,14 @@
-<form role="form" #submissionForm="ngForm" (ngSubmit)="onSubmit(submissionForm)">
-  <ckeditor [(ngModel)]="contentdata.content" name="content" #content="ngModel" [editor]="Editor" data="<p>Hello, world!</p>" (ready)="onReady($event)"></ckeditor>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div *ngIf="this.bodyArrived">
+  <div *ngIf="this.successMessage">
+    <div class="alert alert-success" role="alert">
+      <h4 class="alert-heading">Saved!</h4>
+      <p>Your submission has been successfully saved . Don't forget to submit it to moodle using the "Submit" button once you have finished !</p>
+    </div>
+  </div>
+  <form role="form" #submissionForm="ngForm" (ngSubmit)="onSubmit(submissionForm)">
+    <ckeditor [(ngModel)]="contentdata.content" name="content" #content="ngModel" [editor]="Editor" [data]="this.body" (ready)="onReady($event)"></ckeditor>
+    <button type="submit" class="btn btn-primary mt-3" (click)="onSaveSubmission()">Save</button>
+    <button type="submit" class="btn btn-warning mt-3 ml-3" (click)="onSubmitSubmission()">Submit</button>
+  </form>
+
+</div>
