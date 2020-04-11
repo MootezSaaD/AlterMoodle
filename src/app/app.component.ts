@@ -14,6 +14,5 @@ export class AppComponent implements OnInit {
   }
   title = "AlterMoodle";
   ngOnInit() {
-    this.router.navigateByUrl("/dashboard/home");
   }
 }

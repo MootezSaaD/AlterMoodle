@@ -25,6 +25,9 @@ import { StatsComponent } from "./stats/stats.component";
 import { TodoComponent } from "./todo/todo.component";
 import { CourseAssignmentsComponent } from "./course-assignments/course-assignments.component";
 import { EditorComponent } from "./editor/editor.component";
+import {EnterEmailComponent} from "./enter-email/enter-email.component"
+import {EnterPasswordComponent} from "./enter-password/enter-password.component"
+
 
 @NgModule({
   declarations: [
@@ -42,6 +45,8 @@ import { EditorComponent } from "./editor/editor.component";
     TodoComponent,
     CourseAssignmentsComponent,
     EditorComponent,
+    EnterEmailComponent,
+    EnterPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -103,6 +108,14 @@ import { EditorComponent } from "./editor/editor.component";
         path: "signup",
         component: SignupComponent,
       },
+      {
+        path: "enter-email",
+        component: EnterEmailComponent,
+      },
+      {
+        path: "enter-password",
+        component: EnterPasswordComponent,
+      }
     ]),
   ],
   providers: [
