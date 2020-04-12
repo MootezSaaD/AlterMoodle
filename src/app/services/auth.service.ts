@@ -93,4 +93,15 @@ export class AuthService {
       emailModel  
     );
   }
+tokenValidation (token :String){
+  return this.httpClient.get(
+    `http://localhost:3000/api/user/reset-password/` + token
+  )
+}
+enterPassword(token: String, password: any){
+  return this.httpClient.post (
+    `http://localhost:3000/api/user/change-password/`+token, password
+  )
+}
+
 }
