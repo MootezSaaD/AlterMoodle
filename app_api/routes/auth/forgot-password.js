@@ -26,7 +26,7 @@ const token = new Token({
     tokenType: "resetPassword"
   });
 
-confirmationEmail = `http://localhost:4200/reset-password/` + token.token;
+confirmationEmail = `http://localhost:4200/enter-password/` + token.token;
 
 smtptransporter.sendMail(
     {

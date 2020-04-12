@@ -86,4 +86,11 @@ export class AuthService {
   getCurrentUserObs(): Observable<User> {
     return this.currentUser;
   }
+
+  enteremail(emailModel: any): Observable<any> {
+    return this.httpClient.post(
+      `http://localhost:3000/api/user/forgot-password`,
+      emailModel  
+    );
+  }
 }

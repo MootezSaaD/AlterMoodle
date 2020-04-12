@@ -1,5 +1,6 @@
 <div class="row h-100 justify-content-center align-items-center">
-  <form class="main-form shadow-sm p-3 mb-5 bg-white rounded" novalidate>
+  <form #emailForm="ngForm" (ngSubmit)="emailForm.valid && onSubmit(emailForm)" action=""
+  class="main-form shadow-sm p-3 mb-5 bg-white rounded" novalidate>
     <div class="row">
       <div class="col text-center">
         <img src="../../assets/atlermoodlev2.png" alt="">
@@ -7,7 +8,9 @@
     </div>
     <div class="form-group">
       <input type="text" name="username" id="login" placeholder="Email address"
-        class="form-control rounded-lg border border-primary" name="email" >
+        class="form-control rounded-lg border border-primary" name="email" #email="ngModel"
+        [(ngModel)]="emailModel.email" [ngClass]="{'invalid-textbox': emailForm.submitted && !email.valid}" required>
+      <div class="invalid-feedback">Please enter a valid email.</div>
     </div>
     <div class="form-group">
       <div class="row">
