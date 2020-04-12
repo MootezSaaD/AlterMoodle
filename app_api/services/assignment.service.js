@@ -5,6 +5,10 @@ const User = require("../models/User");
 const Submission = require("../models/Submission");
 const mongoose = require("mongoose");
 const { ErrorHandler } = require("../helpers/errorHandler");
+const fs = require("fs");
+const pretty = require("pretty");
+const pdf = require("html-pdf");
+const options = { format: "Letter" };
 
 function assignmentService() {
   // Get user's assignments from moodle
@@ -94,6 +98,55 @@ function assignmentService() {
       _user: mongoose.Types.ObjectId(userID),
     });
   }
+  // Convert submission from HTML to PDF
+  async function convertPDF(file, pdfFile) {
+    await pdf.create(file, options).toFile(pdfFile, (err, data) => {
+      if (err) {
+        throw new ErrorHandler(500, "Conversion to PDF Failed");
+      }
+    });
+  }
+  // Upload submission to user's moodle draft area
+  async function uploadToMoodle(filePath, moodleToken) {
+    let files = {
+      file: fs.createReadStream(filePath),
+    };
+    const res = moodle
+      .init({
+        wwwroot: process.env.MOODLE_URL,
+        token: moodleToken,
+      })
+      .then((client) => {
+        return client
+          .upload({
+            files: files,
+          })
+          .then((draftfiles) => {
+            // Copy files from the draft area to the persistent private files area.
+            return client
+              .call({
+                wsfunction: "core_user_add_user_private_files",
+                args: {
+                  draftid: draftfiles[0].itemid,
+                },
+              })
+              .then(function () {
+                console.log(
+                  "Total of %d files uploaded to your private files area!",
+                  draftfiles.length
+                );
+                return;
+              });
+          })
+          .catch((err) => {
+            console.log("Error uploading the file: " + err);
+            return;
+          });
+      });
+
+    return Promise.resolve(res);
+  }
+
   return {
     storeAssignments,
     getUserAssignments,
@@ -101,6 +154,8 @@ function assignmentService() {
     markAsDone,
     storeSubmissionInDB,
     fetchSub,
+    convertPDF,
+    uploadToMoodle,
   };
 }
 

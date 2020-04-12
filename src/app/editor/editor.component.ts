@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import * as DecoupledEditor from "@ckeditor/ckeditor5-build-classic";
+import * as DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 import { SubmissionService } from "../services/submission.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Subimission } from "../models/submission.model";
@@ -21,6 +21,7 @@ export class EditorComponent implements OnInit {
   successMessage = "";
   public body = "";
   public bodyArrived = false;
+  public saved = false;
   constructor(
     private submissionService: SubmissionService,
     private router: Router,
@@ -31,7 +32,6 @@ export class EditorComponent implements OnInit {
     this.assignmentID = this.route.snapshot.params["id"];
     this.submissionService.getSubmissionContent(this.assignmentID).subscribe({
       next: (data: any) => {
-        console.log(data);
         this.body = data.data;
         this.bodyArrived = true;
       },
@@ -51,6 +51,7 @@ export class EditorComponent implements OnInit {
   onSubmit(form: NgForm) {
     // Saving submissing without uploading it to moodle
     if (!this.submitClicked) {
+      this.saved = true;
       this.contentdata._assignment = this.assignmentID;
       this.submissionService
         .saveSubmission(this.contentdata, this.assignmentID)
@@ -63,8 +64,11 @@ export class EditorComponent implements OnInit {
             console.log(error);
           },
         });
-      // Saving submission and uploading to moodle
+      // uploading to moodle
     } else {
+      if (this.saved) {
+      } else {
+      }
     }
   }
   public onSubmitSubmission(): void {

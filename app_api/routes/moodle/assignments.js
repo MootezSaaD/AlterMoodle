@@ -92,24 +92,6 @@ router.post("/submission/:id", verifyJwt, async (req, res) => {
       }
     }
   );
-  // //Convert to PDF
-  // let submissionToPDF = fs.readFileSync(
-  //   "app_api/files/" + user._id + "/" + req.body._assignment + ".html",
-  //   "utf8"
-  // );
-  // pdf
-  //   .create(submissionToPDF, options)
-  //   .toFile(
-  //     "app_api/files/" + user._id + "/" + req.body._assignment + ".pdf",
-  //     (err, data) => {
-  //       if (err) {
-  //         return res.status(500).send({
-  //           success: false,
-  //           message: "Error",
-  //         });
-  //       }
-  //     }
-  //   );
   /**
    * Save submission to the database.
    * First check if the submission doc exists, if it does do nothing, otherwise, store it in database
@@ -155,5 +137,27 @@ router.put("/assignment/:id", verifyJwt, async (req, res) => {
     success: true,
     message: "Assignment has been marked done successfully",
   });
+});
+
+/**
+ * Submit assignment (submission to moodle)
+ */
+router.post("/submission/add/:id", verifyJwt, async (req, res) => {
+  let user = await userService.getUserByID(req.decodedToken._id);
+  let filePath = "app_api/files/" + user._id + "/" + req.params.id + ".html";
+  let pdfFilePath = "app_api/files/" + user._id + "/" + req.params.id + ".pdf";
+  let file = fs.readFileSync(filePath, "utf8");
+  //Convert to PDF
+  await assignmentService.convertPDF(file, pdfFilePath);
+  // Upload to moodle
+  // Upload to the user's persistent draft area
+  await assignmentService.uploadToMoodle(pdfFilePath, user.moodleToken);
+  return res.status(200).send({
+    success: true,
+    message: "File Uploaded",
+  });
+  //Upload it to the assignment
+
+  //Delete it from the user's private files
 });
 module.exports = router;
