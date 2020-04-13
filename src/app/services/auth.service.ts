@@ -100,7 +100,7 @@ tokenValidation (token :String){
 }
 enterPassword(token: String, password: any){
   return this.httpClient.post (
-    `http://localhost:3000/api/user/change-password/`+token, password
+    `http://localhost:3000/api/user/change-password/` +token, password
   )
 }
 
