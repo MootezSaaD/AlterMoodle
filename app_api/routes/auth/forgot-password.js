@@ -38,20 +38,17 @@ smtptransporter.sendMail(
         accessToken : process.env.ACCESS_TOKEN,
         refreshToken :process.env.REFRESH_TOKEN
     }},
-    function (error) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("The email is sent");
-        }
-      }
 )
 try{
   await token.save();
-  console.log (token);
+  res.status(200).send(
+    {
+      message : "email sent"
+    }
+  )
 }
 catch(error){
-return res.status(200).send({
+return res.status(500).send({
   error :error
 }
 )

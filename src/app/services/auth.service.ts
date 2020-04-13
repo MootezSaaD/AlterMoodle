@@ -87,17 +87,23 @@ export class AuthService {
     return this.currentUser;
   }
 
+
+//Sends the reset-password email
   enteremail(emailModel: any): Observable<any> {
     return this.httpClient.post(
       `http://localhost:3000/api/user/forgot-password`,
       emailModel  
     );
   }
+
+ //Gets the token from the link in the email and verify it 
 tokenValidation (token :String){
   return this.httpClient.get(
     `http://localhost:3000/api/user/reset-password/` + token
   )
 }
+
+//Verify the password entered
 enterPassword(token: String, password: any){
   return this.httpClient.post (
     `http://localhost:3000/api/user/change-password/` +token, password

@@ -12,14 +12,15 @@ import { NgForm } from "@angular/forms";
 
 
   export class EnterPasswordComponent implements OnInit {
-    ngOnInit() {}
+    ngOnInit() {
+      this.verifyToken(this.token);
+    }
     errorMessage: string;
     userStatus : String;
     token : null;
     passwordModel = {
       newPassword :''
     }
-
     constructor (
       private route :ActivatedRoute,
       private AuthService : AuthService,
@@ -27,9 +28,22 @@ import { NgForm } from "@angular/forms";
     ){
 this.route.params.subscribe(
   params =>{
-    this.token = params.token
-  })}
+    this.token = params.token;
+ })
+}
   
+verifyToken (token){
+  this.AuthService.tokenValidation(token).subscribe(
+    success =>{
+      console.log(success);
+      this.userStatus = 'Access'
+    },
+    fail =>{
+      this.userStatus = 'noAccess'
+    }
+  )
+}
+
     onSubmit (NgForm : NgForm){
         this.AuthService.enterPassword(this.token,NgForm.value).subscribe(
         data =>{

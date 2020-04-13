@@ -26,14 +26,15 @@ export class EnterEmailComponent implements OnInit {
   ngOnInit() {}
 
   onSubmit(form: NgForm) {
-    
+   
     this.auth.enteremail(form.value).subscribe(
-      data => {
-        this .successMessage = 'The reset link is in your email';
+      data =>{
+        this.successMessage = 'The reset link is in your email'
       },
-      err => {
+      err =>{
+        //console.log(err);
         this.errorMessage = err.error.message
       }
-    );
-    }
+      )
+}
     }
