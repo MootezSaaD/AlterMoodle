@@ -11,6 +11,10 @@ const pdf = require("html-pdf");
 const options = { format: "Letter" };
 
 function assignmentService() {
+  //Get assignment by id from database
+  async function getAssignmentByID(assignmentID) {
+    return Assignment.findById(assignmentID);
+  }
   // Get user's assignments from moodle
   async function getUserAssignments(moodleToken, coursesArr) {
     const res = moodle
@@ -21,7 +25,7 @@ function assignmentService() {
       .then((client) => {
         return client
           .call({
-            wsfunction: "core_calendar_get_action_events_by_courses",
+            wsfunction: "mod_assign_get_assignments",
             args: {
               courseids: coursesArr,
             },
@@ -99,62 +103,64 @@ function assignmentService() {
     });
   }
   // Convert submission from HTML to PDF
-  async function convertPDF(file, pdfFile) {
+  async function uploadToMoodle(file, pdfFile, moodleToken, assignmentID) {
     await pdf.create(file, options).toFile(pdfFile, (err, data) => {
       if (err) {
         throw new ErrorHandler(500, "Conversion to PDF Failed");
       }
+      console.log(data);
+      let files = {
+        file: fs.createReadStream(data.filename),
+      };
+      const res = moodle
+        .init({
+          wwwroot: process.env.MOODLE_URL,
+          token: moodleToken,
+        })
+        .then((client) => {
+          return client
+            .upload({
+              files: files,
+            })
+            .then((draftfiles) => {
+              console.log(draftfiles);
+              // Copy files from the draft area to the persistent private files area.
+              return client
+                .call({
+                  wsfunction: "mod_assign_save_submission",
+                  args: {
+                    assignmentid: assignmentID,
+                    "plugindata[onlinetext_editor][text]": "done",
+                    "plugindata[onlinetext_editor][format]": 1,
+                    "plugindata[onlinetext_editor][itemid]":
+                      draftfiles[0].itemid,
+                    "plugindata[files_filemanager]": draftfiles[0].itemid,
+                  },
+                })
+                .then(() => {
+                  console.log(
+                    "Assignment Successfully submitted !",
+                    draftfiles.length
+                  );
+                  return;
+                });
+            })
+            .catch((err) => {
+              console.log("Error uploading the file: " + err);
+              return;
+            });
+        });
     });
-  }
-  // Upload submission to user's moodle draft area
-  async function uploadToMoodle(filePath, moodleToken) {
-    let files = {
-      file: fs.createReadStream(filePath),
-    };
-    const res = moodle
-      .init({
-        wwwroot: process.env.MOODLE_URL,
-        token: moodleToken,
-      })
-      .then((client) => {
-        return client
-          .upload({
-            files: files,
-          })
-          .then((draftfiles) => {
-            // Copy files from the draft area to the persistent private files area.
-            return client
-              .call({
-                wsfunction: "core_user_add_user_private_files",
-                args: {
-                  draftid: draftfiles[0].itemid,
-                },
-              })
-              .then(function () {
-                console.log(
-                  "Total of %d files uploaded to your private files area!",
-                  draftfiles.length
-                );
-                return;
-              });
-          })
-          .catch((err) => {
-            console.log("Error uploading the file: " + err);
-            return;
-          });
-      });
-
-    return Promise.resolve(res);
   }
 
   return {
+    getAssignmentByID,
     storeAssignments,
     getUserAssignments,
     fetchUserAssignments,
     markAsDone,
     storeSubmissionInDB,
     fetchSub,
-    convertPDF,
     uploadToMoodle,
   };
 }
