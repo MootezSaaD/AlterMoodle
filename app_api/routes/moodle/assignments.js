@@ -147,6 +147,10 @@ router.put("/assignment/:id", verifyJwt, async (req, res) => {
 router.post("/submission/add/:id", verifyJwt, async (req, res) => {
   let user = await userService.getUserByID(req.decodedToken._id);
   let assignment = await assignmentService.getAssignmentByID(req.params.id);
+  // Mark when the assignment was finished
+  assignment.finishedAt = finishedAt;
+  await assignment.save();
+
   let filePath = "app_api/files/" + user._id + "/" + req.params.id + ".html";
   let pdfFilePath = "app_api/files/" + user._id + "/" + req.params.id + ".pdf";
   let file = fs.readFileSync(filePath, "utf8");
