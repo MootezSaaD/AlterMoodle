@@ -22,4 +22,11 @@ export class SubmissionService {
       "http://localhost:3000/api/moodle/submission/" + assignmentID
     );
   }
+
+  uploadSubmission(assignmentID: string) {
+    return this.httpClient.post(
+      `http://localhost:3000/api/moodle/submission/add/${assignmentID}`,
+      null
+    );
+  }
 }

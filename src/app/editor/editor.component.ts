@@ -4,6 +4,7 @@ import { SubmissionService } from "../services/submission.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Subimission } from "../models/submission.model";
 import { NgForm } from "@angular/forms";
+import { AssignmentService } from "../services/assignment.service";
 
 @Component({
   selector: "app-editor",
@@ -18,14 +19,16 @@ export class EditorComponent implements OnInit {
     content: "",
   };
   submitClicked = false;
-  successMessage = "";
+  successMessageSave = "";
+  successMessageUpload = "";
+  url = "";
   public body = "";
   public bodyArrived = false;
   public saved = false;
   constructor(
     private submissionService: SubmissionService,
-    private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private assignmentService: AssignmentService
   ) {}
 
   ngOnInit() {
@@ -57,7 +60,7 @@ export class EditorComponent implements OnInit {
         .saveSubmission(this.contentdata, this.assignmentID)
         .subscribe({
           next: (data: any) => {
-            this.successMessage = data.message;
+            this.successMessageSave = data.message;
             console.log(data);
           },
           error: (error) => {
@@ -67,7 +70,27 @@ export class EditorComponent implements OnInit {
       // uploading to moodle
     } else {
       if (this.saved) {
+        this.contentdata._assignment = this.assignmentID;
+        this.submissionService.uploadSubmission(this.assignmentID).subscribe({
+          next: (data: any) => {
+            this.successMessageUpload = data.message;
+            this.url = data.url;
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        });
+        // Change the assignments status to "done"
+        this.assignmentService.markAsDone(this.assignmentID).subscribe({
+          next: (data: any) => {
+            console.log(data);
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        });
       } else {
+        alert("Please save your work before uploading");
       }
     }
   }

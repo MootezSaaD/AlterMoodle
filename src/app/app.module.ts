@@ -25,9 +25,8 @@ import { StatsComponent } from "./stats/stats.component";
 import { TodoComponent } from "./todo/todo.component";
 import { CourseAssignmentsComponent } from "./course-assignments/course-assignments.component";
 import { EditorComponent } from "./editor/editor.component";
-import {EnterEmailComponent} from "./enter-email/enter-email.component"
-import {EnterPasswordComponent} from "./enter-password/enter-password.component"
-
+import { EnterEmailComponent } from "./enter-email/enter-email.component";
+import { EnterPasswordComponent } from "./enter-password/enter-password.component";
 
 @NgModule({
   declarations: [
@@ -46,7 +45,7 @@ import {EnterPasswordComponent} from "./enter-password/enter-password.component"
     CourseAssignmentsComponent,
     EditorComponent,
     EnterEmailComponent,
-    EnterPasswordComponent
+    EnterPasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -115,7 +114,7 @@ import {EnterPasswordComponent} from "./enter-password/enter-password.component"
       {
         path: "enter-password/:token",
         component: EnterPasswordComponent,
-      }
+      },
     ]),
   ],
   providers: [

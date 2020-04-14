@@ -161,6 +161,7 @@ router.post("/submission/add/:id", verifyJwt, async (req, res) => {
   return res.status(200).send({
     success: true,
     message: "Assignment has been successfully submitted !",
+    url: assignment.url,
   });
   //Update the assignment status in the frontend
 });

@@ -24,6 +24,7 @@
     "@ckeditor/ckeditor5-build-classic": "^18.0.0",
     "@ckeditor/ckeditor5-build-decoupled-document": "^18.0.0",
     "@hapi/joi": "^17.1.0",
+    "@ng-bootstrap/ng-bootstrap": "^6.0.2",
     "angular-feather": "^6.0.8",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
