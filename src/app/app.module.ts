@@ -113,7 +113,7 @@ import {EnterPasswordComponent} from "./enter-password/enter-password.component"
         component: EnterEmailComponent,
       },
       {
-        path: "enter-password",
+        path: "enter-password/:token",
         component: EnterPasswordComponent,
       }
     ]),

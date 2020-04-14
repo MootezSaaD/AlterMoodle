@@ -11,12 +11,21 @@ router.get ('/reset-password/:token', async (req, res) => {
         token : req.params.token,
         tokenType : "resetPassword" 
     })
-    console.log(token); 
     if (!token){
         res.status(400).send({
             message : 'No token found!'
         })
     }
+    const user = await User.findOne({
+        _id: token._userId
+      });
+      if (!user) return res.status(500).send( {
+        message : 'success'  
+      });
+      return res.send({
+        success: true
+      });
+    
 })
 
 router.post ('/change-password/:token', async (req, res, next) => {

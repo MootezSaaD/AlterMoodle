@@ -13,7 +13,8 @@ export class EnterEmailComponent implements OnInit {
   emailModel = {
     email: ""
       };
-  errMsg: string;
+  errorMessage: string;
+  successMessage:String;
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -25,10 +26,15 @@ export class EnterEmailComponent implements OnInit {
   ngOnInit() {}
 
   onSubmit(form: NgForm) {
-    const resetPasswordObserver = ({
-    next : x => console.log("email sent successfully"),
-    error : error => console.log(error.error.message)
-    });
-    this.auth.enteremail(form.value).subscribe(resetPasswordObserver);
-    }
+   
+    this.auth.enteremail(form.value).subscribe(
+      data =>{
+        this.successMessage = 'The reset link is in your email'
+      },
+      err =>{
+        //console.log(err);
+        this.errorMessage = err.error.message
+      }
+      )
+}
     }

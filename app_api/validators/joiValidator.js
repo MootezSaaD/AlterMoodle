@@ -2,7 +2,7 @@ const Joi = require("@hapi/joi");
 
 const handleJoiError = (joiObject) => {
   if (joiObject.error)
-  throw new Error(joiObject.error);
+  throw new Error(joiObject.error.details[0].message);
 }
 
 
@@ -41,14 +41,13 @@ const loginValidation = data => {
 };
 
 //New password validation
-
 const resetPasswordValidation = data => 
   {
     const schema = Joi.object(
       {
-        newPassword : Joi.string().min(6).required() 
-      }
-    )
+        newPassword : Joi.string().min(6).required()
+
+        })
     return handleJoiError(schema.validate(data));
   }
 
