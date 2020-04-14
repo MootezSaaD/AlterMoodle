@@ -7,7 +7,7 @@ const fs = require("fs");
 const pretty = require("pretty");
 const pdf = require("html-pdf");
 const options = { format: "Letter" };
-
+const moment = require("moment");
 const router = Router({
   mergeParams: true,
 });
@@ -21,38 +21,40 @@ router.get("/get-mdl-assignments", verifyJwt, async (req, res) => {
     user.moodleUserID,
     user.moodleToken
   );
-  let assignments = await assignmentService.getUserAssignments(
+  let assignmentsQuery = await assignmentService.getUserAssignments(
     user.moodleToken,
     courseArr
   );
-  let groupedbycourse = assignments.groupedbycourse;
-  let finalAssignments = [];
-  // Define our array of assignments
-  for (let assignment in groupedbycourse) {
-    let pre = groupedbycourse[assignment].events;
+  let interAssignment = assignmentsQuery.courses;
+
+  let final = [];
+  for (let courseAssignment in interAssignment) {
+    let pre = interAssignment[courseAssignment].assignments;
     for (let a in pre) {
-      finalAssignments.push({
-        moodleID: pre[a].id,
-        name: pre[a].name.replace(" is due", ""),
-        description: pre[a].description,
-        url: pre[a].url,
+      final.push({
+        assignmentID: pre[a].id,
+        name: pre[a].name,
+        description: pre[a].intro,
+        url:
+          "http://192.168.126.129/moodle/mod/assign/view.php?id=" + pre[a].cmid,
         course: {
-          courseMoodleID: pre[a].course.id,
-          courseCode: pre[a].course.shortname,
-          courseName: pre[a].course.fullname,
+          courseMoodleID: interAssignment[courseAssignment].id,
+          courseCode: interAssignment[courseAssignment].shortname,
+          courseName: interAssignment[courseAssignment].fullname,
         },
-        expDate: pre[a].formattedtime.replace(/<[^>]*>/g, ""),
+        expDate: moment(pre[a].duedate * 1000).format("LLLL"),
+        expDateInt: pre[a].duedate * 1000,
         status: false,
-        _user: user,
+        finishedAt: 0,
+        _user: user._id,
       });
     }
   }
   // Store newly fetched assignments in the database
-  await assignmentService.storeAssignments(finalAssignments);
-
+  await assignmentService.storeAssignments(final);
   return res.status(200).send({
     success: true,
-    message: "Assignments fetched from moodle and stored in database",
+    message: "Assignments have been stored",
   });
 });
 
@@ -144,20 +146,22 @@ router.put("/assignment/:id", verifyJwt, async (req, res) => {
  */
 router.post("/submission/add/:id", verifyJwt, async (req, res) => {
   let user = await userService.getUserByID(req.decodedToken._id);
+  let assignment = await assignmentService.getAssignmentByID(req.params.id);
   let filePath = "app_api/files/" + user._id + "/" + req.params.id + ".html";
   let pdfFilePath = "app_api/files/" + user._id + "/" + req.params.id + ".pdf";
   let file = fs.readFileSync(filePath, "utf8");
-  //Convert to PDF
-  await assignmentService.convertPDF(file, pdfFilePath);
-  // Upload to moodle
-  // Upload to the user's persistent draft area
-  await assignmentService.uploadToMoodle(pdfFilePath, user.moodleToken);
+  // Upload the assignment to moodle
+  // It will be converted to pdf first then uploaded
+  await assignmentService.uploadToMoodle(
+    file,
+    pdfFilePath,
+    user.moodleToken,
+    assignment.assignmentID
+  );
   return res.status(200).send({
     success: true,
-    message: "File Uploaded",
+    message: "Assignment has been successfully submitted !",
   });
-  //Upload it to the assignment
-
-  //Delete it from the user's private files
+  //Update the assignment status in the frontend
 });
 module.exports = router;
