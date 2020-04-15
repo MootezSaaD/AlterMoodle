@@ -19,10 +19,10 @@
     </thead>
     <tbody>
     <tr *ngFor="let assignment of this.course.assignment">
-      <td align="center">{{assignment.name}}</td>
-      <td align="center" [innerHTML]="assignment.description"></td>
-      <td align="center">{{assignment.expDate}}</td>
-      <td align="center"><a href="{{assignment.url}}">Link</a></td>
+      <td align="center">{{assignment?.name}}</td>
+      <td align="center" [innerHTML]="assignment?.description"></td>
+      <td align="center">{{assignment?.expDate}}</td>
+      <td align="center"><a href="{{assignment?.url}}">Link</a></td>
       <td align="center" >
         <span *ngIf="!this.assignment.status" class="status unfinished">Pending</span>
         <span *ngIf="this.assignment.status" class="status finished">Finished</span>

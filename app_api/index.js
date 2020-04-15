@@ -8,7 +8,7 @@ let { handleError } = require("./helpers/errorHandler");
 const authRouter = require("./routes/authCreateRouter.js")();
 const moodleRouter = require("./routes/moodleCreateRouter.js")();
 const miscRouter = require("./routes/miscCreateRouter.js")();
-
+const statsRouter = require("./routes/statsCreateRouter.js")();
 //Middleware
 app.use(express.json());
 app.use(bodyParser.json());
@@ -34,7 +34,7 @@ mongoose.connect(
 app.use("/api/user", authRouter);
 app.use("/api/moodle", moodleRouter);
 app.use("/api/misc", miscRouter);
-
+app.use("/api/stats", statsRouter);
 // Error handler
 app.use(function (err, req, res, next) {
   handleError(err, res);
