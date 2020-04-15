@@ -13,9 +13,8 @@ function statsService() {
       {
         $group: {
           _id: "$course.courseCode",
-          total: { $sum: 1 },
-          total_finished: { $sum: { $cond: ["$status", 1, 0] } },
-          total_unfinished: { $sum: { $cond: ["$status", 0, 1] } },
+          Finished: { $sum: { $cond: ["$status", 1, 0] } },
+          Unfinished: { $sum: { $cond: ["$status", 0, 1] } },
         },
       },
     ]);

@@ -12,7 +12,18 @@ router.get("/progress/:courseId", verifyJwt, async (req, res) => {
     parseInt(req.params.courseId),
     req.decodedToken._id
   );
-  return res.status(200).send(query);
+  delete query[0]._id;
+  let data = [
+    {
+      name: "Finished",
+      value: query[0].Finished,
+    },
+    {
+      name: "Unfinished",
+      value: query[0].Unfinished,
+    },
+  ];
+  return res.status(200).send(data);
 });
 
 module.exports = router;

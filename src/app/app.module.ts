@@ -6,6 +6,9 @@ import { RouterModule } from "@angular/router";
 import { HttpClientModule } from "@angular/common/http";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { JwtInterceptor } from "./interceptors/jwt.interceptor";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgxChartsModule } from "@swimlane/ngx-charts";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -27,6 +30,7 @@ import { CourseAssignmentsComponent } from "./course-assignments/course-assignme
 import { EditorComponent } from "./editor/editor.component";
 import { EnterEmailComponent } from "./enter-email/enter-email.component";
 import { EnterPasswordComponent } from "./enter-password/enter-password.component";
+import { CourseProgressComponent } from "./statistics/course-progress/course-progress.component";
 
 @NgModule({
   declarations: [
@@ -46,6 +50,7 @@ import { EnterPasswordComponent } from "./enter-password/enter-password.componen
     EditorComponent,
     EnterEmailComponent,
     EnterPasswordComponent,
+    CourseProgressComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +59,9 @@ import { EnterPasswordComponent } from "./enter-password/enter-password.componen
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    NgbModule,
+    NgxChartsModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot([
       {
         path: "",

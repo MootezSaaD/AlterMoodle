@@ -12,7 +12,7 @@ import { switchMap, map, filter } from "rxjs/operators";
 })
 export class CourseAssignmentsComponent implements OnInit {
   courseAssignments$: any;
-  coursId: string;
+  coursName: string;
   course: CourseAssignment;
   statusMsg: string;
   constructor(
@@ -22,8 +22,8 @@ export class CourseAssignmentsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.coursId = this.route.snapshot.params["coursName"];
-    this.assignmentService.searchCourse(this.coursId);
+    this.coursName = this.route.snapshot.params["coursName"];
+    this.assignmentService.searchCourse(this.coursName);
     this.assignmentService.currentCourse.subscribe((a) => {
       this.course = a;
     });
