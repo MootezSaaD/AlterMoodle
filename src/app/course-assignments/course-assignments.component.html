@@ -1,7 +1,7 @@
 <div class="card mb-3 rounded shadow-sm" style="width: 18rem;">
   <div class="card-body">
-    <h5 class="card-title">{{this.test._id}}</h5>
-    <p class="card-text">Total Assignments: {{this.test.assignment.length}}</p>
+    <h5 class="card-title">{{this.course._id}}</h5>
+    <p class="card-text">Total Assignments: {{this.course.assignment.length}}</p>
   </div>
 </div>
 
@@ -18,7 +18,7 @@
       </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let assignment of this.test.assignment">
+    <tr *ngFor="let assignment of this.course.assignment">
       <td align="center">{{assignment.name}}</td>
       <td align="center" [innerHTML]="assignment.description"></td>
       <td align="center">{{assignment.expDate}}</td>

@@ -9,11 +9,13 @@ import { of } from "rxjs";
   providedIn: "root",
 })
 export class AssignmentService {
+  public currentCourse = new BehaviorSubject<CourseAssignment>(null);
   private subject = new BehaviorSubject<CourseAssignment[]>([]);
-  assignments$: Observable<CourseAssignment[]> = this.subject.asObservable();
+  public assignments$: Observable<
+    CourseAssignment[]
+  > = this.subject.asObservable();
   private nbrOfAssignments = 0;
   private nbrOfUnfinishedAssignments = 0;
-  reAssignment: CourseAssignment;
 
   constructor(private httpClient: HttpClient) {}
 
@@ -54,24 +56,6 @@ export class AssignmentService {
   getNbrOfUnfinishedAssigments() {
     return this.nbrOfUnfinishedAssignments;
   }
-
-  getCourseAssignments(id: string) {
-    let a = this.assignments$
-      .pipe(
-        map((assignments: CourseAssignment[]) => {
-          assignments.forEach((assignment) => {
-            if (assignment._id === id) {
-              console.log("Found it !");
-              console.log("IT IS => ", assignment);
-              this.reAssignment = assignment;
-              return assignment;
-            }
-          });
-        })
-      )
-      .subscribe((a) => {});
-    return this.reAssignment;
-  }
   markAsDone(assignmentID: string) {
     const data = this.subject.getValue();
     let courseIdx = 0;
@@ -98,5 +82,15 @@ export class AssignmentService {
       "http://localhost:3000/api/moodle/assignment/" + assignmentID,
       null
     );
+  }
+  searchCourse(courseName: string) {
+    this.assignments$
+      .pipe(
+        map((ca: CourseAssignment[]) => {
+          let a = ca.find((c) => c._id === courseName);
+          this.currentCourse.next(a);
+        })
+      )
+      .subscribe((c) => {});
   }
 }

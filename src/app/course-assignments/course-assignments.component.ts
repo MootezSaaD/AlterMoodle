@@ -3,7 +3,7 @@ import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { CourseAssignment } from "../models/courseAssignment.model";
 import { Observable } from "rxjs";
 import { AssignmentService } from "../services/assignment.service";
-import { switchMap } from "rxjs/operators";
+import { switchMap, map, filter } from "rxjs/operators";
 
 @Component({
   selector: "app-course-assignments",
@@ -13,8 +13,7 @@ import { switchMap } from "rxjs/operators";
 export class CourseAssignmentsComponent implements OnInit {
   courseAssignments$: any;
   coursId: string;
-  course: Observable<void>;
-  test: CourseAssignment;
+  course: CourseAssignment;
   statusMsg: string;
   constructor(
     private route: ActivatedRoute,
@@ -24,8 +23,10 @@ export class CourseAssignmentsComponent implements OnInit {
 
   ngOnInit() {
     this.coursId = this.route.snapshot.params["coursName"];
-    this.test = this.assignmentService.getCourseAssignments(this.coursId);
-    console.log(this.test);
+    this.assignmentService.searchCourse(this.coursId);
+    this.assignmentService.currentCourse.subscribe((a) => {
+      this.course = a;
+    });
   }
   onSelect(assigment) {
     this.router.navigate(["dashboard/editor/", assigment.id]);
