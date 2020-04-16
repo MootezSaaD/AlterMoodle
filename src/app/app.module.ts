@@ -18,6 +18,10 @@ import { SideBarComponent } from "./side-bar/side-bar.component";
 import { SignupComponent } from "./signup/signup.component";
 import { JwtService } from "./services/jwt.service";
 import { AuthService } from "./services/auth.service";
+import { AssignmentService } from "./services/assignment.service";
+import { StatisticsService } from "./services/statistics.service";
+import { StorageService } from "./services/storage.service";
+import { SubmissionService } from "./services/submission.service";
 import { AuthGuardGuard as AuthGuard } from "./guards/auth-guard.guard";
 import { UserProfileComponent } from "./user-profile/user-profile.component";
 import { UserDdmenuComponent } from "./user-ddmenu/user-ddmenu.component";
@@ -130,6 +134,10 @@ import { CourseProgressComponent } from "./statistics/course-progress/course-pro
     AuthService,
     JwtService,
     AuthGuard,
+    AssignmentService,
+    StatisticsService,
+    StorageService,
+    SubmissionService,
   ],
   bootstrap: [AppComponent],
 })

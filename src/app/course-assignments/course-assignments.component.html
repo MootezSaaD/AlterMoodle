@@ -6,7 +6,7 @@
 </div>
 <h4>Assignments</h4>
 <div class="table-responsive">
-  <table class="table table-striped shadow-sm table-bordered">
+  <table class="table shadow-sm table-bordered">
     <thead>
       <tr>
         <th scope="col">Name</th>
@@ -19,13 +19,13 @@
     </thead>
     <tbody>
     <tr *ngFor="let assignment of this.course.assignment">
+      <ng-container *ngIf="!this.assignment.status">
       <td align="center">{{assignment?.name}}</td>
       <td align="center" [innerHTML]="assignment?.description"></td>
       <td align="center">{{assignment?.expDate}}</td>
       <td align="center"><a href="{{assignment?.url}}">Link</a></td>
       <td align="center" >
-        <span *ngIf="!this.assignment.status" class="status unfinished">Pending</span>
-        <span *ngIf="this.assignment.status" class="status finished">Finished</span>
+        <span  class="status unfinished">Pending</span>
       </td>
       <td align="center">
         <div class="btn-group mr-2" role="group" aria-label="Done">
@@ -35,6 +35,26 @@
           <button type="button" class="btn btn-primary" (click)="onSelect(assignment)">Do it</button>
         </div>
       </td>
+    </ng-container>
+    </tr>
+    <tr *ngFor="let assignment of this.course.assignment">
+      <ng-container *ngIf="this.assignment.status">
+      <td align="center">{{assignment?.name}}</td>
+      <td align="center" [innerHTML]="assignment?.description"></td>
+      <td align="center">{{assignment?.expDate}}</td>
+      <td align="center"><a href="{{assignment?.url}}">Link</a></td>
+      <td align="center" >
+        <span  class="status finished">Finished</span>
+      </td>
+      <td align="center">
+        <div class="btn-group mr-2" role="group" aria-label="Done">
+          <button type="button" class="btn btn-success" (click)="done(assignment)">Done</button>
+        </div>
+        <div class="btn-group mr-2" role="group" aria-label="Do">
+          <button type="button" class="btn btn-primary" (click)="onSelect(assignment)">Do it</button>
+        </div>
+      </td>
+    </ng-container>
     </tr>
   </tbody>
   </table>
