@@ -148,7 +148,7 @@ router.post("/submission/add/:id", verifyJwt, async (req, res) => {
   let user = await userService.getUserByID(req.decodedToken._id);
   let assignment = await assignmentService.getAssignmentByID(req.params.id);
   // Mark when the assignment was finished
-  assignment.finishedAt = finishedAt;
+  assignment.finishedAt = Date.now();
   await assignment.save();
 
   let filePath = "app_api/files/" + user._id + "/" + req.params.id + ".html";

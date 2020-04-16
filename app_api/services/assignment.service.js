@@ -50,30 +50,30 @@ function assignmentService() {
   }
   // Get user's assignments from database
   async function fetchUserAssignments(userID) {
-    return Assignment.aggregate([
-      { $match: { _user: mongoose.Types.ObjectId(userID) } },
-      {
-        $group: {
-          _id: "$course.courseCode",
-          courseInfo: {
-            $first: {
-              courseName: "$course.courseName",
-              courseID: "$course.courseMoodleID",
-            },
+    let sort = { $sort: { expDateInt: 1 } };
+    let match = { $match: { _user: mongoose.Types.ObjectId(userID) } };
+    let group = {
+      $group: {
+        _id: "$course.courseCode",
+        courseInfo: {
+          $first: {
+            courseName: "$course.courseName",
+            courseID: "$course.courseMoodleID",
           },
-          assignment: {
-            $push: {
-              id: "$_id",
-              name: "$name",
-              description: "$description",
-              expDate: "$expDate",
-              status: "$status",
-              url: "$url",
-            },
+        },
+        assignment: {
+          $push: {
+            id: "$_id",
+            name: "$name",
+            description: "$description",
+            expDate: "$expDate",
+            status: "$status",
+            url: "$url",
           },
         },
       },
-    ]);
+    };
+    return Assignment.aggregate([sort, match, group]);
   }
   // Mark assignment as done
   async function markAsDone(assignmentID) {
