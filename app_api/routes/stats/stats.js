@@ -13,17 +13,11 @@ router.get("/progress/:courseId", verifyJwt, async (req, res) => {
     req.decodedToken._id
   );
   delete query[0]._id;
-  let data = [
-    {
-      name: "Finished",
-      value: query[0].Finished,
-    },
-    {
-      name: "Unfinished",
-      value: query[0].Unfinished,
-    },
-  ];
-  return res.status(200).send(data);
+  let finalRes = Object.keys(query[0]).map((x) => ({
+    name: x,
+    value: query[0][x],
+  }));
+  return res.status(200).send(finalRes);
 });
 
 module.exports = router;
