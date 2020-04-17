@@ -27,26 +27,36 @@ export class AssignmentService {
      * new fetched assignments from the database
      */
     this.httpClient
-      .get("http://localhost:3000/api/moodle/get-mdl-assignments")
-      .subscribe();
-    this.httpClient
-      .get<CourseAssignment[]>("http://localhost:3000/api/moodle/assignments")
-      .pipe(
-        tap(() => {
-          console.log("HTTP REQUEST DONE");
-        }),
-        map((res) => Object.values(res))
-      )
-      .subscribe((assignments: CourseAssignment[]) => {
-        this.subject.next(assignments);
-        assignments.forEach((assignment) => {
-          this.nbrOfAssignments += assignment.assignment.length;
-          assignment.assignment.forEach((a) => {
-            if (!a.status) {
-              this.nbrOfUnfinishedAssignments++;
-            }
+      .get("http://localhost:3000/api/moodle/get/mdl/assignments")
+      .subscribe((data: any) => {
+        this.httpClient
+          .post(
+            "http://localhost:3000/api/moodle/assignments/status/update",
+            null
+          )
+          .subscribe((data2: any) => {
+            this.httpClient
+              .get<CourseAssignment[]>(
+                "http://localhost:3000/api/moodle/assignments"
+              )
+              .pipe(
+                tap(() => {
+                  console.log("HTTP REQUEST DONE");
+                }),
+                map((res) => Object.values(res))
+              )
+              .subscribe((assignments: CourseAssignment[]) => {
+                this.subject.next(assignments);
+                assignments.forEach((assignment) => {
+                  this.nbrOfAssignments += assignment.assignment.length;
+                  assignment.assignment.forEach((a) => {
+                    if (!a.status) {
+                      this.nbrOfUnfinishedAssignments++;
+                    }
+                  });
+                });
+              });
           });
-        });
       });
   }
   getNbrOfAssignments() {

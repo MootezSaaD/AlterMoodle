@@ -48,6 +48,37 @@ function assignmentService() {
         console.error("Duplicate docs were found and were not stored");
       });
   }
+  // Get unfinished assignments from data base
+  async function getUnfinished(userID) {
+    return Assignment.find({
+      _user: mongoose.Types.ObjectId(userID),
+      status: false,
+    }).select("assignmentID");
+  }
+  // Check an assignments status
+  async function checkStatus(assignmentID, moodleToken) {
+    const res = moodle
+      .init({
+        wwwroot: process.env.MOODLE_URL,
+        token: moodleToken,
+      })
+      .then((client) => {
+        return client
+          .call({
+            wsfunction: "mod_assign_get_submission_status",
+            args: {
+              assignid: assignmentID,
+            },
+          })
+          .then((status) => {
+            return status;
+          });
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+    return Promise.resolve(res);
+  }
   // Get user's assignments from database
   async function fetchUserAssignments(userID) {
     let sort = { $sort: { expDateInt: 1 } };
@@ -157,6 +188,8 @@ function assignmentService() {
     getAssignmentByID,
     storeAssignments,
     getUserAssignments,
+    getUnfinished,
+    checkStatus,
     fetchUserAssignments,
     markAsDone,
     storeSubmissionInDB,

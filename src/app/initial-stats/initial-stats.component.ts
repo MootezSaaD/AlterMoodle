@@ -7,7 +7,7 @@ import { AssignmentService } from "../services/assignment.service";
 @Component({
   selector: "app-initial-stats",
   templateUrl: "./initial-stats.component.html",
-  styleUrls: ["./initial-stats.component.css"]
+  styleUrls: ["./initial-stats.component.css"],
 })
 export class InitialStatsComponent implements OnInit {
   constructor(

@@ -15,7 +15,7 @@ const router = Router({
 /**
  * Get assignments from moodle.
  */
-router.get("/get-mdl-assignments", verifyJwt, async (req, res) => {
+router.get("/get/mdl/assignments", verifyJwt, async (req, res) => {
   let user = await userService.getUserByID(req.decodedToken._id);
   const courseArr = await moodleService.getUsersCoursesIDS(
     user.moodleUserID,
@@ -57,7 +57,35 @@ router.get("/get-mdl-assignments", verifyJwt, async (req, res) => {
     message: "Assignments have been stored",
   });
 });
-
+/**
+ * Update assignments' status by checking the submission status
+ */
+router.post("/assignments/status/update", verifyJwt, async (req, res) => {
+  // Get user
+  let user = await userService.getUserByID(req.decodedToken._id);
+  // Fetch user's assignments that are unfinished.
+  let unfinishedAssignment = await assignmentService.getUnfinished(
+    req.decodedToken._id
+  );
+  // Make an API call to Moodle's endpoint to check whether if a submission exists or not.
+  unfinishedAssignment.forEach(async (assisgn) => {
+    let assignmentStatus = await assignmentService.checkStatus(
+      assisgn.assignmentID,
+      user.moodleToken
+    );
+    // Update assignment status if a submission exists
+    let result =
+      assignmentStatus.lastattempt.submission.plugins[0].fileareas[0].files
+        .length;
+    if (result > 0) {
+      await assignmentService.markAsDone(assisgn._id);
+    }
+  });
+  return res.status(200).send({
+    success: true,
+    message: "Assignments status updated",
+  });
+});
 /**
  * Get assignments from the database
  */
@@ -149,6 +177,7 @@ router.post("/submission/add/:id", verifyJwt, async (req, res) => {
   let assignment = await assignmentService.getAssignmentByID(req.params.id);
   // Mark when the assignment was finished
   assignment.finishedAt = Date.now();
+  assignment.status = true;
   await assignment.save();
 
   let filePath = "app_api/files/" + user._id + "/" + req.params.id + ".html";
@@ -169,4 +198,5 @@ router.post("/submission/add/:id", verifyJwt, async (req, res) => {
   });
   //Update the assignment status in the frontend
 });
+
 module.exports = router;
