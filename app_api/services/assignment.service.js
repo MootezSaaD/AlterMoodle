@@ -110,6 +110,7 @@ function assignmentService() {
   async function markAsDone(assignmentID) {
     let assignment = await Assignment.findById(assignmentID);
     assignment.status = true;
+    assignment.finishedAt = Date.now();
     await assignment
       .save()
       .then((doc) => {})
