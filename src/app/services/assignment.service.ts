@@ -19,44 +19,33 @@ export class AssignmentService {
 
   constructor(private httpClient: HttpClient) {}
 
-  init() {
+  async init() {
     /**
      * First, we need to fetch/update the assignment list from moodle.
      * We will call the the "/get-mdl-assignments" API End-Point.
      * Then, we will call the "assignments" API End-Point to get the old and
      * new fetched assignments from the database
      */
-    this.httpClient
+    await this.httpClient
       .get("http://localhost:3000/api/moodle/get/mdl/assignments")
-      .subscribe((data: any) => {
-        this.httpClient
-          .post(
-            "http://localhost:3000/api/moodle/assignments/status/update",
-            null
-          )
-          .subscribe((data2: any) => {
-            this.httpClient
-              .get<CourseAssignment[]>(
-                "http://localhost:3000/api/moodle/assignments"
-              )
-              .pipe(
-                tap(() => {
-                  console.log("HTTP REQUEST DONE");
-                }),
-                map((res) => Object.values(res))
-              )
-              .subscribe((assignments: CourseAssignment[]) => {
-                this.subject.next(assignments);
-                assignments.forEach((assignment) => {
-                  this.nbrOfAssignments += assignment.assignment.length;
-                  assignment.assignment.forEach((a) => {
-                    if (!a.status) {
-                      this.nbrOfUnfinishedAssignments++;
-                    }
-                  });
-                });
-              });
+      .toPromise();
+    await this.httpClient
+      .get("http://localhost:3000/api/moodle/assignments/status/update")
+      .toPromise();
+
+    await this.httpClient
+      .get<CourseAssignment[]>("http://localhost:3000/api/moodle/assignments")
+      .toPromise()
+      .then((assignments: CourseAssignment[]) => {
+        this.subject.next(assignments);
+        assignments.forEach((assignment) => {
+          this.nbrOfAssignments += assignment.assignment.length;
+          assignment.assignment.forEach((a) => {
+            if (!a.status) {
+              this.nbrOfUnfinishedAssignments++;
+            }
           });
+        });
       });
   }
   getNbrOfAssignments() {

@@ -60,7 +60,7 @@ router.get("/get/mdl/assignments", verifyJwt, async (req, res) => {
 /**
  * Update assignments' status by checking the submission status
  */
-router.post("/assignments/status/update", verifyJwt, async (req, res) => {
+router.get("/assignments/status/update", verifyJwt, async (req, res) => {
   // Get user
   let user = await userService.getUserByID(req.decodedToken._id);
   // Fetch user's assignments that are unfinished.
