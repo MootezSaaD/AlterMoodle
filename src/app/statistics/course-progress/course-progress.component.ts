@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 
 @Component({
@@ -8,16 +8,8 @@ import { NgxChartsModule } from "@swimlane/ngx-charts";
 })
 export class CourseProgressComponent implements OnInit {
   constructor() {}
-  data = [
-    {
-      name: "Finished",
-      value: 1,
-    },
-    {
-      name: "Unfinished",
-      value: 2,
-    },
-  ];
+  @Input() data;
+
   colorScheme = {
     domain: ["#2ecc71", "#fa4251"],
   };
