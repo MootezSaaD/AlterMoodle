@@ -103,25 +103,32 @@ router.get("/assignments", verifyJwt, async (req, res) => {
  * to moodle.
  */
 router.post("/submission/:id", verifyJwt, async (req, res) => {
-  //Fetch the user
+  // Fetch the user
   let user = await userService.getUserByID(req.decodedToken._id);
+  // Fetch the assignment info
+  let assignmentInfo = await assignmentService.getAssignmentByID(req.params.id);
   //Create folder (if it does exist) of the user
   if (!fs.existsSync("app_api/files/" + user._id)) {
     fs.mkdirSync("app_api/files/" + user._id);
   }
   //Save submission file
-  fs.writeFile(
-    "app_api/files/" + user._id + "/" + req.body._assignment + ".html",
-    pretty(req.body.content),
-    (err, data) => {
-      if (err) {
-        return res.status(500).send({
-          success: false,
-          message: "Error",
-        });
-      }
+  let fileName =
+    "app_api/files/" +
+    user._id +
+    "/" +
+    user.firstName +
+    user.lastName +
+    "_" +
+    assignmentInfo.name.trim() +
+    ".html";
+  fs.writeFile(fileName, pretty(req.body.content), (err, data) => {
+    if (err) {
+      return res.status(500).send({
+        success: false,
+        message: "Error",
+      });
     }
-  );
+  });
   /**
    * Save submission to the database.
    * First check if the submission doc exists, if it does do nothing, otherwise, store it in database
@@ -131,7 +138,7 @@ router.post("/submission/:id", verifyJwt, async (req, res) => {
   if (sub.length === 0) {
     await assignmentService.storeSubmissionInDB(
       req.body._assignment,
-      "app_api/files/" + user._id + "/" + req.body._assignment + ".html",
+      fileName,
       user._id
     );
   }
@@ -179,9 +186,16 @@ router.post("/submission/add/:id", verifyJwt, async (req, res) => {
   assignment.finishedAt = Date.now();
   assignment.status = true;
   await assignment.save();
-
-  let filePath = "app_api/files/" + user._id + "/" + req.params.id + ".html";
-  let pdfFilePath = "app_api/files/" + user._id + "/" + req.params.id + ".pdf";
+  let fileName =
+    "app_api/files/" +
+    user._id +
+    "/" +
+    user.firstName +
+    user.lastName +
+    "_" +
+    assignment.name.trim();
+  let filePath = fileName + ".html";
+  let pdfFilePath = fileName + ".pdf";
   let file = fs.readFileSync(filePath, "utf8");
   // Upload the assignment to moodle
   // It will be converted to pdf first then uploaded
