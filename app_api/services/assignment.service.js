@@ -107,10 +107,10 @@ function assignmentService() {
     return Assignment.aggregate([sort, match, group]);
   }
   // Mark assignment as done
-  async function markAsDone(assignmentID) {
+  async function markAsDone(assignmentID, date) {
     let assignment = await Assignment.findById(assignmentID);
     assignment.status = true;
-    assignment.finishedAt = Date.now();
+    assignment.finishedAt = date;
     await assignment
       .save()
       .then((doc) => {})

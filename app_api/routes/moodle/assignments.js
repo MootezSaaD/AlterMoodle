@@ -78,7 +78,11 @@ router.get("/assignments/status/update", verifyJwt, async (req, res) => {
       assignmentStatus.lastattempt.submission.plugins[0].fileareas[0].files
         .length;
     if (result > 0) {
-      await assignmentService.markAsDone(assisgn._id);
+      await assignmentService.markAsDone(
+        assisgn._id,
+        assignmentStatus.lastattempt.submission.plugins[0].fileareas[0].files[0]
+          .timemodified * 1000
+      );
     }
   });
   return res.status(200).send({
@@ -169,7 +173,7 @@ router.get("/submission/:id", verifyJwt, async (req, res) => {
  * Mark an assignment as done
  */
 router.put("/assignment/:id", verifyJwt, async (req, res) => {
-  await assignmentService.markAsDone(req.params.id);
+  await assignmentService.markAsDone(req.params.id, Date.now());
   return res.status(200).send({
     success: true,
     message: "Assignment has been marked done successfully",
