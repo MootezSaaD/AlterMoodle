@@ -4,35 +4,38 @@ let UserSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
-      required: true
+      required: true,
     },
     lastName: {
       type: String,
-      required: true
+      required: true,
     },
     email: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     moodleToken: {
       type: String,
       unique: true,
       min: 32,
       max: 32,
-      required: true
+      required: true,
     },
     password: {
       type: String,
       required: true,
       max: 1024,
-      min: 6
+      min: 6,
     },
     moodleUserID: {
       type: Number,
-      required: false
+      required: false,
     },
-    courses: []
+    courses: [],
+    userImage: {
+      type: String,
+    },
   },
   { strict: false }
 );

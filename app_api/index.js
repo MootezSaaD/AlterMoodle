@@ -1,5 +1,6 @@
 const cors = require("cors");
 const dotenv = require("dotenv").config();
+const path = require("path");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -18,6 +19,9 @@ app.use(
   })
 );
 app.use(cors());
+//Static folders
+app.use("/files", express.static(path.join(__dirname, "files/")));
+console.log(path.join(__dirname, "files"));
 
 //Connect to database
 mongoose.connect(
@@ -35,6 +39,7 @@ app.use("/api/user", authRouter);
 app.use("/api/moodle", moodleRouter);
 app.use("/api/misc", miscRouter);
 app.use("/api/stats", statsRouter);
+
 // Error handler
 app.use(function (err, req, res, next) {
   handleError(err, res);
