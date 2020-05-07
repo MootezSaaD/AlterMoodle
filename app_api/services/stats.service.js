@@ -1,4 +1,5 @@
 const Assignment = require("../models/Assignment");
+const UserLog = require("../models/UserLog");
 const mongoose = require("mongoose");
 function statsService() {
   //Get number of unfinished assignments of a specific course
@@ -19,7 +20,11 @@ function statsService() {
       },
     ]);
   }
-  return { calcCourseProgress };
+  // Return the user's logs
+  async function fetchUserLogs(userId) {
+    return UserLog.find({ _user: userId });
+  }
+  return { calcCourseProgress, fetchUserLogs };
 }
 
 module.exports = statsService;

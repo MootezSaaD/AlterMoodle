@@ -22,17 +22,24 @@ export class AssignmentService {
   async init() {
     /**
      * First, we need to fetch/update the assignment list from moodle.
-     * We will call the the "/get-mdl-assignments" API End-Point.
+     * We will call the the "/get/mdl/assignments" API End-Point.
      * Then, we will call the "assignments" API End-Point to get the old and
      * new fetched assignments from the database
      */
     await this.httpClient
       .get("http://localhost:3000/api/moodle/get/mdl/assignments")
-      .toPromise();
+      .toPromise()
+      .then((res) => {
+        console.log(res);
+        return;
+      });
     await this.httpClient
       .get("http://localhost:3000/api/moodle/assignments/status/update")
-      .toPromise();
-
+      .toPromise()
+      .then((res) => {
+        console.log(res);
+        return;
+      });
     await this.httpClient
       .get<CourseAssignment[]>("http://localhost:3000/api/moodle/assignments")
       .toPromise()

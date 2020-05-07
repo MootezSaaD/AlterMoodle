@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { NgxChartsModule } from "@swimlane/ngx-charts";
+import { Component, Input, OnInit } from "@angular/core";
+import * as Feather from "feather-icons";
 
 @Component({
   selector: "app-course-progress",
@@ -13,6 +13,8 @@ export class CourseProgressComponent implements OnInit {
   colorScheme = {
     domain: ["#2ecc71", "#fa4251"],
   };
+  infoMessage =
+    "This metric helps you to have an overall idea about the completion of the assignments";
   // options
   showLegend: boolean = true;
   showLabels: boolean = true;
