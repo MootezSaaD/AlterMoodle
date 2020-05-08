@@ -3,6 +3,8 @@ const User = require("../models/User");
 const authBasic = require("../helpers/authBasic");
 const moodleService = require("../services/moodle.service")();
 const userSerivce = require("../services/user.service")();
+const statsSerivce = require("../services/stats.service")();
+
 const bcrypt = require("bcryptjs");
 const { ErrorHandler } = require("../helpers/errorHandler");
 
@@ -28,8 +30,10 @@ function authService() {
       lastName: user.lastName,
       moodleToken: user.moodleToken,
       courses: user.courses,
-      userToken
+      userToken,
     };
+    // Save user log
+    await statsSerivce.storeUserLogs(user._id);
     return userObj;
   }
   // User Signup Service
@@ -52,7 +56,7 @@ function authService() {
         ...userCreds,
         password: hashedPassword,
         moodleUserID,
-        courses
+        courses,
       });
 
       if (!user) {

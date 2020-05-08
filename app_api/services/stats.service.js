@@ -1,5 +1,6 @@
 const Assignment = require("../models/Assignment");
 const UserLog = require("../models/UserLog");
+const moment = require("moment");
 const mongoose = require("mongoose");
 function statsService() {
   //Get number of unfinished assignments of a specific course
@@ -24,7 +25,20 @@ function statsService() {
   async function fetchUserLogs(userId) {
     return UserLog.find({ _user: userId });
   }
-  return { calcCourseProgress, fetchUserLogs };
+  // Record user logs
+  async function storeUserLogs(userId) {
+    const day = moment().format("dddd"); // Sunday
+    const monthYr = moment().format("MMM Do YYYY"); // May 3rd 2020
+    const time = moment().format("LT"); // e.g 2:21 PM
+    await UserLog.create({
+      timeInt: Date.now(),
+      day,
+      monthYr,
+      time,
+      _user: userId,
+    });
+  }
+  return { calcCourseProgress, fetchUserLogs, storeUserLogs };
 }
 
 module.exports = statsService;
