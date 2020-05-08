@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from "@angular/core";
-import * as Feather from "feather-icons";
 
 @Component({
   selector: "app-course-progress",
@@ -8,7 +7,7 @@ import * as Feather from "feather-icons";
 })
 export class CourseProgressComponent implements OnInit {
   constructor() {}
-  @Input() data;
+  @Input() data: any;
 
   colorScheme = {
     domain: ["#2ecc71", "#fa4251"],

@@ -33,7 +33,7 @@ function authService() {
       userToken,
     };
     // Save user log
-    await statsSerivce.storeUserLogs(user._id);
+    // await statsSerivce.storeUserLogs(user._id);
     return userObj;
   }
   // User Signup Service

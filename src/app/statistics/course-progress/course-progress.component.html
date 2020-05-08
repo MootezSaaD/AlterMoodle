@@ -1,7 +1,7 @@
 <ng-container *ngIf="this.data">
 <div class="card shadow-sm" style="width: 400px;">
   <div class="card-header" placement="right" ngbPopover="{{this.infoMessage}}" popoverTitle="Info" id="headingOne">
-    <h5>Porgress</h5>
+    <h5>Progress</h5>
   </div>
   <ngx-charts-advanced-pie-chart
   [view]="view"
@@ -11,5 +11,4 @@
   >
 </ngx-charts-advanced-pie-chart>
 </div>
-<span data-feather="info"></span>
 </ng-container>

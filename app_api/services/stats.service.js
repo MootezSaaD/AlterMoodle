@@ -23,7 +23,7 @@ function statsService() {
   }
   // Return the user's logs
   async function fetchUserLogs(userId) {
-    return UserLog.find({ _user: userId });
+    return UserLog.find({ _user: userId }).select("-_id -_user -__v");
   }
   // Record user logs
   async function storeUserLogs(userId) {

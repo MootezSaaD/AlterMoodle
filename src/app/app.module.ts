@@ -35,6 +35,7 @@ import { EditorComponent } from "./editor/editor.component";
 import { EnterEmailComponent } from "./enter-email/enter-email.component";
 import { EnterPasswordComponent } from "./enter-password/enter-password.component";
 import { CourseProgressComponent } from "./statistics/course-progress/course-progress.component";
+import { LoginLogsComponent } from './statistics/login-logs/login-logs.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { CourseProgressComponent } from "./statistics/course-progress/course-pro
     EnterEmailComponent,
     EnterPasswordComponent,
     CourseProgressComponent,
+    LoginLogsComponent,
   ],
   imports: [
     BrowserModule,

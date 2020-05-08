@@ -21,8 +21,6 @@ app.use(
 app.use(cors());
 //Static folders
 app.use("/files", express.static(path.join(__dirname, "files/")));
-console.log(path.join(__dirname, "files"));
-
 //Connect to database
 mongoose.connect(
   process.env.DB_URL,

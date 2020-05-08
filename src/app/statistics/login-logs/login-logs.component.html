@@ -1,0 +1,21 @@
+<h4>Access Log</h4>
+<ng-container *ngIf="this.logs.length">
+  <div class="table-responsive">
+    <table class="table shadow-sm table-bordered">
+      <thead>
+        <tr>
+          <th scope="col" class="text-center">Day</th>
+          <th scope="col" class="text-center">Month and Year</th>
+          <th scope="col" class="text-center">Time</th>
+        </tr>
+      </thead>
+      <tr *ngFor="let log of this.logs">
+        <td align="center">{{log.day}}</td>
+        <td align="center">{{log.monthYr}}</td>
+        <td align="center">{{log.time}}</td>
+      </tr>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</ng-container>
