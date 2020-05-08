@@ -8,10 +8,18 @@ const router = Router({
 // Login
 router.post("/login", async (req, res, next) => {
   try {
-    loginValidation(req.body);
-    const { email, password } = req.body;
-    const user = await authService.login(email, password);
-    res.send(user);
+    if(req.body.NameValuePairs == null){
+      loginValidation(req.body);
+      const { email, password } = req.body;
+      const user = await authService.login(email, password);
+      res.send(user);
+    }else{
+      loginValidation(req.body.NameValuePairs);
+      const { email, password } = req.body.NameValuePairs;
+      const user = await authService.login(email, password);
+      res.send(user);
+    }
+  
   } catch (err) {
     next(err);
   }
