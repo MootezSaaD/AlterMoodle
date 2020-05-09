@@ -184,6 +184,30 @@ function assignmentService() {
         });
     });
   }
+  // Fetch assignments that are due in 24h or less for a given date
+  async function getImminentAssignments(userID, date) {
+    return Assignment.aggregate([
+      {
+        $project: {
+          status: "$status",
+          courseCode: "$course.courseCode",
+          name: "$name",
+          expDate: "$expDate",
+          duration: { $subtract: ["$expDateInt", parseInt(date)] },
+          _user: "$_user",
+        },
+      },
+      {
+        $match: {
+          $and: [
+            { _user: mongoose.Types.ObjectId(userID) },
+            { status: false },
+            { duration: { $lte: 86400000, $gt: 0 } },
+          ],
+        },
+      },
+    ]);
+  }
 
   return {
     getAssignmentByID,
@@ -196,6 +220,7 @@ function assignmentService() {
     storeSubmissionInDB,
     fetchSub,
     uploadToMoodle,
+    getImminentAssignments,
   };
 }
 

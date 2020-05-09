@@ -102,6 +102,24 @@ router.get("/assignments", verifyJwt, async (req, res) => {
 });
 
 /**
+ * Get assignments that are due in 24h or less
+ */
+router.get("/assignments/urgent", verifyJwt, async (req, res) => {
+  let date = Date.now();
+  let query = await assignmentService.getImminentAssignments(
+    req.decodedToken._id,
+    date
+  );
+  // Refine the result
+  for (let p in query) {
+    delete query[p]._user;
+    delete query[p]._id;
+    delete query[p].status;
+  }
+  return res.status(200).send(query);
+});
+
+/**
  * Store a submission as a file and in database
  * Ideas: convert to pdf only when submitting the assignment
  * to moodle.
