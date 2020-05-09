@@ -8,19 +8,19 @@ function moodleService() {
     const userid = moodle
       .init({
         wwwroot: process.env.MOODLE_URL,
-        token: userToken
+        token: userToken,
       })
-      .then(client => {
+      .then((client) => {
         return client
           .call({
-            wsfunction: "core_webservice_get_site_info"
+            wsfunction: "core_webservice_get_site_info",
           })
-          .then(async function(info) {
+          .then(async function (info) {
             return info.userid;
           });
       })
-      .catch(err => {
-        throw new Error(err);
+      .catch((err) => {
+        throw new ErrorHandler(err);
       });
     return Promise.resolve(userid);
   }
@@ -30,26 +30,26 @@ function moodleService() {
     const res = moodle
       .init({
         wwwroot: process.env.MOODLE_URL,
-        token: moodleToken
+        token: moodleToken,
       })
-      .then(client => {
+      .then((client) => {
         return client
           .call({
             wsfunction: "core_enrol_get_users_courses",
             args: {
-              userid: userID
-            }
+              userid: userID,
+            },
           })
-          .then(async courses => {
+          .then(async (courses) => {
             let coursesIDS = [];
-            courses.forEach(course => {
+            courses.forEach((course) => {
               coursesIDS.push(course.id);
             });
             return coursesIDS;
           });
       })
-      .catch(err => {
-        throw new Error(err);
+      .catch((err) => {
+        throw new ErrorHandler(err);
       });
     return Promise.resolve(res);
   }
@@ -58,31 +58,31 @@ function moodleService() {
     const res = moodle
       .init({
         wwwroot: process.env.MOODLE_URL,
-        token: moodleToken
+        token: moodleToken,
       })
-      .then(client => {
+      .then((client) => {
         return client
           .call({
             wsfunction: "core_enrol_get_users_courses",
             args: {
-              userid: userID
-            }
+              userid: userID,
+            },
           })
-          .then(async courses => {
+          .then(async (courses) => {
             let coursesArr = [];
-            courses.forEach(course => {
+            courses.forEach((course) => {
               coursesArr.push({
                 courseCode: course.shortname,
                 courseMoodleID: course.id,
                 courseDesc: course.fullname,
-                _user: _userdid
+                _user: _userdid,
               });
             });
             return coursesArr;
           });
       })
-      .catch(err => {
-        throw new Error(err);
+      .catch((err) => {
+        throw new ErrorHandler(err);
       });
     return Promise.resolve(res);
   }
@@ -97,7 +97,7 @@ function moodleService() {
   return {
     getUserMoodleID,
     getUsersCoursesIDS,
-    getUsersCourses
+    getUsersCourses,
   };
 }
 
