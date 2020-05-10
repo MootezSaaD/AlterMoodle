@@ -1,9 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
+import { NgForm } from "@angular/forms";
 import {
   CalendarEvent,
   CalendarEventTimesChangedEvent,
   CalendarView,
 } from "angular-calendar";
+import { startOfDay, endOfDay, subDays, addDays } from "date-fns";
 import { Subject } from "rxjs";
 
 @Component({
@@ -17,27 +19,24 @@ export class UserScheduleComponent implements OnInit {
   CalendarView = CalendarView;
   view = CalendarView.Month;
   viewDate = new Date();
+  // Week starts from monday
+  weekStartsOn = 1;
+  // Classes start from 8
+  dayStartHour = 8;
+  // Classes end 19h
+  dayEndHour = 19;
   // This one will be updated and stored in/fetched from db.
-  externalEvents: CalendarEvent[] = [
-    {
-      title: "Event 1",
-      color: { primary: "#e3bc08", secondary: "#FDF1BA" },
-      start: new Date(),
-      draggable: true,
+  externalEvents: CalendarEvent[] = [];
+  courseEvent = {
+    title: "",
+    color: {
+      primary: "#1e90ff",
+      secondary: "#D1E8FF",
     },
-    {
-      title: "Event 2",
-      color: {
-        primary: "#1e90ff",
-        secondary: "#D1E8FF",
-      },
-      start: new Date(),
-      draggable: true,
-    },
-  ];
-
+    start: new Date(),
+    draggable: true,
+  };
   events: CalendarEvent[] = [];
-
   activeDayIsOpen = false;
 
   refresh = new Subject<void>();
@@ -74,5 +73,18 @@ export class UserScheduleComponent implements OnInit {
     }
   }
 
+  onSubmit(form: NgForm) {
+    console.log(form.value);
+    this.externalEvents.push({
+      title: form.value.title,
+      color: {
+        primary: "#1e90ff",
+        secondary: "#D1E8FF",
+      },
+      draggable: true,
+      start: startOfDay(new Date()),
+      end: addDays(new Date(), 1),
+    });
+  }
   ngOnInit() {}
 }
