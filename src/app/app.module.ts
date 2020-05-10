@@ -9,6 +9,9 @@ import { JwtInterceptor } from "./interceptors/jwt.interceptor";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { CalendarModule, DateAdapter } from "angular-calendar";
+import { adapterFactory } from "angular-calendar/date-adapters/date-fns";
+import { NgxSpinnerModule } from "ngx-spinner";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -35,7 +38,7 @@ import { EditorComponent } from "./editor/editor.component";
 import { EnterEmailComponent } from "./enter-email/enter-email.component";
 import { EnterPasswordComponent } from "./enter-password/enter-password.component";
 import { CourseProgressComponent } from "./statistics/course-progress/course-progress.component";
-import { LoginLogsComponent } from './statistics/login-logs/login-logs.component';
+import { LoginLogsComponent } from "./statistics/login-logs/login-logs.component";
 
 @NgModule({
   declarations: [
@@ -68,6 +71,7 @@ import { LoginLogsComponent } from './statistics/login-logs/login-logs.component
     NgbModule,
     NgxChartsModule,
     BrowserAnimationsModule,
+    NgxSpinnerModule,
     RouterModule.forRoot([
       {
         path: "",
@@ -130,6 +134,10 @@ import { LoginLogsComponent } from './statistics/login-logs/login-logs.component
         component: EnterPasswordComponent,
       },
     ]),
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

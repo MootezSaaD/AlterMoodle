@@ -11,6 +11,8 @@ import { of } from "rxjs";
 export class AssignmentService {
   public currentCourse = new BehaviorSubject<CourseAssignment>(null);
   private subject = new BehaviorSubject<CourseAssignment[]>([]);
+  public nbrOfAssignmentsSubject = new BehaviorSubject<number>(0);
+  public nbrOfUnAssignmentsSubject = new BehaviorSubject<number>(0);
   public assignments$: Observable<
     CourseAssignment[]
   > = this.subject.asObservable();
@@ -53,14 +55,16 @@ export class AssignmentService {
             }
           });
         });
+        this.nbrOfAssignmentsSubject.next(this.nbrOfAssignments);
+        this.nbrOfUnAssignmentsSubject.next(this.nbrOfUnfinishedAssignments);
       });
   }
   getNbrOfAssignments() {
-    return this.nbrOfAssignments;
+    return this.nbrOfAssignmentsSubject;
   }
 
   getNbrOfUnfinishedAssigments() {
-    return this.nbrOfUnfinishedAssignments;
+    return this.nbrOfUnAssignmentsSubject;
   }
   markAsDone(assignmentID: string) {
     const data = this.subject.getValue();
@@ -84,6 +88,8 @@ export class AssignmentService {
       url: newCourses[courseIdx].assignment[asgnIdx].url,
     };
     this.subject.next(newCourses);
+    this.nbrOfUnfinishedAssignments--;
+    this.nbrOfUnAssignmentsSubject.next(this.nbrOfUnfinishedAssignments);
     return this.httpClient.put(
       "http://localhost:3000/api/moodle/assignment/" + assignmentID,
       null

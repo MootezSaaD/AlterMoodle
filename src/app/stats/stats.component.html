@@ -30,14 +30,22 @@
   <div class="card custom-card shadow-sm">
     <div class="card-body">
       <h5 class="card-title">Finished Assignments :</h5>
-      <h1 class="card-title text-success">{{this.nbrOfFinishedAssignments}}</h1>
+      <h1 class="card-title text-success">
+        <ng-container *ngIf="this.nbrOfFinishedAssignments >= 0">
+          {{this.nbrOfFinishedAssignments}}
+        </ng-container>
+      </h1>
     </div>
   </div>
 
   <div class="card custom-card shadow-sm">
     <div class="card-body">
       <h5 class="card-title">Unfinished Assignments :</h5>
-      <h1 class="card-title text-danger">{{this.nbOfUnfinishedAssignments}}</h1>
+      <h1 class="card-title text-danger">
+        <ng-container *ngIf="this.nbOfUnfinishedAssignments >= 0">
+          {{this.nbOfUnfinishedAssignments}}
+        </ng-container>
+      </h1>
     </div>
   </div>
 

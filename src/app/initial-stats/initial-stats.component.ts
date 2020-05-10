@@ -1,8 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { AuthService } from "../services/auth.service";
 import { StorageService } from "../services/storage.service";
-import { User } from "../models/user.model";
 import { AssignmentService } from "../services/assignment.service";
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: "app-initial-stats",
@@ -12,14 +11,23 @@ import { AssignmentService } from "../services/assignment.service";
 export class InitialStatsComponent implements OnInit {
   constructor(
     private storageService: StorageService,
-    private assignmentService: AssignmentService
+    private assignmentService: AssignmentService,
+    private spinner: NgxSpinnerService
   ) {}
   nbrOfCourses: number;
   currentUser: any;
   nbrOfAssignments: number;
+  loaded = false;
+  ngAfterViewInit() {
+    this.spinner.show();
+  }
   ngOnInit() {
     this.currentUser = this.storageService.getUser();
     this.nbrOfCourses = this.currentUser.courses.length;
-    this.nbrOfAssignments = this.assignmentService.getNbrOfAssignments();
+    this.assignmentService.getNbrOfAssignments().subscribe((res) => {
+      this.nbrOfAssignments = res;
+      this.loaded = true;
+    });
+    this.spinner.hide();
   }
 }
