@@ -1,42 +1,55 @@
 <div class="row">
   <div class="col-md-3">
-    <div class="card" mwlDroppable (drop)="externalDrop($event.dropData.event)" dragOverClass="drag-over">
+    <div class="card shadow-sm">
+      <div class="card-header">
+        <h4 class="mb-0">Add Course</h4>
+      </div>
       <div class="card-body">
-        <p *ngIf="externalEvents.length === 0"><em>No events added</em></p>
-        <ul>
-          <li *ngFor="let event of externalEvents" mwlDraggable [dropData]="{event: event}"
-            dragActiveClass="drag-active">
-            <a href="javascript:;" [style.color]="event.color.primary">
-              {{ event.title }}
-            </a>
-          </li>
-        </ul>
+        <form role="form" #submissionForm="ngForm" (ngSubmit)="onSubmit(submissionForm)">
+          <div class="form-group">
+            <label for="courseCode">Course Code</label>
+            <input type="text" [(ngModel)]="courseEvent.title" name="title" #title="ngModel" class="form-control"
+              id="courseCode" placeholder="Course Name">
+          </div>
+          <div class="form-group">
+            <label for="courseCode">Day</label>
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker
+                #d="ngbDatepicker">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="courseCode">Start Time</label>
+                <div class="input-group">
+                  <ngb-timepicker name="starTtime" [(ngModel)]="starTtime"></ngb-timepicker>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="courseCode">End Time</label>
+                <div class="input-group">
+                  <ngb-timepicker name="endTime" [(ngModel)]="endTime"></ngb-timepicker>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <button type="submit" class="btn btn-warning" (click)=save()>Save</button>
       </div>
     </div>
-    <form role="form" #submissionForm="ngForm" (ngSubmit)="onSubmit(submissionForm)">
-      <div class="form-group">
-        <label for="courseName">Course Name</label>
-        <input type="text" class="form-control" id="courseName" aria-describedby="emailHelp" placeholder="Course Name">
-      </div>
-      <div class="form-group">
-        <label for="courseCode">Course Code</label>
-        <input type="text" [(ngModel)]="courseEvent.title" name="title" #title="ngModel" class="form-control" id="courseCode" placeholder="Course Name">
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
   </div>
 
   <div class="col-md-9">
-    <mwl-calendar-week-view
-    precision="minutes"
-    [viewDate]="viewDate"
-    [weekStartsOn] = "weekStartsOn"
-    [dayStartHour] = "dayStartHour"
-    [dayEndHour] = "dayEndHour"
-    [events]="events"
-    [snapDraggedEvents]="false"
-    (eventTimesChanged)="eventDropped($event)"
-  >
-  </mwl-calendar-week-view>
+    <mwl-calendar-week-view precision="minutes" [viewDate]="viewDate" [weekStartsOn]="weekStartsOn"
+      [dayStartHour]="dayStartHour" [dayEndHour]="dayEndHour" [events]="events" [excludeDays]="excludeDays"
+      [snapDraggedEvents]="false" (eventTimesChanged)="eventDropped($event)" [refresh]="refresh" class="shadow-sm">
+    </mwl-calendar-week-view>
   </div>
 </div>

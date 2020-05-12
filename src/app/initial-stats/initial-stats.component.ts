@@ -18,9 +18,6 @@ export class InitialStatsComponent implements OnInit {
   currentUser: any;
   nbrOfAssignments: number;
   loaded = false;
-  ngAfterViewInit() {
-    this.spinner.show();
-  }
   ngOnInit() {
     this.currentUser = this.storageService.getUser();
     this.nbrOfCourses = this.currentUser.courses.length;
@@ -28,6 +25,5 @@ export class InitialStatsComponent implements OnInit {
       this.nbrOfAssignments = res;
       this.loaded = true;
     });
-    this.spinner.hide();
   }
 }
