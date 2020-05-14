@@ -13,4 +13,13 @@ export class CalendarService {
       calendar
     );
   }
+  fetchCalendar() {
+    return this.httpClient.get("http://localhost:3000/api/misc/calendar");
+  }
+  cleanEventsDates(events) {
+    for (const event of events) {
+      event.start = new Date(event.start);
+      event.end = new Date(event.end);
+    }
+  }
 }

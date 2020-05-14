@@ -3,6 +3,7 @@ const { verifyJwt } = require("../../helpers/verifyToken");
 const moment = require("moment");
 const _ = require("lodash");
 const fs = require("fs");
+const calendarService = require("../../services/calendar.service")();
 const router = Router({
   mergeParams: true,
 });
@@ -16,6 +17,12 @@ router.post("/calendar/save", verifyJwt, async (req, res) => {
   console.log(finalEvents);
 
   // Save events in JSON files:
+  // Delete old events (days)
+  if (fs.existsSync("app_api/files/" + req.decodedToken._id + "/calendar/")) {
+    calendarService.deleteOldEvents(
+      "app_api/files/" + req.decodedToken._id + "/calendar/"
+    );
+  }
   // *  Each file represents a day.
   // Note that data coming from the front end will always
   // contain the most updated versions.
@@ -36,19 +43,37 @@ router.post("/calendar/save", verifyJwt, async (req, res) => {
       "app_api/files/" + req.decodedToken._id + "/calendar/" + day + ".json",
       ""
     );
-    // Create a stream
-    let stream = fs.createWriteStream(
+
+    fs.writeFileSync(
       "app_api/files/" + req.decodedToken._id + "/calendar/" + day + ".json",
-      { flags: "a" }
+      JSON.stringify(dayEvents, null, 2)
     );
-    dayEvents.forEach((event) => {
-      stream.write(JSON.stringify(event) + "\n");
-    });
   }
   // Return the saved events
   return res.status(200).send({
     success: true,
     message: "Calendar has been saved",
+  });
+});
+
+router.get("/calendar", verifyJwt, async (req, res) => {
+  // Iterate through files and store their content into an array
+  const path = "app_api/files/" + req.decodedToken._id + "/calendar/";
+  let content = [];
+  let finalResult = [];
+  fs.readdirSync(path).forEach((file) => {
+    let arr = JSON.parse(fs.readFileSync(path + "/" + file));
+    arr.forEach((e) => {
+      content.push(e);
+    });
+  });
+
+  // Correct the date of each event
+  finalResult = calendarService.syncDates(content);
+  // Return the array
+  return res.status(200).send({
+    success: true,
+    events: finalResult,
   });
 });
 module.exports = router;

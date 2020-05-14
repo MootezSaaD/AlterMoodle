@@ -1,3 +1,10 @@
+<ng-template #loading>
+  <div class="text-center">
+    <div class="spinner-border" role="status" style="width: 3rem; height: 3rem;"></div>
+    Loading events...
+  </div>
+</ng-template>
+
 <div class="row">
   <div class="col-md-3">
     <div class="card shadow-sm">
@@ -5,6 +12,15 @@
         <h4 class="mb-0">Add Course</h4>
       </div>
       <div class="card-body">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <h4 class="alert-heading"><span data-feather="x-octagon" class="dimensions-warining"></span> Warning!</h4>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <hr>
+          <p>Before leaving this page, please make sure to save your schedule.</p>
+          <p class="mb-0">Failing to do so, will reset it to its initial state.</p>
+        </div>
         <form role="form" #submissionForm="ngForm" (ngSubmit)="onSubmit(submissionForm)">
           <div class="form-group">
             <label for="courseCode">Course Code</label>
@@ -17,7 +33,9 @@
               <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker
                 #d="ngbDatepicker">
               <div class="input-group-append">
-                <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+                <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                  <span data-feather="calendar" class="dimensions"></span>
+                </button>
               </div>
             </div>
           </div>
@@ -39,7 +57,8 @@
               </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary">Add</button>
+          <div class="form-group"></div>
         </form>
         <button type="submit" class="btn btn-warning" (click)=save()>Save</button>
       </div>
@@ -47,9 +66,30 @@
   </div>
 
   <div class="col-md-9">
-    <mwl-calendar-week-view precision="minutes" [viewDate]="viewDate" [weekStartsOn]="weekStartsOn"
-      [dayStartHour]="dayStartHour" [dayEndHour]="dayEndHour" [events]="events" [excludeDays]="excludeDays"
-      [snapDraggedEvents]="false" (eventTimesChanged)="eventDropped($event)" [refresh]="refresh" class="shadow-sm">
-    </mwl-calendar-week-view>
+    <div class="accordion shadow-sm" id="accordionExample">
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h2 class="mb-0">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+              aria-expanded="false" aria-controls="collapseOne">
+              Schedule
+            </button>
+          </h2>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+          <div class="card-body">
+            <ng-container *ngIf="this.events$ | async; else loading; let events">
+              <mwl-calendar-week-view precision="minutes" [viewDate]="viewDate" [weekStartsOn]="weekStartsOn"
+                [dayStartHour]="dayStartHour" [dayEndHour]="dayEndHour" [events]="events" [excludeDays]="excludeDays"
+                [snapDraggedEvents]="false" (eventTimesChanged)="eventDropped($event)" class="shadow-sm">
+              </mwl-calendar-week-view>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </div>

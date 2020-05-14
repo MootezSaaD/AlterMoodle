@@ -1,1 +1,30 @@
-{"title":"CS350","draggable":true,"resizable":{"beforeStart":true,"afterEnd":true},"start":"2020-05-12T06:15:00.000Z","end":"2020-05-12T07:45:00.000Z","color":{"primary":"#1e90ff","secondary":"#D1E8FF"}}
+[
+  {
+    "title": "CS350",
+    "draggable": true,
+    "resizable": {
+      "beforeStart": true,
+      "afterEnd": true
+    },
+    "color": {
+      "primary": "#1e90ff",
+      "secondary": "#D1E8FF"
+    },
+    "start": "2020-05-12T06:15:00.000Z",
+    "end": "2020-05-12T07:45:00.000Z"
+  },
+  {
+    "title": "ISS396",
+    "draggable": true,
+    "resizable": {
+      "beforeStart": true,
+      "afterEnd": true
+    },
+    "color": {
+      "primary": "#1e90ff",
+      "secondary": "#D1E8FF"
+    },
+    "start": "2020-05-12T13:00:00.000Z",
+    "end": "2020-05-12T15:00:00.000Z"
+  }
+]

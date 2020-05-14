@@ -1,13 +1,19 @@
-import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  AfterViewInit,
+} from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+import * as Feather from "feather-icons";
 
 import {
   CalendarEvent,
   CalendarEventTimesChangedEvent,
   CalendarView,
 } from "angular-calendar";
-import { Subject } from "rxjs";
+import { Subject, Observable, BehaviorSubject } from "rxjs";
 import { CalendarService } from "../services/calendar.service";
 
 @Component({
@@ -25,7 +31,7 @@ import { CalendarService } from "../services/calendar.service";
 // newDate.setMinutes() = doc.setDay(); etc..
 // Store them in JSON files ? no need for db ? ==> problem is that many files will be created for each user
 // TODO: add the delete function (search by course name, day, start date)
-export class UserScheduleComponent implements OnInit {
+export class UserScheduleComponent implements OnInit, AfterViewInit {
   constructor(private calendarService: CalendarService) {}
   // Date picker
   model: NgbDateStruct;
@@ -45,6 +51,7 @@ export class UserScheduleComponent implements OnInit {
   // Classes end 19h
   dayEndHour = 19;
   // This one will be updated and stored in/fetched from db.
+  loaded = false;
   externalEvents: CalendarEvent[] = [];
   courseEvent = {
     title: "",
@@ -55,36 +62,9 @@ export class UserScheduleComponent implements OnInit {
     start: new Date(),
     draggable: true,
   };
-  events: CalendarEvent[] = [
-    {
-      title: "CS350",
-      draggable: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      start: new Date("2020-05-12T06:15:00.000Z"),
-      end: new Date("2020-05-12T07:45:00.000Z"),
-      color: {
-        primary: "#1e90ff",
-        secondary: "#D1E8FF",
-      },
-    },
-    {
-      title: "CS350",
-      draggable: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      start: new Date("2020-05-11T06:15:00.000Z"),
-      end: new Date("2020-05-11T07:45:00.000Z"),
-      color: {
-        primary: "#1e90ff",
-        secondary: "#D1E8FF",
-      },
-    },
-  ];
+  eventsArr: CalendarEvent[] = [];
+  private subject = new BehaviorSubject<CalendarEvent[]>([]);
+  public events$: Observable<CalendarEvent[]> = this.subject.asObservable();
   activeDayIsOpen = false;
 
   refresh = new Subject<void>();
@@ -99,26 +79,20 @@ export class UserScheduleComponent implements OnInit {
     if (typeof allDay !== "undefined") {
       event.allDay = allDay;
     }
-    if (externalIndex > -1) {
-      this.externalEvents.splice(externalIndex, 1);
-      this.events.push(event);
-    }
     event.start = newStart;
     if (newEnd) {
       event.end = newEnd;
       this.refresh.next();
     }
-    if (this.view === "month") {
-      this.viewDate = newStart;
-      this.activeDayIsOpen = true;
-    }
-    this.events = [...this.events];
-    console.log("All events => ", this.events);
+    this.eventsArr = [...this.eventsArr];
+    this.subject.next(this.eventsArr);
+    console.log("All events => ", this.eventsArr);
   }
 
   externalDrop(event: CalendarEvent) {
     if (this.externalEvents.indexOf(event) === -1) {
-      this.events = this.events.filter((iEvent) => iEvent !== event);
+      this.eventsArr = this.eventsArr.filter((iEvent) => iEvent !== event);
+      this.subject.next(this.eventsArr);
       this.externalEvents.push(event);
     }
   }
@@ -126,27 +100,18 @@ export class UserScheduleComponent implements OnInit {
   onSubmit(form: NgForm) {
     const event = this.eventBuilder(form.value);
     console.log(event);
-    this.events.push(event);
-    this.events = [...this.events];
-    console.log(this.events);
-    // this.externalEvents.push({
-    //   title: form.value.title,
-    //   color: {
-    //     primary: "#1e90ff",
-    //     secondary: "#D1E8FF",
-    //   },
-    //   draggable: true,
-    //   start,
-    //   end,
-    //   resizable: {
-    //     beforeStart: true,
-    //     afterEnd: true,
-    //   },
-    // });
+    this.eventsArr.push(event);
+    this.eventsArr = [...this.eventsArr];
+    this.subject.next(this.eventsArr);
+    console.log(this.eventsArr);
   }
   save() {
-    const eventArr = this.events.map((event) => JSON.stringify(event));
-    this.calendarService.saveCalendar({ events: eventArr }).subscribe({
+    // delete actions from each event
+    this.eventsArr.forEach((event) => {
+      delete event.actions;
+    });
+    const eventArray = this.eventsArr.map((event) => JSON.stringify(event));
+    this.calendarService.saveCalendar({ events: eventArray }).subscribe({
       next: (res) => {
         console.log(res);
       },
@@ -157,7 +122,6 @@ export class UserScheduleComponent implements OnInit {
   }
   eventBuilder(preEvent) {
     const event = {
-      id: preEvent.id,
       title: preEvent.title,
       draggable: true,
       resizable: {
@@ -184,9 +148,58 @@ export class UserScheduleComponent implements OnInit {
         primary: "#1e90ff",
         secondary: "#D1E8FF",
       },
+      actions: [
+        {
+          label: "[X] ",
+          onClick: ({ event }: { event: CalendarEvent }): void => {
+            this.eventsArr = this.eventsArr.filter(
+              (iEvent) => iEvent !== event
+            );
+            this.subject.next(this.eventsArr);
+            console.log("After Deletion", this.eventsArr);
+          },
+        },
+      ],
     };
     return event;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.calendarService.fetchCalendar().subscribe({
+      next: (res: any) => {
+        this.calendarService.cleanEventsDates(res.events);
+        this.loadEvents(res.events);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+  ngAfterViewInit() {
+    Feather.replace();
+  }
+  loadEvents(es) {
+    console.log(es);
+    es.forEach((event) => {
+      // Add delete action
+      event.actions = [
+        {
+          label: "[X] ",
+          onClick: ({ event }: { event: CalendarEvent }): void => {
+            this.eventsArr = this.eventsArr.filter(
+              (iEvent) => iEvent !== event
+            );
+            this.subject.next(this.eventsArr);
+            console.log("After Deletion", this.eventsArr);
+          },
+        },
+      ];
+      this.eventsArr.push(event);
+    });
+    this.eventsArr = [...this.eventsArr];
+    this.subject.next(this.eventsArr);
+    console.log(this.eventsArr);
+    this.loaded = true;
+    console.log(this.loaded);
+  }
 }
