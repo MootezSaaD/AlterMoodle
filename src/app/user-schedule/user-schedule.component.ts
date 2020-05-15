@@ -62,7 +62,6 @@ export class UserScheduleComponent implements OnInit, AfterViewInit {
   loaded = false;
   // Date template
   baseDate: Date;
-
   externalEvents: CalendarEvent[] = [];
   courseEvent = {
     title: "",

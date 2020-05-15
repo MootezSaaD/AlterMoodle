@@ -9,7 +9,18 @@
   <div class="col-md-3">
     <div class="card shadow-sm">
       <div class="card-header">
-        <h4 class="mb-0">Add Course</h4>
+        <div class="row">
+          <div class="col">
+            <h4 class="mb-0">Add Course</h4>
+          </div>
+          <div class="col">
+            <ng-template #popContent>Fill this form to add a course to your course schedule, once you have finished
+              click on the <b>Add</b> button and don't forget to save it using the <b>Save</b> button</ng-template>
+            <div placement="right" [ngbPopover]="popContent" popoverTitle="Info">
+              <span data-feather="help-circle" class="float-right"></span>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="card-body">
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -31,8 +42,9 @@
             <label for="courseCode">Day</label>
             <div class="input-group">
               <select (change)="selectDay($event)" class="form-control">
-                <option *ngFor="let item of days | keyvalue" [value]="item.key" [selected]="item.value">{{item.key}}</option>
-            </select>
+                <option *ngFor="let item of days | keyvalue" [value]="item.key" [selected]="item.value">{{item.key}}
+                </option>
+              </select>
             </div>
           </div>
           <div class="row">
@@ -60,7 +72,6 @@
       </div>
     </div>
   </div>
-
   <div class="col-md-9">
     <div class="accordion shadow-sm" id="accordionExample">
       <div class="card">
