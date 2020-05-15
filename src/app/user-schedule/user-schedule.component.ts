@@ -33,7 +33,15 @@ import { CalendarService } from "../services/calendar.service";
 // TODO: add the delete function (search by course name, day, start date)
 export class UserScheduleComponent implements OnInit, AfterViewInit {
   constructor(private calendarService: CalendarService) {}
-  // Date picker
+  // Days Of the Week
+  days = {
+    Monday: 1,
+    Tuesday: 2,
+    Wednesday: 3,
+    Thursday: 4,
+    Friday: 5,
+    Saturday: 6,
+  };
   model: NgbDateStruct;
   // Start Time Picker
   starTtime = { hour: 0, minute: 0 };
@@ -52,6 +60,9 @@ export class UserScheduleComponent implements OnInit, AfterViewInit {
   dayEndHour = 19;
   // This one will be updated and stored in/fetched from db.
   loaded = false;
+  // Date template
+  baseDate: Date;
+
   externalEvents: CalendarEvent[] = [];
   courseEvent = {
     title: "",
@@ -129,17 +140,17 @@ export class UserScheduleComponent implements OnInit, AfterViewInit {
         afterEnd: true,
       },
       start: new Date(
-        preEvent.dp.year,
-        preEvent.dp.month - 1,
-        preEvent.dp.day,
+        this.baseDate.getFullYear(),
+        this.baseDate.getMonth(),
+        this.baseDate.getDate(),
         preEvent.starTtime.hour,
         preEvent.starTtime.minute,
         preEvent.starTtime.second
       ),
       end: new Date(
-        preEvent.dp.year,
-        preEvent.dp.month - 1,
-        preEvent.dp.day,
+        this.baseDate.getFullYear(),
+        this.baseDate.getMonth(),
+        this.baseDate.getDate(),
         preEvent.endTime.hour,
         preEvent.endTime.minute,
         preEvent.endTime.second
@@ -201,5 +212,28 @@ export class UserScheduleComponent implements OnInit, AfterViewInit {
     console.log(this.eventsArr);
     this.loaded = true;
     console.log(this.loaded);
+  }
+  selectDay(evt) {
+    this.getNightlyType(evt.target.value);
+  }
+  getNightlyType(country: any) {
+    for (let element in this.days) {
+      if (element === country) {
+        let selectedDate = this.days[element];
+        let curr = new Date();
+        for (let i = 0; i <= 6; i++) {
+          let first = curr.getDate() - curr.getDay() + i;
+          let start = new Date(curr.setDate(first));
+          if (start.getDay() === parseInt(selectedDate)) {
+            this.baseDate = new Date(
+              start.getFullYear(),
+              start.getMonth(),
+              start.getDate()
+            );
+          }
+        }
+        break;
+      }
+    }
   }
 }
