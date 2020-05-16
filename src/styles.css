@@ -1,5 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
+/* Remove Date from week day*/
+.cal-week-view .cal-day-headers span {
+  font-weight: 400;
+  opacity: 0;
+}
 body, html {
   background-color: #F8F8F8;
   margin: 0;

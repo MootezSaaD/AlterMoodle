@@ -12,6 +12,7 @@ import {
   CalendarEvent,
   CalendarEventTimesChangedEvent,
   CalendarView,
+  DAYS_OF_WEEK,
 } from "angular-calendar";
 import { Subject, Observable, BehaviorSubject } from "rxjs";
 import { CalendarService } from "../services/calendar.service";
@@ -51,7 +52,7 @@ export class UserScheduleComponent implements OnInit, AfterViewInit {
   view = CalendarView.Week;
   viewDate = new Date();
   // Week starts from monday
-  weekStartsOn = 1;
+  weekStartsOn = DAYS_OF_WEEK.SUNDAY;
   // Exclude sunday
   excludeDays = [0];
   // Classes start from 8
