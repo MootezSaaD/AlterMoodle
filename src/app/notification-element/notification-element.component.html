@@ -6,8 +6,8 @@
     </div>
     <div class="col-md-9">
       <div class="card-body">
-        <div class="card-text props">{{this.assignmentTitle}}</div>
-        <p class="card-text"><small class="text-muted">Remainig : {{this.duration}} - </small><a href="{{this.assignmentURL}}"><small>URL</small></a>
+        <div class="card-text props">{{this.assignmentCourse}} : {{this.assignmentTitle}}</div>
+        <p class="card-text"><small class="text-muted">Remainig : {{this.duration | date:'HH:mm:ss'}} - </small><a href="{{this.assignmentURL}}"><small>URL</small></a>
         </p>
       </div>
     </div>

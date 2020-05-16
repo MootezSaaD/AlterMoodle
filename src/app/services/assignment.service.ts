@@ -105,4 +105,9 @@ export class AssignmentService {
       )
       .subscribe((c) => {});
   }
+  fetchUrgentAssignments() {
+    return this.httpClient.get(
+      "http://localhost:3000/api/moodle/assignments/urgent"
+    );
+  }
 }

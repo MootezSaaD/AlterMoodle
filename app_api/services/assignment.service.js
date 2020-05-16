@@ -193,6 +193,7 @@ function assignmentService() {
           courseCode: "$course.courseCode",
           name: "$name",
           expDate: "$expDate",
+          url: "$url",
           duration: { $subtract: ["$expDateInt", parseInt(date)] },
           _user: "$_user",
         },

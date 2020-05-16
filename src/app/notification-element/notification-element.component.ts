@@ -11,6 +11,7 @@ export class NotificationElementComponent implements AfterViewInit {
 
   @Input() assignmentTitle: string;
   @Input() assignmentURL: string;
+  @Input() assignmentCourse: string;
   @Input() duration: number;
 
   ngAfterViewInit() {

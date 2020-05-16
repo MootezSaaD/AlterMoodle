@@ -1,10 +1,15 @@
 <button type="button" class="btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
   <ng-container *ngIf="this.notifications">
-    <span class="badge badge-danger">4</span>
+    <span class="badge badge-danger">{{this.assignments.length}}</span>
   </ng-container>
   <span data-feather="bell"></span>
 </button>
-<div class="dropdown-menu dropdown-menu-right" style="width: 18rem;">
-  <app-notification-element [assignmentTitle]="" [assignmentURL]=""
-    [duration]="24"></app-notification-element>
-</div>
+<ng-container *ngIf="this.notifications">
+  <div class="dropdown-menu dropdown-menu-right" style="width: 18rem;">
+    <ng-container *ngFor="let assignment of this.assignments">
+      <app-notification-element [assignmentTitle]="assignment.name" [assignmentCourse]="assignment.courseCode" [assignmentURL]="assignment.url" [duration]="assignment.duration"></app-notification-element>
+    </ng-container>
+
+  </div>
+</ng-container>
+
