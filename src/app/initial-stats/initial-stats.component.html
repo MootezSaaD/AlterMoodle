@@ -5,13 +5,12 @@
       <h1 class="card-title">{{this.nbrOfCourses}}</h1>
     </div>
   </div>
-
+  <ng-container *ngIf="this.nbrOfAssignments"></ng-container>
   <div class="card custom-card shadow-sm">
     <div class="card-body">
       <h5 class="card-title">Due Assignments</h5>
-      <h1 class="card-title">{{this.nbrOfAssignments}}</h1>
+      <h1 class="card-title">{{this.nbrOfAssignments.value}}</h1>
     </div>
   </div>
 
 </div>
-

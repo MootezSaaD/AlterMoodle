@@ -41,6 +41,7 @@ import { CourseProgressComponent } from "./statistics/course-progress/course-pro
 import { LoginLogsComponent } from "./statistics/login-logs/login-logs.component";
 import { NotificationsComponent } from './notifications/notifications.component';
 import { NotificationElementComponent } from './notification-element/notification-element.component';
+import { LoadingComponent } from './loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { NotificationElementComponent } from './notification-element/notificatio
     LoginLogsComponent,
     NotificationsComponent,
     NotificationElementComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 [
   {
-    "title": "ISS396",
+    "title": "CS350",
     "draggable": true,
     "resizable": {
       "beforeStart": true,
@@ -10,7 +10,7 @@
       "primary": "#1e90ff",
       "secondary": "#D1E8FF"
     },
-    "start": "2020-05-19T13:00:00.000Z",
-    "end": "2020-05-19T15:00:00.000Z"
+    "start": "2020-06-02T09:50:00.000Z",
+    "end": "2020-06-02T11:20:00.000Z"
   }
 ]
