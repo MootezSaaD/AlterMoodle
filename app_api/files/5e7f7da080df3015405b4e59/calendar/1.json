@@ -1,6 +1,6 @@
 [
   {
-    "title": "CS425",
+    "title": "CS350",
     "draggable": true,
     "resizable": {
       "beforeStart": true,
@@ -10,7 +10,8 @@
       "primary": "#1e90ff",
       "secondary": "#D1E8FF"
     },
-    "start": "2020-06-05T10:20:00.000Z",
-    "end": "2020-06-05T11:50:00.000Z"
+    "start": "2020-06-01T06:20:00.000Z",
+    "end": "2020-06-01T07:50:00.000Z",
+    "allDay": false
   }
 ]

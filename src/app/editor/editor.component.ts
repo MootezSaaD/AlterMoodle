@@ -1,17 +1,21 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import * as DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 import { SubmissionService } from "../services/submission.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Subimission } from "../models/submission.model";
 import { NgForm } from "@angular/forms";
 import { AssignmentService } from "../services/assignment.service";
+import * as moment from "moment";
+import { StatisticsService } from '../services/statistics.service';
+
 
 @Component({
   selector: "app-editor",
   templateUrl: "./editor.component.html",
   styleUrls: ["./editor.component.css"],
 })
-export class EditorComponent implements OnInit {
+export class EditorComponent implements OnInit, OnDestroy {
+  beginTimer: number;
   public Editor = DecoupledEditor;
   private assignmentID: string;
   public contentdata = {
@@ -28,10 +32,12 @@ export class EditorComponent implements OnInit {
   constructor(
     private submissionService: SubmissionService,
     private route: ActivatedRoute,
-    private assignmentService: AssignmentService
+    private assignmentService: AssignmentService,
+    private statisticsService: StatisticsService
   ) {}
 
   ngOnInit() {
+    this.beginTimer = Date.now();
     this.assignmentID = this.route.snapshot.params["id"];
     this.submissionService.getSubmissionContent(this.assignmentID).subscribe({
       next: (data: any) => {
@@ -99,5 +105,13 @@ export class EditorComponent implements OnInit {
   }
   public onSaveSubmission(): void {
     this.submitClicked = false;
+  }
+  ngOnDestroy() {
+    this.statisticsService.storeTimeSpent({
+      duration: Date.now() - this.beginTimer,
+      day: moment().format("dddd"), // Sunday
+      monthYr: moment().format("MMM Do YYYY"), // May 3rd 2020
+      activity: "Editor",
+    });
   }
 }

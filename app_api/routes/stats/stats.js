@@ -33,4 +33,14 @@ router.get("/grades/:courseId", verifyJwt, async (req, res) => {
   return res.status(200).send(query);
 });
 
+// Calculate performance in each course
+
+router.get("/performance", verifyJwt, async (req, res) => {
+  // First calculate the avg/duration that
+  // the user has spent on AlterMoodle
+  let results = await statsService.fetchUserLogs(req.decodedToken._id);
+  // Calculate the difference between two consecutive timeStamps
+  res.status(200).send(results);
+});
+
 module.exports = router;

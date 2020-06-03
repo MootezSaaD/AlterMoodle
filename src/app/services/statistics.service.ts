@@ -18,4 +18,9 @@ export class StatisticsService {
       "http://localhost:3000/api/stats/fetch/logs"
     );
   }
+  storeTimeSpent(body: any) {
+    this.httpClient
+      .post("http://localhost:3000/api/stats/record/time", body)
+      .subscribe();
+  }
 }

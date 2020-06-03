@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const userLogSchema = new mongoose.Schema({
-  timeInt: {
+  duration: {
     type: Number,
     required: true,
   },
@@ -13,7 +13,7 @@ const userLogSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  time: {
+  activity: {
     type: String,
     required: true,
   },

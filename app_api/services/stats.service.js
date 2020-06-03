@@ -23,22 +23,34 @@ function statsService() {
   }
   // Return the user's logs
   async function fetchUserLogs(userId) {
-    return UserLog.find({ _user: userId }).select("-_id -_user -__v");
+    let match = { $match: { _user: mongoose.Types.ObjectId(userId) } };
+    let group = {
+      $group: {
+        _id: "$monthYr",
+        durations: {
+          $push: {
+            duration: "$duration",
+          },
+        },
+      },
+    };
+    let durations = await UserLog.aggregate([match, group]);
+    let results = [];
+    for (const duration of durations) {
+      let timeSpans = [];
+      for (const timeSpan of duration.durations) {
+        timeSpans.push(timeSpan.duration);
+      }
+      results.push({
+        day: duration._id,
+        durations: timeSpans,
+      });
+    }
+    return results;
   }
   // Record user logs
-  async function storeUserLogs(userId) {
-    const day = moment().format("dddd"); // Sunday
-    const monthYr = moment().format("MMM Do YYYY"); // May 3rd 2020
-    const time = moment().format("LT"); // e.g 2:21 PM
-    await UserLog.create({
-      timeInt: Date.now(),
-      day,
-      monthYr,
-      time,
-      _user: userId,
-    });
-  }
-  return { calcCourseProgress, fetchUserLogs, storeUserLogs };
+
+  return { calcCourseProgress, fetchUserLogs };
 }
 
 module.exports = statsService;
