@@ -13,7 +13,7 @@ router.post("/record/time", verifyJwt, async (req, res) => {
     ...req.body,
     _user: req.decodedToken._id,
   });
-  console.log("Log Saved");
+  console.log("Log Saved From", req.body.activity);
 });
 
 module.exports = router;

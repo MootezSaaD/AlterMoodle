@@ -3,6 +3,7 @@ const { verifyJwt } = require("../../helpers/verifyToken");
 const statsService = require("../../services/stats.service")();
 const transcriptService = require("../../services/transcript.service")();
 const userService = require("../../services/user.service")();
+const moment = require("moment");
 const router = Router({
   mergeParams: true,
 });
@@ -38,9 +39,40 @@ router.get("/grades/:courseId", verifyJwt, async (req, res) => {
 router.get("/performance", verifyJwt, async (req, res) => {
   // First calculate the avg/duration that
   // the user has spent on AlterMoodle
+  let message = {};
+  let totalDurations = 0;
+  let totalDays = 0;
+
   let results = await statsService.fetchUserLogs(req.decodedToken._id);
-  // Calculate the difference between two consecutive timeStamps
-  res.status(200).send(results);
+  for (let log of results) {
+    log.totalTimeSpent = log.durations.reduce((a, b) => a + b, 0) / 3600000;
+  }
+
+  results.forEach((log) => {
+    totalDurations += log.totalTimeSpent;
+    totalDays += 1;
+  });
+  let avgDuration = parseFloat(totalDurations / totalDays).toPrecision(2);
+
+  if (avgDuration >= 1) {
+    message.perf = "Good";
+    message.icon = `data-feather="check-circle"`;
+    message.message = `You are spending ${avgDuration} hours on average on AlterMoodle !`;
+  }
+
+  if (avgDuration < 1 && avgDuration >= 0.5) {
+    message.perf = "Moderate";
+    message.icon = `data-feather="minus-circle"`;
+    message.message = `You are spending ${avgDuration} hours on average on AlterMoodle !`;
+  }
+
+  if (avgDuration < 0.5) {
+    message.perf = "Alarming";
+    message.icon = `data-feather="alert-circle"`;
+    message.message = `You are spending ${avgDuration} hours on average on AlterMoodle !`;
+  }
+
+  res.status(200).send(message);
 });
 
 module.exports = router;

@@ -20,12 +20,11 @@ export class TodoComponent implements OnInit, OnDestroy {
   ) {}
   beginTimer: number;
   ngOnDestroy() {
-    this.statisticsService.storeTimeSpent({
-      duration: Date.now() - this.beginTimer,
-      day: moment().format("dddd"), // Sunday
-      monthYr: moment().format("MMM Do YYYY"), // May 3rd 2020
-      activity: "ToDo",
-    });
+    this.statisticsService.storeTimeSpent(
+      'ToDo',
+      this.beginTimer,
+      Date.now()
+    );
   }
 
   ngOnInit() {

@@ -107,11 +107,10 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.submitClicked = false;
   }
   ngOnDestroy() {
-    this.statisticsService.storeTimeSpent({
-      duration: Date.now() - this.beginTimer,
-      day: moment().format("dddd"), // Sunday
-      monthYr: moment().format("MMM Do YYYY"), // May 3rd 2020
-      activity: "Editor",
-    });
+    this.statisticsService.storeTimeSpent(
+      'Editor',
+      this.beginTimer,
+      Date.now()
+    );
   }
 }

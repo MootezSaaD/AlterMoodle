@@ -17,6 +17,11 @@ router.post("/calendar/save", verifyJwt, async (req, res) => {
   console.log(finalEvents);
 
   // Save events in JSON files:
+  // First check if the folder exists
+  //Create folder (if it does exist) of the user
+  if (!fs.existsSync("app_api/files/" + user._id)) {
+    fs.mkdirSync("app_api/files/" + user._id);
+  }
   // Delete old events (days)
   if (fs.existsSync("app_api/files/" + req.decodedToken._id + "/calendar/")) {
     calendarService.deleteOldEvents(

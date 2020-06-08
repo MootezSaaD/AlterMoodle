@@ -74,9 +74,13 @@ router.get("/assignments/status/update", verifyJwt, async (req, res) => {
       user.moodleToken
     );
     // Update assignment status if a submission exists
-    let result =
-      assignmentStatus.lastattempt.submission.plugins[0].fileareas[0].files
-        .length;
+    let result = 0;
+    if (assignmentStatus.lastattempt.submission.plugins) {
+      result =
+        assignmentStatus.lastattempt.submission.plugins[0].fileareas[0].files
+          .length;
+    }
+
     if (result > 0) {
       await assignmentService.markAsDone(
         assisgn._id,

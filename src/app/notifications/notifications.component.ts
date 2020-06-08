@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, OnInit } from "@angular/core";
 import * as Feather from "feather-icons";
 import { AssignmentService } from "../services/assignment.service";
+import { Assignment } from '../models/assignment.model';
 
 @Component({
   selector: "app-notifications",
@@ -18,10 +19,9 @@ export class NotificationsComponent implements AfterViewInit, OnInit {
   }
   ngOnInit() {
     this.assignmentService.fetchUrgentAssignments().subscribe({
-      next: (res: any) => {
+      next: (res: any[]) => {
         this.assignments = res;
-        this.notifications = true;
-        console.log(res);
+        this.notifications = res.length > 0;
       },
       error: (error) => {
         console.log(error);

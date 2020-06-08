@@ -1,4 +1,5 @@
-<div><h4>Transcript</h4>
+<div>
+  <h4>Transcript</h4>
 </div>
 <div class="table-responsive">
   <table class="table table-bordered">
@@ -9,14 +10,15 @@
         <th scope="col">Overall</th>
       </tr>
     </thead>
-      <tr *ngFor="let course of this.transcript$ | async">
-        <td>{{course.courseCode}}</td>
-        <td>{{course.courseDesc}}</td>
-        <th scope="row">{{course.grade}}</th>
-      </tr>
+    <tr *ngFor="let course of this.transcript$ | async">
+      <td>{{course.courseCode}}</td>
+      <td>{{course.courseDesc}}</td>
+      <th scope="row">{{course.grade}}</th>
+    </tr>
   </table>
 </div>
-<div><h4>Assignments</h4>
+<div>
+  <h4>Assignments</h4>
 </div>
 <div class="card-deck mb-3">
 
@@ -50,4 +52,36 @@
   </div>
 
 </div>
+<h4>Overall Performance</h4>
+<div class="col-5">
+  <div id="accordion">
+    <div class="card">
+      <div class="card-header" id="headingOne">
+        <h5 class="mb-0">
+          <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+            aria-controls="collapseOne">
+            <div class="flex-container longhand">
+              <div class="flex-item">
+                <svg class="bi bi-plus-circle" width="15px" height="15px" viewBox="0 0 16 16" fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                    d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z" />
+                  <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z" />
+                  <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                </svg>
+              </div>
+              <div class="flex-item ml-2">Hours Spent </div>
+              <div class="flex-item ml-2"> <span class="badge badge-success">Good</span> </div>
+            </div>
+          </button>
+        </h5>
+      </div>
 
+      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+          You are spending 1.5 hours on average on AlterMoodle !
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

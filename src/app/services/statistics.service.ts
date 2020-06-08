@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { UserLog } from "../models/userlog.model";
+import * as moment from "moment";
 
 @Injectable({
   providedIn: "root",
@@ -18,9 +19,14 @@ export class StatisticsService {
       "http://localhost:3000/api/stats/fetch/logs"
     );
   }
-  storeTimeSpent(body: any) {
+  storeTimeSpent(activityName: string, startTime: number, endTime: number) {
     this.httpClient
-      .post("http://localhost:3000/api/stats/record/time", body)
+      .post("http://localhost:3000/api/stats/record/time", {
+        duration: startTime - endTime,
+        day: moment().format("dddd"), // Sunday
+        monthYr: moment().format("MMM Do YYYY"), // May 3rd 2020
+        activity: activityName,
+      })
       .subscribe();
   }
 }
