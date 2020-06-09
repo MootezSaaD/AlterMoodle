@@ -3,6 +3,7 @@ import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { CourseAssignment } from "../models/courseAssignment.model";
 import { AssignmentService } from "../services/assignment.service";
 import { StatisticsService } from "../services/statistics.service";
+import { Assignment } from '../models/assignment.model';
 
 @Component({
   selector: "app-course-assignments",
@@ -16,6 +17,9 @@ export class CourseAssignmentsComponent implements OnInit {
   courseID: number;
   statusMsg: string;
   data: any;
+  page = 1;
+  pageSize = 4;
+  collectionSize: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,6 +58,7 @@ export class CourseAssignmentsComponent implements OnInit {
   }
   assignCourse(c: CourseAssignment) {
     this.course = c;
+    this.collectionSize = c.assignment.length;
   }
   assignCourseID(c: CourseAssignment) {
     if (c) {
@@ -68,6 +73,13 @@ export class CourseAssignmentsComponent implements OnInit {
           this.data = res;
           console.log(this.data);
         });
+    }
+  }
+  get assignments(): Assignment[] {
+    if (this.course) {
+      return this.course.assignment
+      .map((assignment, i) => ({nbr: i + 1, ...assignment}))
+      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
     }
   }
 }

@@ -75,7 +75,7 @@ router.get("/assignments/status/update", verifyJwt, async (req, res) => {
     );
     // Update assignment status if a submission exists
     let result = 0;
-    if (assignmentStatus.lastattempt.submission.plugins) {
+    if (assignmentStatus.lastattempt.submission) {
       result =
         assignmentStatus.lastattempt.submission.plugins[0].fileareas[0].files
           .length;
@@ -219,10 +219,11 @@ router.post("/submission/add/:id", verifyJwt, async (req, res) => {
     user.firstName +
     user.lastName +
     "_" +
-    assignment.name.trim();
+    assignment.name;
   let filePath = fileName + ".html";
   let pdfFilePath = fileName + ".pdf";
   let file = fs.readFileSync(filePath, "utf8");
+  console.log();
   // Upload the assignment to moodle
   // It will be converted to pdf first then uploaded
   await assignmentService.uploadToMoodle(
