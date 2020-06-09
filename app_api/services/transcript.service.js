@@ -84,6 +84,9 @@ function transcriptService() {
             },
           })
           .then(async (course) => {
+            if (course.errorcode) {
+              throw new ErrorHandler(401, "Not enrolled in that course");
+            }
             let tablesArr = course.tables[0].tabledata;
             let finalRes = [];
             // Because the first element contains the cours's details
@@ -105,7 +108,8 @@ function transcriptService() {
           });
       })
       .catch((err) => {
-        throw new Error(err);
+        console.log("ERR", err);
+        throw new ErrorHandler(500, err.message);
       });
     return Promise.resolve(res);
   }

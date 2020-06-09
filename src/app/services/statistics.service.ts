@@ -22,11 +22,14 @@ export class StatisticsService {
   storeTimeSpent(activityName: string, startTime: number, endTime: number) {
     this.httpClient
       .post("http://localhost:3000/api/stats/record/time", {
-        duration: startTime - endTime,
+        duration: endTime - startTime,
         day: moment().format("dddd"), // Sunday
         monthYr: moment().format("MMM Do YYYY"), // May 3rd 2020
         activity: activityName,
       })
       .subscribe();
+  }
+  getTimeSpent() {
+    return this.httpClient.get("http://localhost:3000/api/stats/time-spent");
   }
 }

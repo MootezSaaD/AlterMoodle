@@ -24,55 +24,78 @@ router.get("/progress/:courseId", verifyJwt, async (req, res) => {
 });
 
 // Returns the grades of a course
-router.get("/grades/:courseId", verifyJwt, async (req, res) => {
-  let user = await userService.fetchUserByID(req.decodedToken._id);
-  let query = await transcriptService.getCourseGrades(
-    user.moodleUserID,
-    parseInt(req.params.courseId),
-    user.moodleToken
-  );
-  return res.status(200).send(query);
+router.get("/grades/:courseId", verifyJwt, async (req, res, next) => {
+  try {
+    let user = await userService.fetchUserByID(req.decodedToken._id);
+    let query = await transcriptService.getCourseGrades(
+      user.moodleUserID,
+      parseInt(req.params.courseId),
+      user.moodleToken
+    );
+    return res.status(200).send(query);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Calculate performance in each course
 
-router.get("/performance", verifyJwt, async (req, res) => {
+router.get("/time-spent", verifyJwt, async (req, res) => {
   // First calculate the avg/duration that
   // the user has spent on AlterMoodle
   let message = {};
   let totalDurations = 0;
   let totalDays = 0;
 
+  let bubbleData = [
+    {
+      name: "Time spent",
+      series: [],
+    },
+  ];
+
   let results = await statsService.fetchUserLogs(req.decodedToken._id);
   for (let log of results) {
-    log.totalTimeSpent = log.durations.reduce((a, b) => a + b, 0) / 3600000;
+    log.totalTimeSpent = parseFloat(
+      log.durations.reduce((a, b) => a + b, 0) / 60000
+    ).toPrecision(3);
+    delete log.durations;
   }
 
-  results.forEach((log) => {
-    totalDurations += log.totalTimeSpent;
-    totalDays += 1;
-  });
-  let avgDuration = parseFloat(totalDurations / totalDays).toPrecision(2);
-
-  if (avgDuration >= 1) {
-    message.perf = "Good";
-    message.icon = `data-feather="check-circle"`;
-    message.message = `You are spending ${avgDuration} hours on average on AlterMoodle !`;
+  for (let obj of results) {
+    bubbleData[0].series.push({
+      name: obj.day,
+      x: obj.day,
+      y: parseFloat(obj.totalTimeSpent),
+      r: parseFloat(obj.totalTimeSpent),
+    });
   }
 
-  if (avgDuration < 1 && avgDuration >= 0.5) {
-    message.perf = "Moderate";
-    message.icon = `data-feather="minus-circle"`;
-    message.message = `You are spending ${avgDuration} hours on average on AlterMoodle !`;
-  }
+  // results.forEach((log) => {
+  //   totalDurations += log.totalTimeSpent;
+  //   totalDays += 1;
+  // });
+  // let avgDuration = parseFloat(totalDurations / totalDays).toPrecision(2);
 
-  if (avgDuration < 0.5) {
-    message.perf = "Alarming";
-    message.icon = `data-feather="alert-circle"`;
-    message.message = `You are spending ${avgDuration} hours on average on AlterMoodle !`;
-  }
+  // if (avgDuration >= 1) {
+  //   message.perf = "Good";
+  //   message.icon = `data-feather="check-circle"`;
+  //   message.message = `You are spending ${avgDuration} hours on average on AlterMoodle !`;
+  // }
 
-  res.status(200).send(message);
+  // if (avgDuration < 1 && avgDuration >= 0.5) {
+  //   message.perf = "Moderate";
+  //   message.icon = `data-feather="minus-circle"`;
+  //   message.message = `You are spending ${avgDuration} hours on average on AlterMoodle !`;
+  // }
+
+  // if (avgDuration < 0.5) {
+  //   message.perf = "Alarming";
+  //   message.icon = `data-feather="alert-circle"`;
+  //   message.message = `You are spending ${avgDuration} hours on average on AlterMoodle !`;
+  // }
+
+  res.status(200).send(bubbleData);
 });
 
 module.exports = router;

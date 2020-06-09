@@ -23,18 +23,19 @@ function statsService() {
   }
   // Return the user's logs
   async function fetchUserLogs(userId) {
+    let sort = { $sort: { _id: 1 } };
     let match = { $match: { _user: mongoose.Types.ObjectId(userId) } };
     let group = {
       $group: {
         _id: "$monthYr",
         durations: {
           $push: {
-            duration: "$duration",
+            duration: { $abs: "$duration" },
           },
         },
       },
     };
-    let durations = await UserLog.aggregate([match, group]);
+    let durations = await UserLog.aggregate([sort, match, group]);
     let results = [];
     for (const duration of durations) {
       let timeSpans = [];

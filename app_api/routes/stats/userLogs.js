@@ -9,11 +9,15 @@ const router = Router({
 // Store Time spent by user
 // This date comes from the OnInit() and OnDestroy() of the dashboard
 router.post("/record/time", verifyJwt, async (req, res) => {
-  await UserLog.create({
-    ...req.body,
-    _user: req.decodedToken._id,
-  });
+  // await UserLog.create({
+  //   ...req.body,
+  //   _user: req.decodedToken._id,
+  // });
   console.log("Log Saved From", req.body.activity);
+  res.status(200).send({
+    success: true,
+    message: "Log saved",
+  });
 });
 
 module.exports = router;

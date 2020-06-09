@@ -1,0 +1,9 @@
+<ng-container *ngIf="this.data">
+  <div class="card shadow-sm" style="width: 400px; height: 460px;">
+    <div class="card-header">
+      <h4>Progress</h4>
+    </div>
+    <ngx-charts-advanced-pie-chart [view]="view" [scheme]="colorScheme" [results]="data" [animations]="true">
+    </ngx-charts-advanced-pie-chart>
+  </div>
+</ng-container>

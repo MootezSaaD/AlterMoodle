@@ -42,6 +42,8 @@ import { LoginLogsComponent } from "./statistics/login-logs/login-logs.component
 import { NotificationsComponent } from './notifications/notifications.component';
 import { NotificationElementComponent } from './notification-element/notification-element.component';
 import { LoadingComponent } from './loading/loading.component';
+import { TimeSpentGraphComponent } from './time-spent-graph/time-spent-graph.component';
+import { TotalAssignmentsComponent } from './total-assignments/total-assignments.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import { LoadingComponent } from './loading/loading.component';
     NotificationsComponent,
     NotificationElementComponent,
     LoadingComponent,
+    TimeSpentGraphComponent,
+    TotalAssignmentsComponent,
   ],
   imports: [
     BrowserModule,

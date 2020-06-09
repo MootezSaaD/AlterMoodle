@@ -1,0 +1,13 @@
+<ng-container *ngIf="this.bubbleData">
+  <div class="card shadow-sm" style="width: 740px;">
+    <div class="card-header">
+      <h5>Time Spent Graph</h5>
+    </div>
+    <ngx-charts-bubble-chart [view]="view" [scheme]="colorScheme" [results]="bubbleData" [xAxis]="showXAxis"
+      [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel" [yScaleMin]="yScaleMin" [yScaleMax]="yScaleMax" [minRadius]="minRadius"
+      [maxRadius]="maxRadius" (select)="onSelect($event)" (activate)="onActivate($event)"
+      (deactivate)="onDeactivate($event)">
+    </ngx-charts-bubble-chart>
+  </div>
+</ng-container>

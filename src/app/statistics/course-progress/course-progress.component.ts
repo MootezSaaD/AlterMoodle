@@ -19,5 +19,6 @@ export class CourseProgressComponent implements OnInit {
   showLabels: boolean = true;
   isDoughnut: boolean = false;
   view = [700, 250];
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }
