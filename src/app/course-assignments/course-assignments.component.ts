@@ -4,6 +4,7 @@ import { CourseAssignment } from "../models/courseAssignment.model";
 import { AssignmentService } from "../services/assignment.service";
 import { StatisticsService } from "../services/statistics.service";
 import { Assignment } from '../models/assignment.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: "app-course-assignments",
@@ -14,6 +15,7 @@ export class CourseAssignmentsComponent implements OnInit {
   courseAssignments$: any;
   coursName: string;
   course: CourseAssignment;
+  lateAssignments = new BehaviorSubject<Assignment[]>([]);
   courseID: number;
   statusMsg: string;
   data: any;
@@ -31,6 +33,11 @@ export class CourseAssignmentsComponent implements OnInit {
   ngOnInit() {
     this.coursName = this.route.snapshot.params["coursName"];
     this.assignmentService.searchCourse(this.coursName);
+    this.assignmentService
+      .fetchLateAssignments(this.coursName)
+      .subscribe((res) => {
+        this.lateAssignments.next(res);
+      });
     this.assignmentService.currentCourse.subscribe({
       next: (a) => {
         this.assignCourse(a);
@@ -57,8 +64,10 @@ export class CourseAssignmentsComponent implements OnInit {
     });
   }
   assignCourse(c: CourseAssignment) {
-    this.course = c;
-    this.collectionSize = c.assignment.length;
+    if (c) {
+            this.course = c;
+            this.collectionSize = c.assignment.length;
+          }
   }
   assignCourseID(c: CourseAssignment) {
     if (c) {

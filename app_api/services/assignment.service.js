@@ -209,6 +209,32 @@ function assignmentService() {
       },
     ]);
   }
+  // Fetch late assignments
+  async function getLateAssignments(userID, code) {
+    return Assignment.aggregate([
+      {
+        $project: {
+          status: "$status",
+          courseCode: "$course.courseCode",
+          name: "$name",
+          expDate: "$expDate",
+          expDateInt: "$expDateInt",
+          url: "$url",
+          _user: "$_user",
+        },
+      },
+      {
+        $match: {
+          $and: [
+            { _user: mongoose.Types.ObjectId(userID) },
+            { status: false },
+            { expDateInt: { $lte: Date.now(), $gt: 0 } },
+            { courseCode: code },
+          ],
+        },
+      },
+    ]);
+  }
 
   return {
     getAssignmentByID,
@@ -222,6 +248,7 @@ function assignmentService() {
     fetchSub,
     uploadToMoodle,
     getImminentAssignments,
+    getLateAssignments,
   };
 }
 

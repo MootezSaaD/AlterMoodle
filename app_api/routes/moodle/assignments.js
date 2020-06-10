@@ -240,4 +240,14 @@ router.post("/submission/add/:id", verifyJwt, async (req, res) => {
   //Update the assignment status in the frontend
 });
 
+/**
+ * Returns array of late assignments
+ */
+router.get("/assignment/late/:courseCode", verifyJwt, async (req, res) => {
+  let results = await assignmentService.getLateAssignments(
+    req.decodedToken._id,
+    req.params.courseCode
+  );
+  res.status(200).send(results);
+});
 module.exports = router;

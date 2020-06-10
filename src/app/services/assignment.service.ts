@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { CourseAssignment } from "../models/courseAssignment.model";
 import { map, filter, tap } from "rxjs/operators";
 import { of } from "rxjs";
+import { Assignment } from '../models/assignment.model';
 
 @Injectable({
   providedIn: "root",
@@ -108,6 +109,11 @@ export class AssignmentService {
   fetchUrgentAssignments() {
     return this.httpClient.get(
       "http://localhost:3000/api/moodle/assignments/urgent"
+    );
+  }
+  fetchLateAssignments(courseName: string) {
+    return this.httpClient.get<Assignment[]>(
+      `http://localhost:3000/api/moodle/assignment/late/${courseName}`
     );
   }
 }

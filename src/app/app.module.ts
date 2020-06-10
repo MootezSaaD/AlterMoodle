@@ -46,6 +46,9 @@ import { TimeSpentGraphComponent } from './time-spent-graph/time-spent-graph.com
 import { TotalAssignmentsComponent } from './total-assignments/total-assignments.component';
 import { AverageTimeComponent } from './average-time/average-time.component';
 import { LateAssignmentsComponent } from './late-assignments/late-assignments.component';
+import { LateAssignmentElementComponent } from './late-assignment-element/late-assignment-element.component';
+import { CourseGradesComponent } from './course-grades/course-grades.component';
+import { CourseGradesElementComponent } from './course-grades-element/course-grades-element.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +77,9 @@ import { LateAssignmentsComponent } from './late-assignments/late-assignments.co
     TotalAssignmentsComponent,
     AverageTimeComponent,
     LateAssignmentsComponent,
+    LateAssignmentElementComponent,
+    CourseGradesComponent,
+    CourseGradesElementComponent,
   ],
   imports: [
     BrowserModule,

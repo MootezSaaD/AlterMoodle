@@ -65,8 +65,7 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col">
-      <app-course-progress [data]="this.data"></app-course-progress>
-    </div>
+  <div class="card-deck">
+    <app-course-progress [data]="this.data"></app-course-progress>
+    <app-late-assignments [lateAssignments]="this.lateAssignments"></app-late-assignments>
   </div>

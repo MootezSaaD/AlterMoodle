@@ -85,7 +85,7 @@ function transcriptService() {
           })
           .then(async (course) => {
             if (course.errorcode) {
-              throw new ErrorHandler(401, "Not enrolled in that course");
+              return [];
             }
             let tablesArr = course.tables[0].tabledata;
             let finalRes = [];
