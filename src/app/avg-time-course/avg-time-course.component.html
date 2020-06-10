@@ -1,0 +1,10 @@
+<ng-container *ngIf="this.data">
+  <div class="card shadow-sm" style="width: 300px; height: 363px;">
+    <div class="card-header">
+      <h5>Average Submission Before Deadline</h5>
+    </div>
+    <ngx-charts-gauge [view]="view" [scheme]="colorScheme" [results]="data" [min]="0" [max]="30" [angleSpan]="240"
+      [startAngle]="-120" [units]="'Days'" [bigSegments]="10" [smallSegments]="5" (select)="onSelect($event)">
+    </ngx-charts-gauge>
+  </div>
+</ng-container>

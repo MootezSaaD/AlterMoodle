@@ -3,6 +3,7 @@ const { verifyJwt } = require("../../helpers/verifyToken");
 const statsService = require("../../services/stats.service")();
 const transcriptService = require("../../services/transcript.service")();
 const userService = require("../../services/user.service")();
+const assignmentService = require("../../services/assignment.service")();
 const moment = require("moment");
 const router = Router({
   mergeParams: true,
@@ -136,4 +137,22 @@ router.get("/avg-time", verifyJwt, async (req, res) => {
   ]);
 });
 
+router.get("/avg-completion/:courseID", verifyJwt, async (req, res) => {
+  let results = await assignmentService.getDoneAssignments(
+    req.decodedToken._id,
+    parseInt(req.params.courseID)
+  );
+  let duration = 0;
+  for (let assignment of results) {
+    duration +=
+      Math.abs(assignment.finishedAt - assignment.expDateInt) / 3600000;
+  }
+  let avgDuration = parseFloat(duration / results.length / 24).toPrecision(4);
+  res.status(200).send([
+    {
+      name: "Avg Time",
+      value: parseFloat(avgDuration), // to get the days
+    },
+  ]);
+});
 module.exports = router;

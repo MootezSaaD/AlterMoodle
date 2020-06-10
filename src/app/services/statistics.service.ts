@@ -36,6 +36,9 @@ export class StatisticsService {
   getAvgTimeSpent() {
     return this.httpClient.get("http://localhost:3000/api/stats/avg-time");
   }
+  getCourseAvgTimeSpent(courseID: number) {
+    return this.httpClient.get(`http://localhost:3000/api/stats/avg-completion/${courseID}`);
+  }
   getCourseGrades(courseID: number) {
     return this.httpClient.get<Grade[]>(
       `http://localhost:3000/api/stats/grades/${courseID}`

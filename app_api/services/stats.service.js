@@ -49,7 +49,6 @@ function statsService() {
     }
     return results;
   }
-  // Record user logs
 
   return { calcCourseProgress, fetchUserLogs };
 }

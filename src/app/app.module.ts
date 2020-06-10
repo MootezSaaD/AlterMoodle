@@ -49,6 +49,7 @@ import { LateAssignmentsComponent } from './late-assignments/late-assignments.co
 import { LateAssignmentElementComponent } from './late-assignment-element/late-assignment-element.component';
 import { CourseGradesComponent } from './course-grades/course-grades.component';
 import { CourseGradesElementComponent } from './course-grades-element/course-grades-element.component';
+import { AvgTimeCourseComponent } from './avg-time-course/avg-time-course.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { CourseGradesElementComponent } from './course-grades-element/course-gra
     LateAssignmentElementComponent,
     CourseGradesComponent,
     CourseGradesElementComponent,
+    AvgTimeCourseComponent,
   ],
   imports: [
     BrowserModule,
