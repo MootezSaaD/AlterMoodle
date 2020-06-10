@@ -32,4 +32,7 @@ export class StatisticsService {
   getTimeSpent() {
     return this.httpClient.get("http://localhost:3000/api/stats/time-spent");
   }
+  getAvgTimeSpent() {
+    return this.httpClient.get("http://localhost:3000/api/stats/avg-time");
+  }
 }

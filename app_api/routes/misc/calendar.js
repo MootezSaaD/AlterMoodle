@@ -19,8 +19,8 @@ router.post("/calendar/save", verifyJwt, async (req, res) => {
   // Save events in JSON files:
   // First check if the folder exists
   //Create folder (if it does exist) of the user
-  if (!fs.existsSync("app_api/files/" + user._id)) {
-    fs.mkdirSync("app_api/files/" + user._id);
+  if (!fs.existsSync("app_api/files/" + req.decodedToken._id)) {
+    fs.mkdirSync("app_api/files/" + req.decodedToken._id);
   }
   // Delete old events (days)
   if (fs.existsSync("app_api/files/" + req.decodedToken._id + "/calendar/")) {
@@ -66,13 +66,14 @@ router.get("/calendar", verifyJwt, async (req, res) => {
   const path = "app_api/files/" + req.decodedToken._id + "/calendar/";
   let content = [];
   let finalResult = [];
-  fs.readdirSync(path).forEach((file) => {
-    let arr = JSON.parse(fs.readFileSync(path + "/" + file));
-    arr.forEach((e) => {
-      content.push(e);
+  if (fs.existsSync(path)) {
+    fs.readdirSync(path).forEach((file) => {
+      let arr = JSON.parse(fs.readFileSync(path + "/" + file));
+      arr.forEach((e) => {
+        content.push(e);
+      });
     });
-  });
-
+  }
   // Correct the date of each event
   finalResult = calendarService.syncDates(content);
   // Return the array

@@ -1,6 +1,6 @@
 [
   {
-    "title": "MATH348",
+    "title": "CS425",
     "draggable": true,
     "resizable": {
       "beforeStart": true,
@@ -10,8 +10,22 @@
       "primary": "#1e90ff",
       "secondary": "#D1E8FF"
     },
-    "start": "2020-06-02T07:20:00.000Z",
-    "end": "2020-06-02T09:50:00.000Z",
+    "start": "2020-06-09T09:50:00.000Z",
+    "end": "2020-06-09T11:20:00.000Z",
     "allDay": false
+  },
+  {
+    "title": "ISS396",
+    "draggable": true,
+    "resizable": {
+      "beforeStart": true,
+      "afterEnd": true
+    },
+    "color": {
+      "primary": "#1e90ff",
+      "secondary": "#D1E8FF"
+    },
+    "start": "2020-06-09T06:10:00.000Z",
+    "end": "2020-06-09T07:40:00.000Z"
   }
 ]

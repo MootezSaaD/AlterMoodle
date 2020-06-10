@@ -35,7 +35,7 @@ function statsService() {
         },
       },
     };
-    let durations = await UserLog.aggregate([sort, match, group]);
+    let durations = await UserLog.aggregate([match, group, sort]);
     let results = [];
     for (const duration of durations) {
       let timeSpans = [];

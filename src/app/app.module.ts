@@ -44,6 +44,8 @@ import { NotificationElementComponent } from './notification-element/notificatio
 import { LoadingComponent } from './loading/loading.component';
 import { TimeSpentGraphComponent } from './time-spent-graph/time-spent-graph.component';
 import { TotalAssignmentsComponent } from './total-assignments/total-assignments.component';
+import { AverageTimeComponent } from './average-time/average-time.component';
+import { LateAssignmentsComponent } from './late-assignments/late-assignments.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +72,8 @@ import { TotalAssignmentsComponent } from './total-assignments/total-assignments
     LoadingComponent,
     TimeSpentGraphComponent,
     TotalAssignmentsComponent,
+    AverageTimeComponent,
+    LateAssignmentsComponent,
   ],
   imports: [
     BrowserModule,

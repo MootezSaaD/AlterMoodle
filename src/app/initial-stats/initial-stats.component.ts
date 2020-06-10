@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { StorageService } from "../services/storage.service";
 import { AssignmentService } from "../services/assignment.service";
 import { NgxSpinnerService } from "ngx-spinner";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 
 @Component({
   selector: "app-initial-stats",
@@ -19,15 +19,17 @@ export class InitialStatsComponent implements OnInit, OnDestroy {
   currentUser: any;
   nbrOfAssignments = new BehaviorSubject<number>(0);
   loaded = false;
+  subscription: Subscription;
   ngOnInit() {
     this.currentUser = this.storageService.getUser();
     this.nbrOfCourses = this.currentUser.courses.length;
-    this.assignmentService.getNbrOfAssignments().subscribe((res) => {
+    this.subscription = this.assignmentService.getNbrOfAssignments().subscribe((res) => {
       this.nbrOfAssignments.next(res);
       this.loaded = true;
     });
   }
   ngOnDestroy() {
-    this.nbrOfAssignments.unsubscribe();
+    this.subscription.unsubscribe();
+    this.nbrOfAssignments.complete();
   }
 }

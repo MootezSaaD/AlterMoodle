@@ -57,7 +57,7 @@ router.get("/time-spent", verifyJwt, async (req, res) => {
   let results = await statsService.fetchUserLogs(req.decodedToken._id);
   for (let log of results) {
     log.totalTimeSpent = parseFloat(
-      log.durations.reduce((a, b) => a + b, 0) / 60000
+      log.durations.reduce((a, b) => a + b, 0) / 3600000
     ).toPrecision(3);
     delete log.durations;
   }
@@ -96,6 +96,25 @@ router.get("/time-spent", verifyJwt, async (req, res) => {
   // }
 
   res.status(200).send(bubbleData);
+});
+
+router.get("/avg-time", verifyJwt, async (req, res) => {
+  let results = await statsService.fetchUserLogs(req.decodedToken._id);
+  let totalDurations = 0;
+  let totalDays = 0;
+
+  for (const log of results) {
+    totalDurations += log.durations.reduce((a, b) => a + b, 0) / 3600000;
+    totalDays++;
+  }
+  let avgDuration = parseFloat(totalDurations / totalDays).toPrecision(2);
+
+  res.status(200).send([
+    {
+      name: "Average Time",
+      value: parseFloat(avgDuration),
+    },
+  ]);
 });
 
 module.exports = router;

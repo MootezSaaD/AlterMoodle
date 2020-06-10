@@ -60,11 +60,11 @@ export class AssignmentService {
       });
   }
   getNbrOfAssignments() {
-    return this.nbrOfAssignmentsSubject;
+    return this.nbrOfAssignmentsSubject.asObservable();
   }
 
   getNbrOfUnfinishedAssigments() {
-    return this.nbrOfUnAssignmentsSubject;
+    return this.nbrOfUnAssignmentsSubject.asObservable();
   }
   markAsDone(assignmentID: string) {
     const data = this.subject.getValue();

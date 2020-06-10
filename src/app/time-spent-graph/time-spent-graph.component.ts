@@ -12,20 +12,20 @@ export class TimeSpentGraphComponent implements OnInit {
   constructor(private statisticsService: StatisticsService) {}
 
   bubbleData: any[];
-  view: any[] = [700, 400];
+  view: any[] = [650, 400];
 
   // options
   showXAxis: boolean = true;
   showYAxis: boolean = true;
   gradient: boolean = false;
   showXAxisLabel: boolean = true;
-  yAxisLabel: string = 'Time Spent (min.)';
+  yAxisLabel: string = 'Time Spent (Hrs.)';
   showYAxisLabel: boolean = true;
   xAxisLabel: string = 'Date';
   maxRadius: number = 20;
   minRadius: number = 5;
-  yScaleMin: number = 0.3;
-  yScaleMax: number = 120;
+  yScaleMin: number = 0.001;
+  yScaleMax: number = 4;
   lodaded = false;
 
   colorScheme = {
@@ -36,7 +36,7 @@ export class TimeSpentGraphComponent implements OnInit {
     this.statisticsService.getTimeSpent().subscribe((res: any[]) => {
       this.bubbleData = res;
       this.lodaded = true;
-    })
+    });
   }
 
   onSelect(data): void {
