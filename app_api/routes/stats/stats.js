@@ -27,12 +27,31 @@ router.get("/progress/:courseId", verifyJwt, async (req, res) => {
 router.get("/grades/:courseId", verifyJwt, async (req, res, next) => {
   try {
     let user = await userService.fetchUserByID(req.decodedToken._id);
-    let query = await transcriptService.getCourseGrades(
+    let results = await transcriptService.getCourseGrades(
       user.moodleUserID,
       parseInt(req.params.courseId),
       user.moodleToken
     );
-    return res.status(200).send(query);
+    for (let result of results) {
+      if (parseFloat(result.grade) === NaN) {
+        result.grade = "N/A";
+        result.badge = "N/A";
+      } else {
+        if (parseFloat(result.grade) > 75.0) {
+          result.badge = `<span class="badge badge-success">Good</span>`;
+        }
+        if (
+          parseFloat(result.grade) >= 50.0 &&
+          parseFloat(result.grade) < 75.0
+        ) {
+          result.badge = `<span class="badge badge-warning">Moderate</span>`;
+        }
+        if (parseFloat(result.grade) < 50.0) {
+          result.badge = `<span class="badge badge-danger">Alarming</span>`;
+        }
+      }
+    }
+    res.status(200).send(results);
   } catch (error) {
     next(error);
   }

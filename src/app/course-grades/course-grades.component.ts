@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { Grade } from '../models/grade.model';
 
 @Component({
   selector: 'app-course-grades',
@@ -7,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CourseGradesComponent implements OnInit {
 
+  @Input() grades: BehaviorSubject<Grade[]>;
   constructor() { }
 
   ngOnInit() {

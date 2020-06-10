@@ -1,1 +1,20 @@
-<p>course-grades works!</p>
+<div class="card scroll" style="width: 350px; height: 300px;">
+  <div class="card-header">
+    <h5>Grades</h5>
+  </div>
+  <div *ngIf="(this.grades | async)?.length else empty">
+    <ng-container *ngFor="let grade of this.grades | async">
+      <app-course-grades-element [item]="grade.itemname" [grade]="grade.grade" [badge]="grade.badge">
+      </app-course-grades-element>
+    </ng-container>
+  </div>
+
+  <ng-template #empty>
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col text-center">
+          Grades Unavailable
+        </div>
+      </div>
+    </div>
+  </ng-template>

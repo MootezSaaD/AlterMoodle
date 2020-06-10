@@ -1,1 +1,11 @@
-<p>course-grades-element works!</p>
+<div class="row no-gutters border-bottom">
+  <div class="col">
+    <div class="card-body">
+      <div class="card-text props">{{this.item}}</div>
+      <div class="card-text">
+        <div class="text-muted" style="font-weight: bold;">{{this.grade}} - <div [innerHTML]="this.badge"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

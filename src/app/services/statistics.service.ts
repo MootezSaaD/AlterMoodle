@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { UserLog } from "../models/userlog.model";
 import * as moment from "moment";
+import { Grade } from '../models/grade.model';
 
 @Injectable({
   providedIn: "root",
@@ -34,5 +35,10 @@ export class StatisticsService {
   }
   getAvgTimeSpent() {
     return this.httpClient.get("http://localhost:3000/api/stats/avg-time");
+  }
+  getCourseGrades(courseID: number) {
+    return this.httpClient.get<Grade[]>(
+      `http://localhost:3000/api/stats/grades/${courseID}`
+    );
   }
 }

@@ -5,6 +5,7 @@ import { AssignmentService } from "../services/assignment.service";
 import { StatisticsService } from "../services/statistics.service";
 import { Assignment } from '../models/assignment.model';
 import { BehaviorSubject } from 'rxjs';
+import { Grade } from '../models/grade.model';
 
 @Component({
   selector: "app-course-assignments",
@@ -16,6 +17,7 @@ export class CourseAssignmentsComponent implements OnInit {
   coursName: string;
   course: CourseAssignment;
   lateAssignments = new BehaviorSubject<Assignment[]>([]);
+  courseGrades = new BehaviorSubject<Grade[]>([]);
   courseID: number;
   statusMsg: string;
   data: any;
@@ -43,6 +45,7 @@ export class CourseAssignmentsComponent implements OnInit {
         this.assignCourse(a);
         this.assignCourseID(a);
         this.getCourseProgress();
+        this.getCourseGrades();
       },
       error: (error) => {
         console.log(error);
@@ -76,12 +79,21 @@ export class CourseAssignmentsComponent implements OnInit {
   }
   getCourseProgress() {
     if (this.courseID > 0) {
+      console.log("ID", this.courseID);
       this.statisticsService
         .getCourseAProgress(this.courseID)
         .subscribe((res) => {
           this.data = res;
           console.log(this.data);
         });
+    }
+  }
+  getCourseGrades() {
+    if (this.courseID > 0) {
+      this.statisticsService.getCourseGrades(this.courseID).subscribe((res) => {
+        this.courseGrades.next(res);
+        console.log("GRADES", this.courseGrades.value);
+      });
     }
   }
   get assignments(): Assignment[] {
