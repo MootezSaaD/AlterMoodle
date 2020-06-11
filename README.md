@@ -8,6 +8,10 @@ AlterMoodle is a lightweight web platform that allows you to track, edit and sub
 
 AlterMoodle was created as a part of the CS425 at SMU-MedTech.
 
+### Schedule
+
+- Flexible schedule with Drag and Drop functionality, to create a course time table
+
 ### Track Assignments
 
 - Track the total number of assignments.
