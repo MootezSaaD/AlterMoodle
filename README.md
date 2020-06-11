@@ -1,29 +1,43 @@
-# Done:
--   Created Authentication Backend (Register and Login)
--   Seperated the different authentication actions (login and register) into services in the backend.
--   Created a sidebar to the dashboard.
--   Created two service:
-    - AuthService, handles the different actions related to authentication: 
-        -   Login in (hitting the /login API end-point).
-        -   Register (hitting the /signup API end-point).
-        -   PurgeAuth (deletes the JWT from the local storage, resets the BehaviourSubject to it's initials value (an empty object), and set the "authenticated" variable for false).
-        -   isAuthenticated (Checks whether the user is authenticated or not by return "authenticated"'s boolean value ).
-    - JWTService, operations on token:
-        - setToken (Sets the JWT in localstorage).
-        - getToken (Gets the JWT from localstorage).
-        - deleteToken (Delete the JWT from localstorage).
--   Protect the access to the dashboard using a Guard.
+# AlterMoodle
 
-# TODO:
-- [ ]  Continue implementing the Seperation of Concers concept:
-- [ ]  - Create an "Auth" module that contains Login and Signup components.
-- [ ]  - Create a "Shared" module that contains different common components (Services, Guards) or any other future shared components.
-- [ ]  - Same thing for "dashboard" componenet.
-- [ ]  Setup Moodle (on this PC).
-- [ ]  Display user's details.
-- [ ]  Allow user to change his/her password.
-- [ ]  Add "Add time table" functionality to the dashboard.
-- [ ]  Create remaining views of the dashboard.
-- [ ]  Start creating appropriate API end-points : I can start by creating an end-point that fetches the user's     assignments.
-- [ ] * Think about deploying the project on Heroku, same thing regardig Moodle (maye on a free hosting service)*.
-- [ ] Enhance validation by including server side errors (ref: https://stackoverflow.com/questions/57747379/how-to-do-and-show-server-validation-errors-in-angular-form)
+AlterMoodle is a lightweight web platform that allows you to track, edit and submit assignments to Moodle automatically. It also offers statistics that describe the user's overall performance and course-based performance.
+
+![main table](https://i.imgur.com/o02iEb0.png)
+
+## Features
+
+AlterMoodle was created as a part of the CS425 at SMU-MedTech.
+
+### Track Assignments
+
+- Track the total number of assignments.
+- Track the number of total number of finished and unfinished assignments.
+- Track each course's finished and unfinished assignments.
+- Edit the assignments status (from Pending to Done).
+
+![assignments](https://i.imgur.com/3maMPuy.png)
+
+### Do and Submit Assignments
+
+- Create draft submissions for each assignment.
+- Store draft submissions for each assignment.
+- Once the submission is ready, it can be submitted automatically without the need to login to moodle.
+
+![submit](https://i.imgur.com/4pXMDeA.png)
+
+### Track Performance
+
+- Get the average time spent on AlterMoodle. (High activity on LMS is an indicator for good academic performance, Paper : [Młynarska, Greene & Cunningham , 2016](https://www.researchgate.net/publication/290527303_Indicators_of_Good_Student_Performance_in_Moodle_Activity_Data)).
+- Track average early submission date.
+- Track number of due and unfinished assignments.
+- Get total time spent on AlterMoodle.
+- Get total grades.
+- Get grades of each course's items.
+
+![perfs](https://i.imgur.com/awXEiYi.png)
+
+![perfs2](https://i.imgur.com/twCBd7N.png)
+
+# Disclaimer
+
+This project is NOT by any means complete or stable. Lots of bugs and anti-patterns exists. It can be further developed and refactored.
