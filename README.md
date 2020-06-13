@@ -21,6 +21,9 @@ AlterMoodle was created as a part of the CS425 at SMU-MedTech.
 - Track the number of total number of finished and unfinished assignments.
 - Track each course's finished and unfinished assignments.
 - Edit the assignments status (from Pending to Done).
+- Notify the user of assignments that are due in 24 hours or less.
+
+![notifcations](https://i.imgur.com/ABPaXrw.png)
 
 ![assignments](https://i.imgur.com/3maMPuy.png)
 
