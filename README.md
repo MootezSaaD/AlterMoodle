@@ -7,6 +7,8 @@ AlterMoodle is a lightweight web platform that allows you to track, edit and sub
 
 ![main table](https://i.imgur.com/o02iEb0.png)
 
+Mobile version is developed by Bechir Jamoussi, it can be found here [Mobile Version](https://github.com/MohamedBechir/AlterMoodle-Android)
+
 ## Features
 
 AlterMoodle was created as a part of the CS425 at SMU-MedTech.
