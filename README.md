@@ -1,7 +1,7 @@
 # AlterMoodle
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](https://bitbucket.org/lbesson/ansi-colors)
 
-
+![logo](https://i.imgur.com/feo0CvE.png)
 
 AlterMoodle is a lightweight web platform that allows you to track, edit and submit assignments to Moodle automatically. It also offers statistics that describe the user's overall performance and course-based performance.
 
