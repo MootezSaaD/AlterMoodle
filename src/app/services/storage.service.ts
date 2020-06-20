@@ -13,7 +13,7 @@ export class StorageService {
   }
 
   // Get user from locastorage
-  getUser(): any {
+  getUser(): User {
     let user = JSON.parse(localStorage.getItem("user"));
     return user;
   }
